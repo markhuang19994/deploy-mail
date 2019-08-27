@@ -18,7 +18,7 @@
             display: none;
         }
 
-        #content_index, #content_step1 {
+        #content_index {
             position: relative;
             margin: auto;
             width: 80%;
@@ -27,6 +27,11 @@
             justify-content: center;
             align-items: center;
             transform: translateY(-50%);
+        }
+
+        #content_step1 {
+            position: relative;
+            margin: auto;
         }
 
         #content_index-title {
@@ -102,18 +107,23 @@
 <div id="step1-body">
     <div id="content_step1">
         <div class="checkin">
-            <h1>Default send to:</h1>
-            <p class="default-send-to"></p>
-            <h1>Default send cc:</h1>
-            <p class="default-send-cc"></p>
+            <h1>Checkin</h1>
+            <label for="checkin-default-send-to">checkin send to:</label>
+            <input id="checkin-default-send-to" name="checkin-default-send-to"/>
+            <br>
+            <label for="checkin-default-send-cc">Checkin send cc:</label>
+            <input id="checkin-default-send-cc" name="checkin-default-send-cc"/>
         </div>
         <div class="checkout">
-            <h1>Default send to:</h1>
-            <p class="default-send-to"></p>
-            <h1>Default send cc:</h1>
-            <p class="default-send-cc"></p>
+            <h1>Checkout</h1>
+            <label for="checkout-default-send-to">checkout send to:</label>
+            <input id="checkout-default-send-to" name="checkout-default-send-to"/>
+            <br>
+            <label for="checkout-default-send-cc">checkout send cc:</label>
+            <input id="checkout-default-send-cc" name="checkout-default-send-cc"/>
         </div>
-        <p id="senderName"></p>
+        <h1>SenderName</h1>
+        <label for="senderName"></label><input id="senderName"/>
     </div>
 </div>
 <script>
@@ -162,16 +172,11 @@
     function index() {
         $.ajax({
             type: 'GET',
-            url: '/invalidateSession',
+            url: 'base/invalidateSession',
             data: {},
             success: d => {
                 if (d) {
-                    const sel = document.getElementById('sel');
-                    d.forEach(name => {
-                        const opt = new Option();
-                        opt.text = name;
-                        sel.appendChild(opt)
-                    });
+                    console.log('Session invalidate ' + d)
                 }
             },
             error: e => console.error(e)
@@ -208,7 +213,36 @@
             data: {engName},
             success: d => {
                 if (d) {
-                    console.log(d)
+                    const engName = d['engName'];
+                    const checkinConfig = d['checkinConfig'];
+                    const checkoutConfig = d['checkoutConfig'];
+                    if (engName) {
+                        $('#senderName').text(engName);
+                    }
+                    if (checkinConfig) {
+                        const defaultSendTo = checkinConfig['defaultSendTo'];
+                        if (defaultSendTo && Array.isArray(defaultSendTo)) {
+                            $('#checkin-default-send-to').val(defaultSendTo.join(';'))
+                        }
+                        const defaultSendCC = checkinConfig['defaultSendCC'];
+                        if (defaultSendCC && Array.isArray(defaultSendCC)) {
+                            $('#checkout-default-send-cc').val(defaultSendCC.join(';'))
+                        }
+                    }
+
+                    if (checkoutConfig) {
+                        const defaultSendTo = checkinConfig['defaultSendTo'];
+                        if (defaultSendTo && Array.isArray(defaultSendTo)) {
+                            $('#checkout-default-send-to').val(defaultSendTo.join(';'))
+                        }
+                        const defaultSendCC = checkinConfig['defaultSendCC'];
+                        if (defaultSendCC && Array.isArray(defaultSendCC)) {
+                            $('#checkout-default-send-cc').val(defaultSendCC.join(';'))
+                        }
+                    }
+                    if (d['checkoutConfig']) {
+                        $('#senderName').text(d['engName']);
+                    }
                 }
             },
             error: e => console.error(e)
