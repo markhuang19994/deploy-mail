@@ -1,0 +1,54 @@
+plugins {
+    id 'org.springframework.boot' version '2.1.7.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'groovy'
+    id 'base'
+}
+
+group = 'com.iisi'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.codehaus.groovy:groovy-all:2.5.8'
+    implementation 'org.freemarker:freemarker'
+    implementation 'net.lingala.zip4j:zip4j:1.3.2'
+    implementation 'com.sun.mail:javax.mail:1.6.0'
+    implementation 'com.microsoft.sqlserver:mssql-jdbc:6.4.0.jre7'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+def void explainMe(it) {
+    //println "Examining $it.name:"
+    println "Meta:"
+    println it.metaClass.metaMethods*.name.sort().unique()
+    println "Methods:"
+    println it.metaClass.methods*.name.sort().unique()
+    println "Depends On:"
+    //println it.dependsOn.collect({it*.getName()})
+    println "Properties:"
+    println it.properties.entrySet()*.toString()
+            .sort().toString().replaceAll(", ", "\n")
+}
+
+def baseDir = project.projectDir.absolutePath
+
+task zip(type: Zip, group: "Archive", description: 'zip source file') {
+    from "${baseDir}/src/main/resources"
+    archiveName = "basic-demo-1.0.zip"
+    destinationDirectory = new File(it.project.projectDir, 'D')
+}

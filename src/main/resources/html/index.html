@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yoo</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #index-body, #step1-body {
+            width: 100%;
+            position: relative;
+            height: 100%;
+            display: none;
+        }
+
+        #content_index, #content_step1 {
+            position: relative;
+            margin: auto;
+            width: 80%;
+            top: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translateY(-50%);
+        }
+
+        #content_index-title {
+            display: inline-block;
+            margin-right: 1rem;
+        }
+
+        .select-wrapper {
+            display: inline-block;
+            position: relative;
+        }
+
+        .select-wrapper:after {
+            content: '▼';
+            position: absolute;
+            top: 12px;
+            right: 10px;
+            font-size: 18px;
+            z-index: 5;
+        }
+
+        select {
+            padding: 10px 40px 10px 10px;
+            -webkit-appearance: none;
+            -ms-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            border: 1px solid #bbb;
+            background-color: transparent;
+            border-radius: 0;
+            position: relative;
+            cursor: pointer;
+            outline: none;
+            z-index: 10;
+        }
+
+        #sel {
+            font-size: 1.2rem;
+            border-radius: 6px;
+        }
+
+        #goStep1 {
+            display: inline-block;
+            margin-left: 1rem;
+            font-size: 2rem;
+            color: #bbbbbb;
+            cursor: pointer;
+        }
+
+        #goStep1:hover {
+            color: black;
+        }
+    </style>
+    <script
+            src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <script
+            src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+            crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="index-body">
+    <div id="content_index">
+        <h1 id="content_index-title">請選擇使用者</h1>
+        <div class="select-wrapper">
+            <label for="sel"></label><select name="sel" id="sel"></select>
+        </div>
+        <div id="goStep1">➤</div>
+    </div>
+</div>
+<div id="step1-body">
+    <div id="content_step1">
+        <h1>Step1</h1>
+    </div>
+</div>
+<script>
+    $.ajax({
+        type: 'GET',
+        url: '/deployMailUsers',
+        data: {},
+        success: d => {
+            if (d) {
+                const sel = document.getElementById('sel');
+                d.forEach(name => {
+                    const opt = new Option();
+                    opt.text = name;
+                    sel.appendChild(opt)
+                });
+            }
+        },
+        error: e => console.error(e)
+    });
+
+    $('#goStep1').click(() => {
+        // slideOut('left', $('#index-body'));
+        // slideIn('right', $('#step1-body'));
+    });
+
+    function slideOut(ele, direction, speed = 350) {
+        if (direction === 'left') {
+            $(ele).animate({left: '-100%'}, speed);
+        } else {
+            $(ele).animate({right: '-100%'}, speed);
+        }
+    }
+
+    function slideIn(ele, direction, speed = 350) {
+        if (direction === 'left') {
+            $(ele).animate({left: '0'}, speed);
+        } else {
+            $(ele).animate({right: '0'}, speed);
+        }
+    }
+
+    $(() => {
+        $('#index-body').css('display', 'block')
+    });
+</script>
+</body>
+</html>
