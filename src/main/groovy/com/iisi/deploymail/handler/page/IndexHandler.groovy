@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseBody
 
 @Controller
-@RequestMapping(['/', '/index'])
+@RequestMapping(['/', '/indexHandler'])
 class IndexHandler {
 
     @Autowired
@@ -20,7 +20,7 @@ class IndexHandler {
     IndexService indexService
 
     @ResponseBody
-    @GetMapping('/')
+    @GetMapping('/index')
     String indexPage() {
         htmlResource.get('index')
     }

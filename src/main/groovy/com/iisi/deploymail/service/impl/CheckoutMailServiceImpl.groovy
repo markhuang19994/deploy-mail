@@ -36,7 +36,7 @@ class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> 
         String password = env.getProperty('mail.user.pwd')
         def session = getMailSession()
 
-        def mailAddress = getMailAddress(['mark.huang@iisigroup.com'], ['mark.huang@iisigroup.com'], false)
+        def mailAddress = getMailAddress(checkoutMailProp.to, checkoutMailProp.cc, false)
         MimeMessage message = new MimeMessage(session)
         message.setFrom(new InternetAddress(username))
         message.addRecipients(Message.RecipientType.TO, mailAddress.to)

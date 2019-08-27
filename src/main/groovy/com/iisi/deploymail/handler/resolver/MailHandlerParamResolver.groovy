@@ -1,13 +1,15 @@
 package com.iisi.deploymail.handler.resolver
 
-import com.iisi.deploymail.model.resolve.InitMailResolveResult
+import com.iisi.deploymail.model.prop.mail.CheckinMailProp
+import com.iisi.deploymail.model.prop.mail.CheckoutMailProp
 
 import javax.servlet.http.HttpServletRequest
 
 interface MailHandlerParamResolver {
 
-    InitMailResolveResult resolveInitMailParam(HttpServletRequest request)
+    CheckinMailProp resolveCheckinHandlerParam(HttpServletRequest request)
 
+    CheckoutMailProp resolveCheckoutHandlerParam(HttpServletRequest request)
 }
 
 

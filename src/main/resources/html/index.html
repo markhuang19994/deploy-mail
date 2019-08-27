@@ -206,7 +206,7 @@
 
         $.ajax({
             type: 'GET',
-            url: 'index/deployMailUsers',
+            url: 'indexHandler/deployMailUsers',
             data: {},
             success: d => {
                 if (d) {
@@ -239,7 +239,7 @@
                     const checkinConfig = d['checkinConfig'];
                     const checkoutConfig = d['checkoutConfig'];
                     if (engName) {
-                        $('#senderName').text(engName);
+                        $('#senderName').val(engName);
                     }
                     if (checkinConfig) {
                         const defaultSendTo = checkinConfig['defaultSendTo'];
@@ -269,6 +269,59 @@
             },
             error: e => console.error(e)
         });
+
+        $('#checkin-send-btn').click(() => {
+            const searchParams = new URLSearchParams(window.location.search);
+            const jenkinsJobName = searchParams.get('jenkinsJobName') || null;
+            const jenkinsBuildNum = searchParams.get('jenkinsBuildNum') || null;
+            const projectName = searchParams.get('projectName') || null;
+            const lacrNo = searchParams.get('lacrNo') || null;
+            const senderName = searchParams.get('senderName') || null;
+            $.ajax({
+                type: 'POST',
+                url: 'mailHandler/checkin',
+                data: {
+                    jenkinsJobName,
+                    jenkinsBuildNum,
+                    projectName,
+                    lacrNo,
+                    senderName: $('#senderName').val(),
+                    checkinDefaultSendTo: $('#checkin-default-send-to').val(),
+                    checkinDefaultSendCc: $('#checkin-default-send-cc').val()
+                },
+                success: d => {
+                    alert(d);
+                },
+                error: e => console.error(e)
+            });
+        });
+
+        $('#checkout-send-btn').click(() => {
+            const searchParams = new URLSearchParams(window.location.search);
+            const jenkinsJobName = searchParams.get('jenkinsJobName') || null;
+            const jenkinsBuildNum = searchParams.get('jenkinsBuildNum') || null;
+            const projectName = searchParams.get('projectName') || null;
+            const lacrNo = searchParams.get('lacrNo') || null;
+            const senderName = searchParams.get('senderName') || null;
+            $.ajax({
+                type: 'POST',
+                url: 'mailHandler/checkout',
+                data: {
+                    jenkinsJobName,
+                    jenkinsBuildNum,
+                    projectName,
+                    lacrNo,
+                    senderName: $('#senderName').val(),
+                    checkoutDefaultSendTo: $('#checkout-default-send-to').val(),
+                    checkoutDefaultSendCc: $('#checkout-default-send-cc').val()
+                },
+                success: d => {
+                    alert(d);
+                },
+                error: e => console.error(e)
+            });
+        });
+
     }
 
     $(() => {
@@ -276,8 +329,6 @@
         const page = searchParams.get('page') || 'index-body';
         $('#' + page).css('display', 'block');
         index();
-
-
     });
 </script>
 </body>
