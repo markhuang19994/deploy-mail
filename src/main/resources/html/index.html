@@ -8,6 +8,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
 
         #index-body, #step1-body {
@@ -100,50 +101,127 @@
 </div>
 <div id="step1-body">
     <div id="content_step1">
-        <h1>Step1</h1>
+        <div class="checkin">
+            <h1>Default send to:</h1>
+            <p class="default-send-to"></p>
+            <h1>Default send cc:</h1>
+            <p class="default-send-cc"></p>
+        </div>
+        <div class="checkout">
+            <h1>Default send to:</h1>
+            <p class="default-send-to"></p>
+            <h1>Default send cc:</h1>
+            <p class="default-send-cc"></p>
+        </div>
+        <p id="senderName"></p>
     </div>
 </div>
 <script>
-    $.ajax({
-        type: 'GET',
-        url: '/deployMailUsers',
-        data: {},
-        success: d => {
-            if (d) {
-                const sel = document.getElementById('sel');
-                d.forEach(name => {
-                    const opt = new Option();
-                    opt.text = name;
-                    sel.appendChild(opt)
-                });
-            }
-        },
-        error: e => console.error(e)
-    });
-
-    $('#goStep1').click(() => {
-        // slideOut('left', $('#index-body'));
-        // slideIn('right', $('#step1-body'));
-    });
-
-    function slideOut(ele, direction, speed = 350) {
+    function slideOut(ele, direction = 'left', speed = 350, callback) {
+        const $ele = $(ele);
         if (direction === 'left') {
-            $(ele).animate({left: '-100%'}, speed);
+            $ele.animate({left: '-100%'}, speed);
+            $ele.attr('direction', 'left');
         } else {
-            $(ele).animate({right: '-100%'}, speed);
+            $ele.animate({right: '-100%'}, speed);
+            $ele.attr('direction', 'right');
         }
     }
 
-    function slideIn(ele, direction, speed = 350) {
+    function slideIn(ele, direction, speed = 350, callback) {
+        const $ele = $(ele);
         if (direction === 'left') {
-            $(ele).animate({left: '0'}, speed);
+            $ele.animate({left: '0'}, speed);
         } else {
-            $(ele).animate({right: '0'}, speed);
+            $ele.animate({right: '0'}, speed);
         }
+        $ele.attr('direction', '');
+    }
+
+    function autoSlideIn(ele, callback) {
+        const $ele = $(ele);
+        const direction = $ele.attr('direction');
+        if (direction === 'left') {
+            slideIn(ele, 'left')
+        } else {
+            slideIn(ele, 'right')
+        }
+    }
+
+    function changePage(oldPage, page) {
+        const $page = $(page);
+        $page.css({
+            display: 'block',
+            right: '-100%',
+            left: ''
+        });
+        slideOut(oldPage, 'left', () => $(oldPage).css('display', 'none'));
+        slideIn(page, 'right')
+    }
+
+    function index() {
+        $.ajax({
+            type: 'GET',
+            url: '/invalidateSession',
+            data: {},
+            success: d => {
+                if (d) {
+                    const sel = document.getElementById('sel');
+                    d.forEach(name => {
+                        const opt = new Option();
+                        opt.text = name;
+                        sel.appendChild(opt)
+                    });
+                }
+            },
+            error: e => console.error(e)
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: 'index/deployMailUsers',
+            data: {},
+            success: d => {
+                if (d) {
+                    const sel = document.getElementById('sel');
+                    d.forEach(name => {
+                        const opt = new Option();
+                        opt.text = name;
+                        sel.appendChild(opt)
+                    });
+                }
+            },
+            error: e => console.error(e)
+        });
+
+        $('#goStep1').click(() => {
+            changePage($('#index-body'), $('#step1-body'));
+            step1();
+        });
+    }
+
+    function step1() {
+        const engName = $('#sel option:selected').text();
+        $.ajax({
+            type: 'GET',
+            url: '/login',
+            data: {engName},
+            success: d => {
+                if (d) {
+                    console.log(d)
+                }
+            },
+            error: e => console.error(e)
+        });
     }
 
     $(() => {
-        $('#index-body').css('display', 'block')
+        const searchParams = new URLSearchParams(window.location.search);
+        const page = searchParams.get('page') || 'index-body';
+        $('#' + page).css('display', 'block');
+        index();
+
+
     });
 </script>
 </body>
