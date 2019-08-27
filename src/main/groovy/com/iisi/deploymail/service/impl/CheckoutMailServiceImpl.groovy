@@ -1,10 +1,7 @@
 package com.iisi.deploymail.service.impl
 
 import com.iisi.deploymail.freemarker.FtlProvider
-import com.iisi.deploymail.model.prop.mail.CheckinMailProp
 import com.iisi.deploymail.model.prop.mail.CheckoutMailProp
-import com.iisi.deploymail.model.prop.mail.CommonMailProp
-import com.iisi.deploymail.util.FileUtil
 import com.iisi.deploymail.util.FreemarkerUtil
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -31,7 +28,7 @@ class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> 
     }
 
     @Override
-    void sendMail(CommonMailProp commonMailProp, CheckoutMailProp checkoutMailProp) {
+    void sendMail(CheckoutMailProp checkoutMailProp) {
         def checkoutResources = checkoutMailProp.checkoutResources
         def checkinFiles = [checkoutResources.checkoutForm, checkoutResources.checkoutTxt]
 
@@ -44,11 +41,11 @@ class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> 
         message.setFrom(new InternetAddress(username))
         message.addRecipients(Message.RecipientType.TO, mailAddress.to)
         message.addRecipients(Message.RecipientType.CC, mailAddress.cc)
-        message.setSubject(getSubject(commonMailProp.projectName, commonMailProp.lacrNo))
+        message.setSubject(getSubject(checkoutMailProp.projectName, checkoutMailProp.lacrNo))
 
         Multipart multipart = generateMultipart(checkinFiles as File[])
         MimeBodyPart messageBodyPart = new MimeBodyPart()
-        messageBodyPart.setContent(generateMailHtml(commonMailProp, checkoutMailProp), HTML_MAIL_CONTENT_TYPE)
+        messageBodyPart.setContent(generateMailHtml(checkoutMailProp), HTML_MAIL_CONTENT_TYPE)
         multipart.addBodyPart(messageBodyPart)
         message.setContent(multipart, HTML_MAIL_CONTENT_TYPE)
 
@@ -61,11 +58,11 @@ class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> 
         transport.close()
     }
 
-    private String generateMailHtml(CommonMailProp commonMailProp, CheckoutMailProp checkoutMailProp) {
+    private String generateMailHtml(CheckoutMailProp checkoutMailProp) {
         def template = ftlProvider.getFreeMarkerTemplate('/ftl/mail/checkout.ftl')
         def m = [
-                projectName: commonMailProp.projectName,
-                lacrNo     : commonMailProp.lacrNo
+                projectName: checkoutMailProp.projectName,
+                lacrNo     : checkoutMailProp.lacrNo
         ]
         FreemarkerUtil.processTemplateToString(template, m)
     }

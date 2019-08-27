@@ -3,7 +3,6 @@ package com.iisi.deploymail.handler.resolver.impl
 import com.iisi.deploymail.handler.resolver.MailHandlerParamResolver
 import com.iisi.deploymail.model.prop.mail.CheckinMailProp
 import com.iisi.deploymail.model.prop.mail.CheckoutMailProp
-import com.iisi.deploymail.model.prop.mail.CommonMailProp
 import com.iisi.deploymail.model.resolve.InitMailResolveResult
 import groovyjarjarcommonscli.MissingArgumentException
 import org.springframework.stereotype.Service
@@ -42,9 +41,14 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
         }
 
         new InitMailResolveResult(
-                checkinMailProp: new CheckinMailProp(),
-                checkoutMailProp: new CheckoutMailProp(),
-                commonMailProp: new CommonMailProp(
+                checkinMailProp: new CheckinMailProp(
+                        jenkinsJobName: jenkinsJobName,
+                        jenkinsBuildNum: jenkinsBuildNum,
+                        projectName: projectName,
+                        lacrNo: lacrNo,
+                        senderName: senderName
+                ),
+                checkoutMailProp: new CheckoutMailProp(
                         jenkinsJobName: jenkinsJobName,
                         jenkinsBuildNum: jenkinsBuildNum,
                         projectName: projectName,

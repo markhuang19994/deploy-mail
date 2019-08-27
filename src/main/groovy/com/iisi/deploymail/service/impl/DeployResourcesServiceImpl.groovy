@@ -1,6 +1,7 @@
 package com.iisi.deploymail.service.impl
 
-import com.iisi.deploymail.model.prop.mail.CommonMailProp
+import com.iisi.deploymail.model.prop.mail.CheckinMailProp
+import com.iisi.deploymail.model.prop.mail.CheckoutMailProp
 import com.iisi.deploymail.model.resources.CheckinResources
 import com.iisi.deploymail.model.resources.CheckoutResources
 import com.iisi.deploymail.service.DeployResourcesService
@@ -19,10 +20,10 @@ class DeployResourcesServiceImpl implements DeployResourcesService {
     Environment env
 
     @Override
-    CheckoutResources downloadCheckoutResources(CommonMailProp commonMailProp) {
-        def projectName = commonMailProp.projectName
-        def jobName = commonMailProp.jenkinsJobName
-        def buildNum = commonMailProp.jenkinsBuildNum
+    CheckoutResources downloadCheckoutResources(CheckoutMailProp checkoutMailProp) {
+        def projectName = checkoutMailProp.projectName
+        def jobName = checkoutMailProp.jenkinsJobName
+        def buildNum = checkoutMailProp.jenkinsBuildNum
 
         def checkoutResourcesList = [
                 'checkoutForm.doc', 'checkout.txt'
@@ -42,10 +43,10 @@ class DeployResourcesServiceImpl implements DeployResourcesService {
     }
 
     @Override
-    CheckinResources downloadCheckinResources(CommonMailProp commonMailProp) {
-        def projectName = commonMailProp.projectName
-        def jobName = commonMailProp.jenkinsJobName
-        def buildNum = commonMailProp.jenkinsBuildNum
+    CheckinResources downloadCheckinResources(CheckinMailProp checkinMailProp) {
+        def projectName = checkinMailProp.projectName
+        def jobName = checkinMailProp.jenkinsJobName
+        def buildNum = checkinMailProp.jenkinsBuildNum
 
         def checkinResourcesList = [
                 "${projectName}_diff_split.zip", 'changeForm.doc', 'ChkSrcApp.csv'

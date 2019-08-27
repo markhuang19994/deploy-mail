@@ -4,7 +4,6 @@ import com.iisi.deploymail.constant.Constants
 import com.iisi.deploymail.handler.resolver.MailHandlerParamResolver
 import com.iisi.deploymail.model.prop.mail.CheckinMailProp
 import com.iisi.deploymail.model.prop.mail.CheckoutMailProp
-import com.iisi.deploymail.model.prop.mail.CommonMailProp
 import com.iisi.deploymail.service.DeployMailService
 import com.iisi.deploymail.service.DeployResourcesService
 import com.iisi.deploymail.tool.HtmlResource
@@ -40,7 +39,6 @@ class MailHandler {
         def session = request.getSession()
         session.setAttribute(Constants.CHECKIN_MAIL_PROP, initMailParam.checkinMailProp)
         session.setAttribute(Constants.CHECKOUT_MAIL_PROP, initMailParam.checkoutMailProp)
-        session.setAttribute(Constants.COMMON_MAIL_PROP, initMailParam.commonMailProp)
         return 'Initialized mail success'
     }
 
@@ -48,10 +46,9 @@ class MailHandler {
     @GetMapping(path = '/checkin')
     String sendCheckin(HttpServletRequest request) {
         def session = request.getSession()
-        def commonMailProp = session.getAttribute(Constants.COMMON_MAIL_PROP) as CommonMailProp
         def checkinMailProp = session.getAttribute(Constants.CHECKIN_MAIL_PROP) as CheckinMailProp
         checkinMailProp.checkinResources = deployResourcesService.downloadCheckinResources(commonMailProp)
-        checkinMailService.sendMail(commonMailProp, checkinMailProp)
+        checkinMailService.sendMail(checkinMailProp)
         return 'Checkin mail send success'
     }
 
@@ -59,10 +56,9 @@ class MailHandler {
     @GetMapping(path = '/checkout')
     String sendCheckout(HttpServletRequest request) {
         def session = request.getSession()
-        def commonMailProp = session.getAttribute(Constants.COMMON_MAIL_PROP) as CommonMailProp
         def checkoutMailProp = session.getAttribute(Constants.CHECKOUT_MAIL_PROP) as CheckoutMailProp
         checkoutMailProp.checkoutResources = deployResourcesService.downloadCheckoutResources(commonMailProp)
-        checkoutMailService.sendMail(commonMailProp, checkoutMailProp)
+        checkoutMailService.sendMail(checkoutMailProp)
         return 'Checkout mail send success'
     }
 }

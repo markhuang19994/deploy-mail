@@ -56,7 +56,6 @@
         select {
             padding: 10px 40px 10px 10px;
             -webkit-appearance: none;
-            -ms-appearance: none;
             -moz-appearance: none;
             appearance: none;
             border: 1px solid #bbb;
@@ -84,6 +83,23 @@
         #goStep1:hover {
             color: black;
         }
+
+        #step1-body {
+            padding: 1rem 0 0 1rem;
+            overflow-y: auto;
+        }
+
+        .send-mail-btn {
+            font-size: 1rem;
+            border-radius: 8px;
+            border: none;
+            padding: .5rem;
+        }
+
+        textarea {
+            min-width: 500px;
+            min-height: 200px;
+        }
     </style>
     <script
             src="https://code.jquery.com/jquery-3.4.1.min.js"
@@ -106,24 +122,30 @@
 </div>
 <div id="step1-body">
     <div id="content_step1">
+        <label for="senderName" style="font-size: 1.2rem">SenderName&nbsp;</label><input id="senderName"/>
         <div class="checkin">
             <h1>Checkin</h1>
-            <label for="checkin-default-send-to">checkin send to:</label>
-            <input id="checkin-default-send-to" name="checkin-default-send-to"/>
-            <br>
-            <label for="checkin-default-send-cc">Checkin send cc:</label>
-            <input id="checkin-default-send-cc" name="checkin-default-send-cc"/>
+            <label for="checkin-default-send-to">Checkin send to:</label><br/>
+            <textarea id="checkin-default-send-to" name="checkin-default-send-to"></textarea>
+            <br/>
+            <label for="checkin-default-send-cc">Checkin send cc:</label><br/>
+            <textarea id="checkin-default-send-cc" name="checkin-default-send-cc"></textarea>
+            <br/>
+            <button class="send-mail-btn" id="checkin-send-btn">Send</button>
         </div>
         <div class="checkout">
             <h1>Checkout</h1>
-            <label for="checkout-default-send-to">checkout send to:</label>
-            <input id="checkout-default-send-to" name="checkout-default-send-to"/>
-            <br>
-            <label for="checkout-default-send-cc">checkout send cc:</label>
-            <input id="checkout-default-send-cc" name="checkout-default-send-cc"/>
+            <label for="checkout-default-send-to">Checkout send to:</label><br/>
+            <textarea id="checkout-default-send-to" name="checkout-default-send-to"></textarea>
+            <br/>
+            <label for="checkout-default-send-cc">Checkout send cc:</label><br/>
+            <textarea id="checkout-default-send-cc" name="checkout-default-send-cc"></textarea>
+            <br/>
+            <button class="send-mail-btn" id="checkout-send-btn">Send</button>
         </div>
-        <h1>SenderName</h1>
-        <label for="senderName"></label><input id="senderName"/>
+        <br/>
+        <br/>
+        <br/>
     </div>
 </div>
 <script>

@@ -2,7 +2,6 @@ package com.iisi.deploymail.service.impl
 
 import com.iisi.deploymail.freemarker.FtlProvider
 import com.iisi.deploymail.model.prop.mail.CheckinMailProp
-import com.iisi.deploymail.model.prop.mail.CommonMailProp
 import com.iisi.deploymail.util.FileUtil
 import com.iisi.deploymail.util.FreemarkerUtil
 import org.slf4j.Logger
@@ -30,7 +29,7 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
     }
 
     @Override
-    void sendMail(CommonMailProp commonMailProp, CheckinMailProp checkinMailProp) {
+    void sendMail(CheckinMailProp checkinMailProp) {
         def checkinResources = checkinMailProp.checkinResources
         def diffFiles = getDiffFiles(checkinResources.diffZip)
         def checkinFiles = [checkinResources.checksum, checkinResources.changeForm] << diffFiles[0]
@@ -45,11 +44,11 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
         message.setFrom(new InternetAddress(username))
         message.addRecipients(Message.RecipientType.TO, mailAddress.to)
         message.addRecipients(Message.RecipientType.CC, mailAddress.cc)
-        message.setSubject(getSubject(commonMailProp.projectName, commonMailProp.lacrNo))
+        message.setSubject(getSubject(checkinMailProp.projectName, checkinMailProp.lacrNo))
 
         Multipart multipart = generateMultipart(checkinFiles as File[])
         MimeBodyPart messageBodyPart = new MimeBodyPart()
-        messageBodyPart.setContent(generateMailHtml(commonMailProp, checkinMailProp), HTML_MAIL_CONTENT_TYPE)
+        messageBodyPart.setContent(generateMailHtml(checkinMailProp), HTML_MAIL_CONTENT_TYPE)
         multipart.addBodyPart(messageBodyPart)
         message.setContent(multipart, HTML_MAIL_CONTENT_TYPE)
 
@@ -79,11 +78,11 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
         transport.close()
     }
 
-    private String generateMailHtml(CommonMailProp commonMailProp, CheckinMailProp checkinMailProp) {
+    private String generateMailHtml(CheckinMailProp checkinMailProp) {
         def template = ftlProvider.getFreeMarkerTemplate('/ftl/mail/checkin.ftl')
         def m = [
-                projectName: commonMailProp.projectName,
-                lacrNo     : commonMailProp.lacrNo
+                projectName: checkinMailProp.projectName,
+                lacrNo     : checkinMailProp.lacrNo
         ]
         FreemarkerUtil.processTemplateToString(template, m)
     }

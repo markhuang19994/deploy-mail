@@ -4,5 +4,4 @@ import com.iisi.deploymail.model.resources.CheckoutResources
 
 class CheckoutMailProp  extends MailProp{
     CheckoutResources checkoutResources
-
 }

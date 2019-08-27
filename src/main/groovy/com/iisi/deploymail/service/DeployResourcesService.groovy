@@ -1,13 +1,14 @@
 package com.iisi.deploymail.service
 
-import com.iisi.deploymail.model.prop.mail.CommonMailProp
+import com.iisi.deploymail.model.prop.mail.CheckinMailProp
+import com.iisi.deploymail.model.prop.mail.CheckoutMailProp
 import com.iisi.deploymail.model.resources.CheckinResources
 import com.iisi.deploymail.model.resources.CheckoutResources
 
 interface DeployResourcesService {
 
-    CheckoutResources downloadCheckoutResources(CommonMailProp commonMailProp)
+    CheckoutResources downloadCheckoutResources(CheckoutMailProp checkoutMailProp)
 
-    CheckinResources downloadCheckinResources(CommonMailProp commonMailProp)
+    CheckinResources downloadCheckinResources(CheckinMailProp checkinMailProp)
 
 }
