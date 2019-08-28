@@ -2,6 +2,7 @@ package com.iisi.deploymail.service.impl
 
 import com.iisi.deploymail.model.config.CheckinConfig
 import com.iisi.deploymail.model.config.CheckoutConfig
+import com.iisi.deploymail.model.config.ChecksumConfig
 import com.iisi.deploymail.model.db.DeployMailUser
 import com.iisi.deploymail.service.LoginService
 import com.iisi.deploymail.util.JsonUtil
@@ -29,9 +30,13 @@ class LoginServiceImpl implements LoginService {
         def checkoutConfigJson = columnMap.get('CHECKOUT_CONFIG')
         def checkoutConfig = JsonUtil.parseJson(String.valueOf(checkoutConfigJson), CheckoutConfig.class)
 
+        def checksumConfigJson = columnMap.get('CHECKSUM_CONFIG')
+        def checksumConfig = JsonUtil.parseJson(String.valueOf(checksumConfigJson), ChecksumConfig.class)
+
         new DeployMailUser(
                 engName: engName,
                 checkinConfig: checkinConfig,
+                checksumConfig: checksumConfig,
                 checkoutConfig: checkoutConfig
         )
     }

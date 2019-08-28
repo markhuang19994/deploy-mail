@@ -159,6 +159,8 @@
             <button class="send-mail-btn" id="checksum-send-btn">Send</button>
         </div>
         <br/>
+        <button class="send-mail-btn" id="save-mail-setting">Set as default</button>
+        <br/>
         <br/>
         <br/>
     </div>
@@ -253,6 +255,7 @@
                     const engName = d['engName'];
                     const checkinConfig = d['checkinConfig'];
                     const checkoutConfig = d['checkoutConfig'];
+                    const checksumConfig = d['checksumConfig'];
                     if (engName) {
                         $('#senderName').val(engName);
                     }
@@ -266,6 +269,18 @@
                             $('#checkout-default-send-cc').val(defaultSendCC.join(';'))
                         }
                     }
+
+                    if (checksumConfig) {
+                        const defaultSendTo = checksumConfig['defaultSendTo'];
+                        if (defaultSendTo && Array.isArray(defaultSendTo)) {
+                            $('#checksum-default-send-to').val(defaultSendTo.join(';'))
+                        }
+                        const defaultSendCC = checksumConfig['defaultSendCC'];
+                        if (defaultSendCC && Array.isArray(defaultSendCC)) {
+                            $('#checksum-default-send-cc').val(defaultSendCC.join(';'))
+                        }
+                    }
+
 
                     if (checkoutConfig) {
                         const defaultSendTo = checkinConfig['defaultSendTo'];
@@ -354,6 +369,27 @@
                     senderName: $('#senderName').val(),
                     checksumDefaultSendTo: $('#checksum-default-send-to').val(),
                     checksumDefaultSendCc: $('#checksum-default-send-cc').val()
+                },
+                success: d => {
+                    alert(d);
+                },
+                error: e => console.error(e)
+            });
+        });
+
+        $('#save-mail-setting').click(() => {
+            const searchParams = new URLSearchParams(window.location.search);
+            $.ajax({
+                type: 'POST',
+                url: 'mailHandler/saveMailSetting',
+                data: {
+                    checkinDefaultSendTo: $('#checkin-default-send-to').val(),
+                    checkinDefaultSendCc: $('#checkin-default-send-cc').val(),
+                    checksumDefaultSendTo: $('#checksum-default-send-to').val(),
+                    checksumDefaultSendCc: $('#checksum-default-send-cc').val(),
+                    checkoutDefaultSendTo: $('#checkout-default-send-to').val(),
+                    checkoutDefaultSendCc: $('#checkout-default-send-cc').val(),
+                    senderName: $('#senderName').val()
                 },
                 success: d => {
                     alert(d);

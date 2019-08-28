@@ -1,6 +1,10 @@
 package com.iisi.deploymail.handler.resolver.impl
 
 import com.iisi.deploymail.handler.resolver.MailHandlerParamResolver
+import com.iisi.deploymail.model.config.CheckinConfig
+import com.iisi.deploymail.model.config.CheckoutConfig
+import com.iisi.deploymail.model.config.ChecksumConfig
+import com.iisi.deploymail.model.db.DeployMailUser
 import com.iisi.deploymail.model.prop.mail.CheckinMailProp
 import com.iisi.deploymail.model.prop.mail.CheckoutMailProp
 import com.iisi.deploymail.model.prop.mail.ChecksumMailProp
@@ -126,6 +130,36 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
                 lacrNo         : lacrNo,
                 senderName     : senderName
         ]
+    }
+
+    DeployMailUser resolveSaveMailSettingParam(HttpServletRequest request) {
+        def checkinSendTo = request.getParameter('checkinDefaultSendTo')?.split(';') ?: ['']
+        def checkinSendCc = request.getParameter('checkinDefaultSendCc')?.split(';') ?: ['']
+        def checkinConfig = new CheckinConfig(
+                defaultSendTo: checkinSendTo,
+                defaultSendCC: checkinSendCc
+        )
+
+        def checksumSendTo = request.getParameter('checksumDefaultSendTo')?.split(';') ?: ['']
+        def checksumSendCc = request.getParameter('checksumDefaultSendCc')?.split(';') ?: ['']
+        def checksumConfig = new ChecksumConfig(
+                defaultSendTo: checksumSendTo,
+                defaultSendCC: checksumSendCc
+        )
+
+        def checkoutSendTo = request.getParameter('checkoutDefaultSendTo')?.split(';') ?: ['']
+        def checkoutSendCc = request.getParameter('checkoutDefaultSendCc')?.split(';') ?: ['']
+        def checkoutConfig = new CheckoutConfig(
+                defaultSendTo: checkoutSendTo,
+                defaultSendCC: checkoutSendCc
+        )
+
+
+        new DeployMailUser(
+                checkinConfig: checkinConfig,
+                checksumConfig: checksumConfig,
+                checkoutConfig: checkoutConfig
+        )
     }
 }
 
