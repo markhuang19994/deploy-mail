@@ -1,6 +1,6 @@
 package com.iisi.deploymail.handler.page
 
-import com.iisi.deploymail.service.IndexService
+import com.iisi.deploymail.service.DeployMailUserService
 import com.iisi.deploymail.tool.HtmlResource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -17,7 +17,7 @@ class IndexHandler {
     HtmlResource htmlResource
 
     @Autowired
-    IndexService indexService
+    DeployMailUserService deployMailUserService
 
     @ResponseBody
     @GetMapping('/index')
@@ -28,7 +28,7 @@ class IndexHandler {
     @ResponseBody
     @GetMapping('/deployMailUsers')
     ResponseEntity<?> getAllDeployUsers() {
-        def users = indexService.getAllDeployUsers()
+        def users = deployMailUserService.getAllDeployMailUserNames()
         ResponseEntity.ok(users)
     }
 
