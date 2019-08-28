@@ -4,6 +4,7 @@ import com.iisi.deploymail.constant.Constants
 import com.iisi.deploymail.handler.resolver.MailHandlerParamResolver
 import com.iisi.deploymail.model.prop.mail.CheckinMailProp
 import com.iisi.deploymail.model.prop.mail.CheckoutMailProp
+import com.iisi.deploymail.model.prop.mail.ChecksumMailProp
 import com.iisi.deploymail.service.DeployMailService
 import com.iisi.deploymail.service.DeployResourcesService
 import com.iisi.deploymail.tool.HtmlResource
@@ -39,6 +40,9 @@ class MailHandler {
     @Autowired
     DeployMailService<CheckoutMailProp> checkoutMailService
 
+    @Autowired
+    DeployMailService<ChecksumMailProp> checksumMailService
+
     @ResponseBody
     @PostMapping(path = '/checkin')
     String sendCheckin(HttpServletRequest request) {
@@ -57,6 +61,16 @@ class MailHandler {
         checkoutMailProp.checkoutResources = deployResourcesService.downloadCheckoutResources(checkoutMailProp)
         checkoutMailService.sendMail(checkoutMailProp)
         return 'Checkout mail send success'
+    }
+
+    @ResponseBody
+    @PostMapping(path = '/checksum')
+    String sendChecksum(HttpServletRequest request) {
+        def session = request.getSession()
+        def checksumMailProp = paramResolver.resolveChecksumHandlerParam(request)
+        checksumMailProp.checksumResources = deployResourcesService.downloadChecksumResources(checksumMailProp)
+        checksumMailService.sendMail(checksumMailProp)
+        return 'Checksum mail send success'
     }
 }
 

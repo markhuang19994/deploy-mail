@@ -3,6 +3,7 @@ package com.iisi.deploymail.handler.resolver.impl
 import com.iisi.deploymail.handler.resolver.MailHandlerParamResolver
 import com.iisi.deploymail.model.prop.mail.CheckinMailProp
 import com.iisi.deploymail.model.prop.mail.CheckoutMailProp
+import com.iisi.deploymail.model.prop.mail.ChecksumMailProp
 import groovyjarjarcommonscli.MissingArgumentException
 import org.springframework.stereotype.Service
 
@@ -54,6 +55,32 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
         def commonParamMap = resolveCommonParam(request)
 
         new CheckoutMailProp(
+                jenkinsJobName: commonParamMap.jenkinsJobName,
+                jenkinsBuildNum: commonParamMap.jenkinsBuildNum,
+                projectName: commonParamMap.projectName,
+                lacrNo: commonParamMap.lacrNo,
+                senderName: commonParamMap.senderName,
+                to: sendToStr.split(';').collect { it.trim() },
+                cc: sendCcStr.split(';').collect { it.trim() }
+        )
+    }
+
+    ChecksumMailProp resolveChecksumHandlerParam(HttpServletRequest request) {
+        def errorMsgs = []
+        def sendToStr = request.getParameter('checksumDefaultSendTo')
+        def sendCcStr = request.getParameter('checksumDefaultSendCc')
+
+        if (sendToStr == null) {
+            errorMsgs << 'checksumDefaultSendTo'
+        }
+
+        if (sendCcStr == null) {
+            errorMsgs << 'checksumDefaultSendCc'
+        }
+
+        def commonParamMap = resolveCommonParam(request)
+
+        new ChecksumMailProp(
                 jenkinsJobName: commonParamMap.jenkinsJobName,
                 jenkinsBuildNum: commonParamMap.jenkinsBuildNum,
                 projectName: commonParamMap.projectName,

@@ -94,6 +94,11 @@
             border-radius: 8px;
             border: none;
             padding: .5rem;
+            outline: none;
+        }
+
+        .send-mail-btn:hover {
+            background-color: #828282;
         }
 
         textarea {
@@ -142,6 +147,16 @@
             <textarea id="checkout-default-send-cc" name="checkout-default-send-cc"></textarea>
             <br/>
             <button class="send-mail-btn" id="checkout-send-btn">Send</button>
+        </div>
+        <div class="checksum">
+            <h1>Checksum</h1>
+            <label for="checksum-default-send-to">Checksum send to:</label><br/>
+            <textarea id="checksum-default-send-to" name="checksum-default-send-to"></textarea>
+            <br/>
+            <label for="checksum-default-send-cc">Checksum send cc:</label><br/>
+            <textarea id="checksum-default-send-cc" name="checksum-default-send-cc"></textarea>
+            <br/>
+            <button class="send-mail-btn" id="checksum-send-btn">Send</button>
         </div>
         <br/>
         <br/>
@@ -262,7 +277,8 @@
                             $('#checkout-default-send-cc').val(defaultSendCC.join(';'))
                         }
                     }
-                    if (d['checkoutConfig']) {
+
+                    if (d['engName']) {
                         $('#senderName').text(d['engName']);
                     }
                 }
@@ -302,7 +318,6 @@
             const jenkinsBuildNum = searchParams.get('jenkinsBuildNum') || null;
             const projectName = searchParams.get('projectName') || null;
             const lacrNo = searchParams.get('lacrNo') || null;
-            const senderName = searchParams.get('senderName') || null;
             $.ajax({
                 type: 'POST',
                 url: 'mailHandler/checkout',
@@ -314,6 +329,31 @@
                     senderName: $('#senderName').val(),
                     checkoutDefaultSendTo: $('#checkout-default-send-to').val(),
                     checkoutDefaultSendCc: $('#checkout-default-send-cc').val()
+                },
+                success: d => {
+                    alert(d);
+                },
+                error: e => console.error(e)
+            });
+        });
+
+        $('#checksum-send-btn').click(() => {
+            const searchParams = new URLSearchParams(window.location.search);
+            const jenkinsJobName = searchParams.get('jenkinsJobName') || null;
+            const jenkinsBuildNum = searchParams.get('jenkinsBuildNum') || null;
+            const projectName = searchParams.get('projectName') || null;
+            const lacrNo = searchParams.get('lacrNo') || null;
+            $.ajax({
+                type: 'POST',
+                url: 'mailHandler/checksum',
+                data: {
+                    jenkinsJobName,
+                    jenkinsBuildNum,
+                    projectName,
+                    lacrNo,
+                    senderName: $('#senderName').val(),
+                    checksumDefaultSendTo: $('#checksum-default-send-to').val(),
+                    checksumDefaultSendCc: $('#checksum-default-send-cc').val()
                 },
                 success: d => {
                     alert(d);

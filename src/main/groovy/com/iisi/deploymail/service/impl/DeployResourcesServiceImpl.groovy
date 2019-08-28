@@ -2,8 +2,10 @@ package com.iisi.deploymail.service.impl
 
 import com.iisi.deploymail.model.prop.mail.CheckinMailProp
 import com.iisi.deploymail.model.prop.mail.CheckoutMailProp
+import com.iisi.deploymail.model.prop.mail.ChecksumMailProp
 import com.iisi.deploymail.model.resources.CheckinResources
 import com.iisi.deploymail.model.resources.CheckoutResources
+import com.iisi.deploymail.model.resources.ChecksumResources
 import com.iisi.deploymail.service.DeployResourcesService
 import com.iisi.deploymail.util.DownloadFileUtil
 import com.iisi.deploymail.util.FileUtil
@@ -49,7 +51,7 @@ class DeployResourcesServiceImpl implements DeployResourcesService {
         def buildNum = checkinMailProp.jenkinsBuildNum
 
         def checkinResourcesList = [
-                "${projectName}_diff_split.zip", 'changeForm.doc', 'ChkSrcApp.csv'
+                "${projectName}_diff_split.zip", 'changeForm.doc'
         ]
 
         def urls = checkinResourcesList.collect {
@@ -63,8 +65,28 @@ class DeployResourcesServiceImpl implements DeployResourcesService {
         def checkinResources = new CheckinResources()
         checkinResources.diffZip = downloadFiles[checkinResourcesList[0]]
         checkinResources.changeForm = downloadFiles[checkinResourcesList[1]]
-        checkinResources.checksum = downloadFiles[checkinResourcesList[2]]
         checkinResources
+    }
+
+    @Override
+    ChecksumResources downloadChecksumResources(ChecksumMailProp checksumMailProp) {
+        def projectName = checksumMailProp.projectName
+        def jobName = checksumMailProp.jenkinsJobName
+        def buildNum = checksumMailProp.jenkinsBuildNum
+
+        def checkinResourcesList = ['ChkSrcApp.csv']
+
+        def urls = checkinResourcesList.collect {
+            getResourceUrl(jobName, buildNum, it)
+        }
+
+        def temp = FileUtil.getTempFolder()
+        LOGGER.debug("Start download files ${urls.toList().toString()}")
+        def downloadFiles = DownloadFileUtil.downloadFiles(urls, temp)
+
+        def checksumResources = new ChecksumResources()
+        checksumResources.checksum = downloadFiles[checkinResourcesList[0]]
+        checksumResources
     }
 
     private getResourceUrl(String jobName, String buildNum, String fileName) {

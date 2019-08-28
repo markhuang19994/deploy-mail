@@ -4,6 +4,5 @@ class CheckinResources {
 
     File changeForm
     File diffZip
-    File checksum
 
 }
