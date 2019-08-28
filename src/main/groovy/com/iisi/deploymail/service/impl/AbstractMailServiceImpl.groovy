@@ -16,7 +16,7 @@ import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMultipart
 
-abstract class  AbstractMailServiceImpl<T extends MailProp> implements DeployMailService<T> {
+abstract class AbstractMailServiceImpl<T extends MailProp> implements DeployMailService<T> {
 
     static final HTML_MAIL_CONTENT_TYPE = 'text/html; charset=utf-8'
     final Environment env
@@ -52,13 +52,14 @@ abstract class  AbstractMailServiceImpl<T extends MailProp> implements DeployMai
     }
 
     static Map getMailAddress(List<String> to, List<String> cc, boolean isPreview) {
-        def toAddr = to.collect{new InternetAddress(it)} as Address[]
+        def toAddr = to.collect { new InternetAddress(it) } as Address[]
+        cc = cc.findAll { it != null && it != '' }
 
-        if (isPreview) {
+        if (isPreview || cc.size() == 0) {
             return [to: toAddr]
         }
 
-        return [to: toAddr, cc: cc.collect{new InternetAddress(it)} as Address[]]
+        return [to: toAddr, cc: cc.collect { new InternetAddress(it) } as Address[]]
     }
 
 }
