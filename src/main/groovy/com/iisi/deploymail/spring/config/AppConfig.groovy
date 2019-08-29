@@ -5,7 +5,10 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.PropertySource
 
 @Configuration
-@PropertySource(['classpath:/other/docker/app/config/config.properties', '/usr/app/config/config.properties'])
+@PropertySource(
+        value = ['classpath:/other/docker/app/config/config.properties', '/usr/app/config/config.properties'],
+        ignoreResourceNotFound = true
+)
 class AppConfig {
 
 }
