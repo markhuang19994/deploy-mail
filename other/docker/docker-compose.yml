@@ -1,9 +1,10 @@
-version: 3
+version: '3'
 
 services:
   my-pgs:
     build: ./postgres
-    restart: always
+    networks:
+      - my-net
     ports:
       - 5430:5432
     volumes:
@@ -11,9 +12,10 @@ services:
 
   deploy-mail:
     build: ./app
-    restart: always
     depends_on:
-      - postgres
+      - my-pgs
+    networks:
+      - my-net
     ports:
       - 9788:8080
     volumes:
@@ -22,4 +24,8 @@ services:
       pgsUrl: 'jdbc:postgresql://my-pgs:5432/postgres?currentSchema=dbo'
       pgsUser: 'postgres'
       pgsPwd: 'p@ssw0rd'
+
+networks:
+  my-net:
+    driver: bridge
 
