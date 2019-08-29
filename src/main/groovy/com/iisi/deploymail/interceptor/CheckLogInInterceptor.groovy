@@ -36,7 +36,6 @@ class CheckLogInInterceptor implements HandlerInterceptor {
         }
 
 
-        println 123
         return true;
     }
 
