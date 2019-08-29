@@ -3,12 +3,13 @@ version: '3'
 services:
   my-pgs:
     build: ./postgres
+    hostname: my-pgs
     networks:
       - my-net
     ports:
       - 5430:5432
     volumes:
-      - ./postgres-volume:/volume
+      - ./postgres/postgres-data:/var/lib/postgresql/data
 
   deploy-mail:
     build: ./app
@@ -19,7 +20,7 @@ services:
     ports:
       - 9788:8080
     volumes:
-      - ./app-volume:/volume
+      - ./app/config:/usr/app/config
     environment:
       pgsUrl: 'jdbc:postgresql://my-pgs:5432/postgres?currentSchema=dbo'
       pgsUser: 'postgres'
