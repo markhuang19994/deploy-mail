@@ -276,7 +276,7 @@
                         }
                         const defaultSendCC = checkinConfig['defaultSendCC'];
                         if (defaultSendCC && Array.isArray(defaultSendCC)) {
-                            $('#checkout-default-send-cc').val(defaultSendCC.join(';'))
+                            $('#checkin-default-send-cc').val(defaultSendCC.join(';'))
                         }
                     }
 
@@ -293,11 +293,11 @@
 
 
                     if (checkoutConfig) {
-                        const defaultSendTo = checkinConfig['defaultSendTo'];
+                        const defaultSendTo = checkoutConfig['defaultSendTo'];
                         if (defaultSendTo && Array.isArray(defaultSendTo)) {
                             $('#checkout-default-send-to').val(defaultSendTo.join(';'))
                         }
-                        const defaultSendCC = checkinConfig['defaultSendCC'];
+                        const defaultSendCC = checkoutConfig['defaultSendCC'];
                         if (defaultSendCC && Array.isArray(defaultSendCC)) {
                             $('#checkout-default-send-cc').val(defaultSendCC.join(';'))
                         }
