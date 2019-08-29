@@ -8,7 +8,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow: auto;
         }
 
         #index-body, #step1-body {
@@ -84,12 +84,29 @@
             color: black;
         }
 
-        #step1-body {
-            padding: 1rem 0 0 1rem;
-            overflow-y: auto;
+        /*step1 css*/
+        textarea {
+            min-width: 500px;
+            min-height: 200px;
+            margin-bottom: 4px;
         }
 
-        .send-mail-btn {
+        #step1-body {
+            padding: 1% 0 0 1%;
+            width: 99%;
+            height: 99%;
+        }
+
+        #content_step1 {
+            margin-bottom: 2rem;
+            box-sizing: border-box;
+            display: flex;
+            flex-flow: row wrap;
+            align-content: space-between;
+            justify-content: space-between;
+        }
+
+        .btn {
             font-size: 1rem;
             border-radius: 8px;
             border: none;
@@ -97,13 +114,16 @@
             outline: none;
         }
 
-        .send-mail-btn:hover {
+        .btn:hover {
             background-color: #828282;
         }
 
-        textarea {
-            min-width: 500px;
-            min-height: 200px;
+        .send-mail-btn {
+            float: right;
+        }
+
+        #save-mail-setting {
+            margin-left: 1rem;
         }
     </style>
     <script
@@ -126,40 +146,41 @@
     </div>
 </div>
 <div id="step1-body">
-    <div id="content_step1">
+    <div>
         <label for="senderName" style="font-size: 1.2rem">SenderName&nbsp;</label><input id="senderName"/>
-        <div class="checkin">
+        <button class="btn" id="save-mail-setting">Set as default</button>
+    </div>
+    <div id="content_step1">
+        <div class="checkin col">
             <h1>Checkin</h1>
-            <label for="checkin-default-send-to">Checkin send to:</label><br/>
+            <label for="checkin-default-send-to">To:</label><br/>
             <textarea id="checkin-default-send-to" name="checkin-default-send-to"></textarea>
             <br/>
-            <label for="checkin-default-send-cc">Checkin send cc:</label><br/>
+            <label for="checkin-default-send-cc">CC:</label><br/>
             <textarea id="checkin-default-send-cc" name="checkin-default-send-cc"></textarea>
             <br/>
-            <button class="send-mail-btn" id="checkin-send-btn">Send</button>
+            <button class="send-mail-btn btn" id="checkin-send-btn">Send</button>
         </div>
-        <div class="checkout">
+        <div class="checkout col">
             <h1>Checkout</h1>
-            <label for="checkout-default-send-to">Checkout send to:</label><br/>
+            <label for="checkout-default-send-to">To:</label><br/>
             <textarea id="checkout-default-send-to" name="checkout-default-send-to"></textarea>
             <br/>
-            <label for="checkout-default-send-cc">Checkout send cc:</label><br/>
+            <label for="checkout-default-send-cc">Cc:</label><br/>
             <textarea id="checkout-default-send-cc" name="checkout-default-send-cc"></textarea>
             <br/>
-            <button class="send-mail-btn" id="checkout-send-btn">Send</button>
+            <button class="send-mail-btn btn" id="checkout-send-btn">Send</button>
         </div>
-        <div class="checksum">
+        <div class="checksum col">
             <h1>Checksum</h1>
-            <label for="checksum-default-send-to">Checksum send to:</label><br/>
+            <label for="checksum-default-send-to">To:</label><br/>
             <textarea id="checksum-default-send-to" name="checksum-default-send-to"></textarea>
             <br/>
-            <label for="checksum-default-send-cc">Checksum send cc:</label><br/>
+            <label for="checksum-default-send-cc">Cc:</label><br/>
             <textarea id="checksum-default-send-cc" name="checksum-default-send-cc"></textarea>
             <br/>
-            <button class="send-mail-btn" id="checksum-send-btn">Send</button>
+            <button class="send-mail-btn btn" id="checksum-send-btn">Send</button>
         </div>
-        <br/>
-        <button class="send-mail-btn" id="save-mail-setting">Set as default</button>
         <br/>
         <br/>
         <br/>
@@ -209,17 +230,6 @@
     }
 
     function index() {
-        $.ajax({
-            type: 'GET',
-            url: 'base/invalidateSession',
-            data: {},
-            success: d => {
-                if (d) {
-                    console.log('Session invalidate ' + d)
-                }
-            },
-            error: e => console.error(e)
-        });
 
         $.ajax({
             type: 'GET',
@@ -396,6 +406,8 @@
                 error: e => console.error(e)
             });
         });
+
+        $('textarea').attr('spellcheck', 'false');
 
     }
 
