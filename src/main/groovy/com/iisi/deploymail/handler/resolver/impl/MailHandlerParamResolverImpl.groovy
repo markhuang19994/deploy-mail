@@ -38,8 +38,8 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
                 projectName: commonParamMap.projectName,
                 lacrNo: commonParamMap.lacrNo,
                 senderName: commonParamMap.senderName,
-                to: sendToStr.split(';').collect { it.trim() },
-                cc: sendCcStr.split(';').collect { it.trim() }
+                to: parseMailTextareaVal(sendToStr),
+                cc: parseMailTextareaVal(sendCcStr)
         )
     }
 
@@ -64,8 +64,8 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
                 projectName: commonParamMap.projectName,
                 lacrNo: commonParamMap.lacrNo,
                 senderName: commonParamMap.senderName,
-                to: sendToStr.split(';').collect { it.trim() },
-                cc: sendCcStr.split(';').collect { it.trim() }
+                to: parseMailTextareaVal(sendToStr),
+                cc: parseMailTextareaVal(sendCcStr)
         )
     }
 
@@ -90,8 +90,8 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
                 projectName: commonParamMap.projectName,
                 lacrNo: commonParamMap.lacrNo,
                 senderName: commonParamMap.senderName,
-                to: sendToStr.split(';').collect { it.trim() },
-                cc: sendCcStr.split(';').collect { it.trim() }
+                to: parseMailTextareaVal(sendToStr),
+                cc: parseMailTextareaVal(sendCcStr)
         )
     }
 
@@ -133,22 +133,22 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
     }
 
     DeployMailUser resolveSaveMailSettingParam(HttpServletRequest request) {
-        def checkinSendTo = request.getParameter('checkinDefaultSendTo')?.split(';') ?: ['']
-        def checkinSendCc = request.getParameter('checkinDefaultSendCc')?.split(';') ?: ['']
+        def checkinSendTo = parseMailTextareaVal(request.getParameter('checkinDefaultSendTo'))
+        def checkinSendCc = parseMailTextareaVal(request.getParameter('checkinDefaultSendCc'))
         def checkinConfig = new CheckinConfig(
                 defaultSendTo: checkinSendTo,
                 defaultSendCC: checkinSendCc
         )
 
-        def checksumSendTo = request.getParameter('checksumDefaultSendTo')?.split(';') ?: ['']
-        def checksumSendCc = request.getParameter('checksumDefaultSendCc')?.split(';') ?: ['']
+        def checksumSendTo = parseMailTextareaVal(request.getParameter('checksumDefaultSendTo'))
+        def checksumSendCc = parseMailTextareaVal(request.getParameter('checksumDefaultSendCc'))
         def checksumConfig = new ChecksumConfig(
                 defaultSendTo: checksumSendTo,
                 defaultSendCC: checksumSendCc
         )
 
-        def checkoutSendTo = request.getParameter('checkoutDefaultSendTo')?.split(';') ?: ['']
-        def checkoutSendCc = request.getParameter('checkoutDefaultSendCc')?.split(';') ?: ['']
+        def checkoutSendTo = parseMailTextareaVal(request.getParameter('checkoutDefaultSendTo'))
+        def checkoutSendCc = parseMailTextareaVal(request.getParameter('checkoutDefaultSendCc'))
         def checkoutConfig = new CheckoutConfig(
                 defaultSendTo: checkoutSendTo,
                 defaultSendCC: checkoutSendCc
@@ -160,6 +160,11 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
                 checksumConfig: checksumConfig,
                 checkoutConfig: checkoutConfig
         )
+    }
+
+    private static List<String> parseMailTextareaVal(String text) {
+        def result = text?.split('[;\n]')?.toList()?.findAll { it != null && it != '' }
+        result ?: ['']
     }
 }
 

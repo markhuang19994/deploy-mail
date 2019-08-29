@@ -18,7 +18,7 @@ class LoginServiceImpl implements LoginService {
 
     @Override
     DeployMailUser login(String engName) {
-        def columnMap = gSql.firstRow("SELECT * FROM DEPLOY_MAIL_USER d WHERE d.ENG_NAME = '$engName'") as Map
+        def columnMap = gSql.firstRow("SELECT * FROM DEPLOY_MAIL_USER d WHERE d.ENG_NAME = '$engName'".toString()) as Map
 
         if (columnMap == null) {
             throw new Exception("User: $engName not found in table DEPLOY_MAIL_USER")
