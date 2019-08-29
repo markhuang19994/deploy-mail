@@ -14,7 +14,7 @@ class DeployMailUserDaoImpl implements DeployMailUserDao {
 
     @Override
     List<String> getAllDeployMailUserNames() {
-        gSql.rows("SELECT ENG_NAME FROM DEPLOY_MAIL_USER").collect { it.values()[0] } as List<String>
+        gSql.rows("SELECT eng_name FROM dbo.deploy_mail_user").collect { it.values()[0] } as List<String>
     }
 
     @Override
@@ -24,13 +24,12 @@ class DeployMailUserDaoImpl implements DeployMailUserDao {
         def checksumConfigJson = JsonUtil.stringify(deployMailUser.checksumConfig, false)
 
         def updateCount = gSql.executeUpdate('''
-            UPDATE DEPLOY_MAIL_USER  SET 
-            CHECKIN_CONFIG =  ?,
-            CHECKOUT_CONFIG = ?,
-            CHECKSUM_CONFIG=  ?
-            WHERE ENG_NAME = ?
+            UPDATE dbo.deploy_mail_user  SET 
+            checkin_config =  ?,
+            checkout_config = ?,
+            checksum_config=  ?
+            WHERE eng_name = ?
         ''', [checkinConfigJson, checkoutConfigJson, checksumConfigJson, deployMailUser.engName])
-        gSql.commit()
         updateCount
     }
 }
