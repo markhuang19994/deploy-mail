@@ -27,7 +27,7 @@ class Beans {
     @Bean
     Sql gSql() {
         def env = System.getenv()
-        def url = env.get('pgsUrl') ?: 'jdbc:postgresql://localhost:5432/postgres?currentSchema=dbo'
+        def url = env.get('pgsUrl') ?: 'jdbc:postgresql://localhost:5430/postgres?currentSchema=dbo'
         def user = env.get('pgsUser') ?: 'postgres'
         def password = env.get('pgsPwd') ?: 'p@ssw0rd'
         def dbConnParams = [
