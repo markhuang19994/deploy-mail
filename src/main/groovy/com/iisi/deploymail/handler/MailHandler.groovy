@@ -1,11 +1,12 @@
 package com.iisi.deploymail.handler
 
-
+import com.iisi.deploymail.constant.Constants
 import com.iisi.deploymail.handler.resolver.MailHandlerParamResolver
 import com.iisi.deploymail.model.prop.mail.CheckinMailProp
 import com.iisi.deploymail.model.prop.mail.CheckoutMailProp
 import com.iisi.deploymail.model.prop.mail.ChecksumMailProp
 import com.iisi.deploymail.service.DeployMailService
+import com.iisi.deploymail.service.DeployMailUserService
 import com.iisi.deploymail.service.DeployResourcesService
 import com.iisi.deploymail.tool.HtmlResource
 import org.slf4j.Logger
@@ -32,6 +33,9 @@ class MailHandler {
 
     @Autowired
     DeployResourcesService deployResourcesService
+
+    @Autowired
+    DeployMailUserService deployMailUserService
 
     @Autowired
     DeployMailService<CheckinMailProp> checkinMailService
@@ -75,9 +79,14 @@ class MailHandler {
     @ResponseBody
     @PostMapping(path = '/saveMailSetting')
     String saveMailSetting(HttpServletRequest request) {
-        def session = request.getSession()
         def deployMailUser = paramResolver.resolveSaveMailSettingParam(request)
-        return 'Save mail setting success'
+
+        def session = request.getSession()
+        def engName = session.getAttribute(Constants.USER_ENG_NAME)
+        deployMailUser.engName = engName
+
+        def isUpdate = deployMailUserService.updateDeployMailUser(deployMailUser)
+        return "Save mail setting ${isUpdate ? 'success':'fail'}"
     }
 }
 

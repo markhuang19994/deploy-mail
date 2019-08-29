@@ -32,7 +32,7 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
     void sendMail(CheckinMailProp checkinMailProp) {
         def checkinResources = checkinMailProp.checkinResources
         def diffFiles = getDiffFiles(checkinResources.diffZip)
-        def checkinFiles = [checkinResources.checksum, checkinResources.changeForm] << diffFiles[0]
+        def checkinFiles = [checkinResources.changeForm] << diffFiles[0]
         def replyFiles = diffFiles.size() > 1 ? diffFiles[1..diffFiles.size() - 1] : []
 
         String username = env.getProperty('mail.user.name')
