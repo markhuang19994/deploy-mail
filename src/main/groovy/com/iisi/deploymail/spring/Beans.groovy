@@ -1,6 +1,5 @@
 package com.iisi.deploymail.spring
 
-
 import com.iisi.deploymail.freemarker.FtlProvider
 import com.iisi.deploymail.tool.HtmlResource
 import groovy.sql.Sql
@@ -28,10 +27,10 @@ class Beans {
     @Bean
     Sql gSql() {
         def dbConnParams = [
-                url     : 'jdbc:sqlserver://localhost:1433;database=XCOLA',
-                user    : 'sa',
+                url     : 'jdbc:postgresql://localhost:5432/postgres?currentSchema=dbo',
+                user    : 'postgres',
                 password: 'p@ssw0rd',
-                driver  : 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
+                driver  : 'org.postgresql.Driver'
         ]
         Sql.newInstance(dbConnParams)
     }
