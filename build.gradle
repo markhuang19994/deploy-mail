@@ -50,9 +50,3 @@ def void explainMe(it) {
 }
 
 def baseDir = project.projectDir.absolutePath
-
-task zip(type: Zip, group: "Archive", description: 'zip source file') {
-    from "${baseDir}/src/main/resources"
-    archiveName = "basic-demo-1.0.zip"
-    destinationDirectory = new File(it.project.projectDir, 'D')
-}
