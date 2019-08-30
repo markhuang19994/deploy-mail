@@ -27,14 +27,14 @@ class Beans {
     @Bean
     Sql gSql() {
         def env = System.getenv()
-        def url = env.get('pgsUrl') ?: 'jdbc:postgresql://localhost:5430/postgres?currentSchema=dbo'
-        def user = env.get('pgsUser') ?: 'postgres'
-        def password = env.get('pgsPwd') ?: 'p@ssw0rd'
+        def url = env.get('mysqlUrl') ?: 'jdbc:mysql://localhost:3307/dbo?serverTimezone=Asia/Taipei&characterEncoding=utf-8'
+        def user = env.get('mysqlUser') ?: 'sc'
+        def password = env.get('mysqlPwd') ?: 'p@ssw0rd'
         def dbConnParams = [
                 url     : url,
                 user    : user,
                 password: password,
-                driver  : 'org.postgresql.Driver'
+                driver  : 'com.mysql.cj.jdbc.Driver'
         ]
         Sql.newInstance(dbConnParams)
     }
