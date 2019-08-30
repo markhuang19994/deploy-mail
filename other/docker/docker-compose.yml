@@ -1,24 +1,10 @@
 version: '3'
 
 services:
-  mysql:
-    build: ./mysql
-    hostname: mysql
-    restart: always
-    command: --default-authentication-plugin=mysql_native_password
-    environment:
-      MYSQL_ROOT_PASSWORD: p@ssw0rd
-    networks:
-      - my-net
-    ports:
-      - 3307:3306
-    volumes:
-      - ./mysql/own/datadir:/var/lib/mysql
-
   deploy-mail:
     build: ./app
     depends_on:
-      - mysql
+      - mssql
     networks:
       - my-net
     ports:
@@ -26,9 +12,9 @@ services:
     volumes:
       - ./app/config:/usr/app/config
     environment:
-      mysqlUrl: 'jdbc:mysql://localhost:3307/dbo?serverTimezone=Asia/Taipei&characterEncoding=utf-8'
-      mysqlUser: 'sa'
-      mysqlPwd: 'p@ssw0rd'
+      mssqlUrl: 'jdbc:sqlserver://newmacaque:3433;database=XCOLA'
+      mssqlUser: 'sa'
+      mssqlPwd: 'p@ssw0rd'
 
 networks:
   my-net:

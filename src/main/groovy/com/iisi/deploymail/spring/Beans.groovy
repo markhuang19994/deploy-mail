@@ -27,14 +27,14 @@ class Beans {
     @Bean
     Sql gSql() {
         def env = System.getenv()
-        def url = env.get('mysqlUrl') ?: 'jdbc:mysql://localhost:3307/dbo?serverTimezone=Asia/Taipei&characterEncoding=utf-8'
-        def user = env.get('mysqlUser') ?: 'sc'
-        def password = env.get('mysqlPwd') ?: 'p@ssw0rd'
+        def url = env.get('mssqlUrl') ?: 'jdbc:sqlserver://newmacaque:3433;database=XCOLA'
+        def user = env.get('mssqlUser') ?: 'sa'
+        def password = env.get('mssqlPwd') ?: 'p@ssw0rd'
         def dbConnParams = [
                 url     : url,
                 user    : user,
                 password: password,
-                driver  : 'com.mysql.cj.jdbc.Driver'
+                driver  : 'com.microsoft.sqlserver.jdbc.SQLServerDriver'
         ]
         Sql.newInstance(dbConnParams)
     }

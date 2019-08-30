@@ -1,4 +1,4 @@
-FROM mysql:5.7
+FROM mysql:8
 
 EXPOSE 3306
 ENV MYSQL_ROOT_PASSWORD p@ssw0rd
