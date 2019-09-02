@@ -15,6 +15,7 @@ services:
       mssqlPwd: 'p@ssw0rd'
     extra_hosts:
       - "newmacaque:192.168.27.44"
+      - "macaque:192.168.27.45"
 
 networks:
   my-net:
