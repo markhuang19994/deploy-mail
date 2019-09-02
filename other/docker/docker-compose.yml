@@ -3,8 +3,6 @@ version: '3'
 services:
   deploy-mail:
     build: ./app
-    depends_on:
-      - mssql
     networks:
       - my-net
     ports:
@@ -15,6 +13,8 @@ services:
       mssqlUrl: 'jdbc:sqlserver://newmacaque:3433;database=XCOLA'
       mssqlUser: 'sa'
       mssqlPwd: 'p@ssw0rd'
+    extra_hosts:
+      - "newmacaque:192.168.27.44"
 
 networks:
   my-net:
