@@ -4,6 +4,71 @@
     <meta charset="UTF-8">
     <title>Yoo</title>
     <style>
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            background-color: rgba(0, 0, 0, 0.65);
+            z-index: 200;
+        }
+
+        .loading .loadingIcon {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 90px;
+            height: 90px;
+            margin: -45px 0 0 -45px;
+            -webkit-animation: circle infinite .75s linear;
+            animation: circle infinite .75s linear;
+            border: 10px solid rgba(0, 0, 0, 0.2);
+            border-left-color: #056dae;
+            border-radius: 100%;
+        }
+
+        .loading .loadingTxt {
+            display: block;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 110px;
+            margin: 0 0 0 -45px;
+            color: #fff;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .loading.on {
+            display: block;
+        }
+
+        @-webkit-keyframes circle {
+            0% {
+                -webkit-transform: rotate(0);
+                transform: rotate(0);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes circle {
+            0% {
+                -webkit-transform: rotate(0);
+                transform: rotate(0);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <style>
         html, body {
             height: 100%;
             margin: 0;
@@ -159,6 +224,10 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
+<div class="loading">
+    <div class="loadingIcon" data-loader="circle-side"></div>
+    <div class="loadingTxt">Loading</div>
+</div>
 <div id="index-body">
     <div id="content_index">
         <h1 id="content_index-title">請選擇使用者</h1>
@@ -210,6 +279,20 @@
     </div>
 </div>
 <script>
+    const loading = document.querySelector('.loading');
+    const defaultLoadingText = 'Loading';
+
+    function startLoading(text) {
+        loading.querySelector('.loadingTxt').innerText = text || defaultLoadingText;
+        loading.classList.add('on');
+    }
+
+    function endLoading() {
+        loading.querySelector('.loadingTxt').innerText = defaultLoadingText;
+        loading.removeClass('on');
+    }
+</script>
+<script>
     function slideOut(ele, direction = 'left', speed = 350, callback) {
         const $ele = $(ele);
         if (direction === 'left') {
@@ -253,7 +336,6 @@
     }
 
     function index() {
-
         $.ajax({
             type: 'GET',
             url: 'indexHandler/deployMailUsers',
@@ -268,7 +350,10 @@
                     });
                 }
             },
-            error: e => console.error(e)
+            error: e => {
+                console.error(e);
+                alert(e.message);
+            }
         });
 
         $('#goStep1').click(() => {
@@ -331,7 +416,10 @@
                     }
                 }
             },
-            error: e => console.error(e)
+            error: e => {
+                console.error(e);
+                alert(e.message);
+            }
         });
 
         $('#checkin-send-btn').click(() => {
@@ -341,6 +429,7 @@
             const projectName = searchParams.get('projectName') || null;
             const lacrNo = searchParams.get('lacrNo') || null;
             const senderName = searchParams.get('senderName') || null;
+            startLoading('信件寄送中');
             $.ajax({
                 type: 'POST',
                 url: 'mailHandler/checkin',
@@ -356,7 +445,13 @@
                 success: d => {
                     alert(d);
                 },
-                error: e => console.error(e)
+                error: e => {
+                    console.error(e);
+                    alert(e.message);
+                },
+                done: () => {
+                    endLoading()
+                }
             });
         });
 
@@ -366,6 +461,7 @@
             const jenkinsBuildNum = searchParams.get('jenkinsBuildNum') || null;
             const projectName = searchParams.get('projectName') || null;
             const lacrNo = searchParams.get('lacrNo') || null;
+            startLoading('信件寄送中');
             $.ajax({
                 type: 'POST',
                 url: 'mailHandler/checkout',
@@ -381,7 +477,13 @@
                 success: d => {
                     alert(d);
                 },
-                error: e => console.error(e)
+                error: e => {
+                    console.error(e);
+                    alert(e.message);
+                },
+                done: () => {
+                    endLoading()
+                }
             });
         });
 
@@ -391,6 +493,7 @@
             const jenkinsBuildNum = searchParams.get('jenkinsBuildNum') || null;
             const projectName = searchParams.get('projectName') || null;
             const lacrNo = searchParams.get('lacrNo') || null;
+            startLoading('信件寄送中');
             $.ajax({
                 type: 'POST',
                 url: 'mailHandler/checksum',
@@ -406,12 +509,16 @@
                 success: d => {
                     alert(d);
                 },
-                error: e => console.error(e)
+                error: e => {
+                    console.error(e);
+                    alert(e.message);
+                }
             });
         });
 
         $('#save-mail-setting').click(() => {
             const searchParams = new URLSearchParams(window.location.search);
+            startLoading('資料儲存中');
             $.ajax({
                 type: 'POST',
                 url: 'mailHandler/saveMailSetting',
@@ -426,7 +533,14 @@
                 success: d => {
                     alert(d);
                 },
-                error: e => console.error(e)
+                error: e => {
+                    console.error(e);
+                    alert(e.message);
+                },
+                done: () => {
+                    endLoading();
+                    alert('資料儲存成功')
+                }
             });
         });
 
