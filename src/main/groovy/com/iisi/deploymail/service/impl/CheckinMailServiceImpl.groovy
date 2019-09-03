@@ -84,7 +84,8 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
         def template = ftlProvider.getFreeMarkerTemplate('/ftl/mail/checkin.ftl')
         def m = [
                 projectName: checkinMailProp.projectName,
-                lacrNo     : checkinMailProp.lacrNo
+                lacrNo     : checkinMailProp.lacrNo,
+                senderName : checkinMailProp.senderName
         ]
         FreemarkerUtil.processTemplateToString(template, m)
     }

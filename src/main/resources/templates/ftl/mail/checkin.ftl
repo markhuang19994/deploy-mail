@@ -16,10 +16,12 @@
 
         #content {
             margin-bottom: 16px;
+            font-family: monospace, Calibri, Arial, Helvetica, sans-serif, serif, EmojiFont;
         }
 
         #footer {
             line-height: 90%;
+            font-family: monospace, Calibri, Arial, Helvetica, sans-serif, serif, EmojiFont;
         }
     </style>
 </head>

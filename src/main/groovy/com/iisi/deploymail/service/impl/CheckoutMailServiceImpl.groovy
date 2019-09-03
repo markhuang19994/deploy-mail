@@ -62,7 +62,8 @@ class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> 
         def template = ftlProvider.getFreeMarkerTemplate('/ftl/mail/checkout.ftl')
         def m = [
                 projectName: checkoutMailProp.projectName,
-                lacrNo     : checkoutMailProp.lacrNo
+                lacrNo     : checkoutMailProp.lacrNo,
+                senderName : checkoutMailProp.senderName
         ]
         FreemarkerUtil.processTemplateToString(template, m)
     }

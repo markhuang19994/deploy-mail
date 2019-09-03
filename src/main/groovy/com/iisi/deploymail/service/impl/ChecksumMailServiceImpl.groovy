@@ -63,7 +63,8 @@ class ChecksumMailServiceImpl extends AbstractMailServiceImpl<ChecksumMailProp> 
         def template = ftlProvider.getFreeMarkerTemplate('/ftl/mail/checksum.ftl')
         def m = [
                 projectName: checksumMailProp.projectName,
-                lacrNo     : checksumMailProp.lacrNo
+                lacrNo     : checksumMailProp.lacrNo,
+                senderName : checksumMailProp.senderName
         ]
         FreemarkerUtil.processTemplateToString(template, m)
     }
