@@ -158,6 +158,10 @@
             box-sizing: border-box;
         }
 
+        textarea {
+            line-height: 145%;
+        }
+
         input:focus, textarea:focus {
             border: 1.5px solid rgb(142, 238, 93);
             box-shadow: 1px 2px 2px rgba(142, 238, 93, 0.3);
@@ -380,22 +384,22 @@
                     if (checkinConfig) {
                         const defaultSendTo = checkinConfig['defaultSendTo'];
                         if (defaultSendTo && Array.isArray(defaultSendTo)) {
-                            $('#checkin-default-send-to').val(defaultSendTo.join(';'))
+                            $('#checkin-default-send-to').val(defaultSendTo.join(';\n'))
                         }
                         const defaultSendCC = checkinConfig['defaultSendCC'];
                         if (defaultSendCC && Array.isArray(defaultSendCC)) {
-                            $('#checkin-default-send-cc').val(defaultSendCC.join(';'))
+                            $('#checkin-default-send-cc').val(defaultSendCC.join(';\n'))
                         }
                     }
 
                     if (checksumConfig) {
                         const defaultSendTo = checksumConfig['defaultSendTo'];
                         if (defaultSendTo && Array.isArray(defaultSendTo)) {
-                            $('#checksum-default-send-to').val(defaultSendTo.join(';'))
+                            $('#checksum-default-send-to').val(defaultSendTo.join(';\n'))
                         }
                         const defaultSendCC = checksumConfig['defaultSendCC'];
                         if (defaultSendCC && Array.isArray(defaultSendCC)) {
-                            $('#checksum-default-send-cc').val(defaultSendCC.join(';'))
+                            $('#checksum-default-send-cc').val(defaultSendCC.join(';\n'))
                         }
                     }
 
@@ -403,11 +407,11 @@
                     if (checkoutConfig) {
                         const defaultSendTo = checkoutConfig['defaultSendTo'];
                         if (defaultSendTo && Array.isArray(defaultSendTo)) {
-                            $('#checkout-default-send-to').val(defaultSendTo.join(';'))
+                            $('#checkout-default-send-to').val(defaultSendTo.join(';\n'))
                         }
                         const defaultSendCC = checkoutConfig['defaultSendCC'];
                         if (defaultSendCC && Array.isArray(defaultSendCC)) {
-                            $('#checkout-default-send-cc').val(defaultSendCC.join(';'))
+                            $('#checkout-default-send-cc').val(defaultSendCC.join(';\n'))
                         }
                     }
 
