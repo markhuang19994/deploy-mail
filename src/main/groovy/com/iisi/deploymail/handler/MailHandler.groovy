@@ -86,7 +86,7 @@ class MailHandler {
         deployMailUser.engName = engName
 
         def isUpdate = deployMailUserService.updateDeployMailUser(deployMailUser)
-        return "Save mail setting ${isUpdate ? 'success':'fail'}"
+        return "資料儲存${isUpdate ? '成功':'失敗'}"
     }
 }
 
