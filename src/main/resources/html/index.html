@@ -448,10 +448,9 @@
                 error: e => {
                     console.log(e['responseJSON']);
                     alert(e.message);
-                },
-                done: () => {
-                    endLoading()
                 }
+            }).done(() => {
+                endLoading()
             });
         });
 
@@ -480,10 +479,9 @@
                 error: e => {
                     console.log(e['responseJSON']);
                     alert(e.message);
-                },
-                done: () => {
-                    endLoading()
                 }
+            }).done(() => {
+                endLoading()
             });
         });
 
@@ -512,10 +510,9 @@
                 error: e => {
                     console.log(e['responseJSON']);
                     alert(e.message);
-                },
-                done: () => {
-                    endLoading()
                 }
+            }).done(() => {
+                endLoading();
             });
         });
 
@@ -539,11 +536,9 @@
                 error: e => {
                     console.log(e['responseJSON']);
                     alert(e.message);
-                },
-                done: () => {
-                    endLoading();
-                    alert('資料儲存成功')
                 }
+            }).done(() => {
+                endLoading();
             });
         });
 
