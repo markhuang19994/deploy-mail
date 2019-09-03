@@ -351,7 +351,7 @@
                 }
             },
             error: e => {
-                console.error(e);
+                console.log(e['responseJSON']);
                 alert(e.message);
             }
         });
@@ -417,7 +417,7 @@
                 }
             },
             error: e => {
-                console.error(e);
+                console.log(e['responseJSON']);
                 alert(e.message);
             }
         });
@@ -446,7 +446,7 @@
                     alert(d);
                 },
                 error: e => {
-                    console.error(e);
+                    console.log(e['responseJSON']);
                     alert(e.message);
                 },
                 done: () => {
@@ -478,7 +478,7 @@
                     alert(d);
                 },
                 error: e => {
-                    console.error(e);
+                    console.log(e['responseJSON']);
                     alert(e.message);
                 },
                 done: () => {
@@ -510,7 +510,7 @@
                     alert(d);
                 },
                 error: e => {
-                    console.error(e);
+                    console.log(e['responseJSON']);
                     alert(e.message);
                 }
             });
@@ -534,7 +534,7 @@
                     alert(d);
                 },
                 error: e => {
-                    console.error(e);
+                    console.log(e['responseJSON']);
                     alert(e.message);
                 },
                 done: () => {
