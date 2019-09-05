@@ -20,7 +20,7 @@ class CheckLogInInterceptor implements HandlerInterceptor {
                 return true
             }
             def methodName = handlerMethod.getMethod().getName()
-            if (methodName in ['login', 'invalidateSession']
+            if (methodName in ['isLogin', 'login', 'invalidateSession']
                     || handlerMethod.getBeanType() == IndexHandler.class) {
                 return true;
             }
