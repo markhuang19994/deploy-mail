@@ -38,7 +38,7 @@ class LoginHandler {
         Map<String, String> result = [isLogin: 'false']
         def session = request.getSession(false)
         if (session == null) {
-            result
+            return result
         }
         if (Boolean.TRUE == session.getAttribute(Constants.Flag.IS_LOGIN)) {
             result['loginUser'] = String.valueOf(session.getAttribute(Constants.USER_ENG_NAME))
