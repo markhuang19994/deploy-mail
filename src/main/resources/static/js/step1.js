@@ -1,5 +1,4 @@
-function step1() {
-    const engName = $('#sel option:selected').text();
+function step1(engName) {
     $.ajax({
         type: 'GET',
         url: '/login',

@@ -21,13 +21,27 @@ function index() {
 
     $('#goStep1').click(() => {
         changePage($('#index-body'), $('#step1-body'));
-        step1();
+        step1($('#sel option:selected').text());
     });
 }
 
 $(() => {
     const searchParams = new URLSearchParams(window.location.search);
-    const page = searchParams.get('page') || 'index-body';
-    $('#' + page).css('display', 'block');
     index();
+    $.ajax({
+        url: '/isLogin',
+        success: d => {
+            let page = 'index-body';
+            const loginUser = d['loginUser'];
+            if (loginUser) {
+                page = 'step1-body';
+                step1(loginUser);
+            }
+            $('#' + page).css('display', 'block');
+        },
+        error: e => {
+            console.log(e['responseJSON']);
+            alert(e.message);
+        }
+    });
 });

@@ -25,11 +25,25 @@ class LoginHandler {
     @GetMapping('/login')
     ResponseEntity<?> login(HttpServletRequest request) {
         def result = loginHandlerParamResolver.resolveLoginParam(request)
-        def deployMailUser =  loginService.login(result.engName)
+        def deployMailUser = loginService.login(result.engName)
         def session = WebUtil.createNewSession(request)
         session.setAttribute(Constants.USER_ENG_NAME, result.engName)
         session.setAttribute(Constants.Flag.IS_LOGIN, Boolean.TRUE)
         ResponseEntity.ok(deployMailUser)
+    }
+
+    @ResponseBody
+    @GetMapping('/isLogin')
+    Map<String, String> isLogin(HttpServletRequest request) {
+        Map<String, String> result = [isLogin: 'false']
+        def session = request.getSession(false)
+        if (session == null) {
+            result
+        }
+        if (Boolean.TRUE == session.getAttribute(Constants.Flag.IS_LOGIN)) {
+            result['loginUser'] = String.valueOf(session.getAttribute(Constants.USER_ENG_NAME))
+        }
+        result
     }
 
 }
