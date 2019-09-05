@@ -114,6 +114,11 @@ textarea {
     box-sizing: border-box;
 }
 
+#step1-header {
+    display: flex;
+    align-items: center;
+}
+
 #content_step1 {
     margin-bottom: 2rem;
     box-sizing: border-box;
@@ -128,7 +133,9 @@ textarea {
 }
 
 .btn {
-    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
     border-radius: 8px;
     border: none;
     padding: .5rem;
@@ -139,10 +146,16 @@ textarea {
     background-color: #828282b8;
 }
 
+.btn i {
+    font-size: 1.25rem;
+    margin-left: 0.5rem;
+    color: #757575;
+}
+
 .send-mail-btn {
     float: right;
 }
 
-#save-mail-setting {
+#save-mail-setting__btn, #advance-setting__btn, #logout__btn {
     margin-left: 1rem;
 }
