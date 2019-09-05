@@ -16,6 +16,9 @@ class CheckLogInInterceptor implements HandlerInterceptor {
     boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         if (handler instanceof HandlerMethod) {
             def handlerMethod = handler as HandlerMethod
+            if (!handlerMethod.getBeanType().getName().contains('com.iisi.deploymail.handler')) {
+                return true
+            }
             def methodName = handlerMethod.getMethod().getName()
             if (methodName in ['login', 'invalidateSession']
                     || handlerMethod.getBeanType() == IndexHandler.class) {
@@ -34,8 +37,6 @@ class CheckLogInInterceptor implements HandlerInterceptor {
             response.sendError(401, 'user not login')
             return false
         }
-
-
         return true;
     }
 
