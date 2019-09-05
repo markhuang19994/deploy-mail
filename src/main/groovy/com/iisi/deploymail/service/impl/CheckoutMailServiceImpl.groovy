@@ -2,6 +2,7 @@ package com.iisi.deploymail.service.impl
 
 import com.iisi.deploymail.freemarker.FtlProvider
 import com.iisi.deploymail.model.prop.mail.CheckoutMailProp
+import com.iisi.deploymail.util.DateUtil
 import com.iisi.deploymail.util.FreemarkerUtil
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -15,7 +16,6 @@ import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMessage
-import java.text.SimpleDateFormat
 
 @Service('CheckoutMailService')
 class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> {
@@ -71,7 +71,7 @@ class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> 
     }
 
     private static String getSubject(String lacrNo, String projectName) {
-        def dateStr = new SimpleDateFormat('MM-dd HH:mm').format(new Date())
+        def dateStr = DateUtil.formatNowUtc8Date('MM-dd HH:mm')
         "[COLA-$lacrNo] Checkout [$projectName] [$dateStr]"
     }
 
