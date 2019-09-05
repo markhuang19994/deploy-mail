@@ -17,44 +17,44 @@
     window.slideOut = function (ele, direction = 'left', speed = 350, callback) {
         const $ele = $(ele);
         if (direction === 'left') {
-            $ele.animate({left: '-100%'}, speed);
+            $ele.animate({left: '-100%'}, speed, callback);
             $ele.attr('direction', 'left');
-        } else {
-            $ele.animate({right: '-100%'}, speed);
+        } else if ((direction === 'right')) {
+            $ele.animate({right: '-100%'}, speed, callback);
             $ele.attr('direction', 'right');
+        } else if ((direction === 'top')) {
+            $ele.animate({top: '-100%'}, speed, callback);
+            $ele.attr('direction', 'top');
+        } else {
+            $ele.animate({bottom: '-100%'}, speed, callback);
+            $ele.attr('direction', 'bottom');
         }
     };
 
     window.slideIn = function (ele, direction, speed = 350, callback) {
         const $ele = $(ele);
         if (direction === 'left') {
-            $ele.animate({left: '0'}, speed);
+            $ele.animate({left: '0'}, speed, callback);
+        } else if ((direction === 'right')) {
+            $ele.animate({right: '0'}, speed, callback);
+        } else if ((direction === 'top')) {
+            $ele.animate({top: '0'}, speed, callback);
         } else {
-            $ele.animate({right: '0'}, speed);
+            $ele.animate({bottom: '0'}, speed, callback);
         }
         $ele.attr('direction', '');
     };
-
-    window.changePage = function (oldPage, page) {
-        const $page = $(page);
-        $page.css({
-            display: 'block',
-            right: '-100%',
-            left: ''
-        });
-        slideOut(oldPage, 'left', () => $(oldPage).css('display', 'none'));
-        slideIn(page, 'right')
-    };
-
 
     window.changePageRightIn = function (oldPage, page) {
         const $page = $(page);
         $page.css({
             display: 'block',
+            top: '',
+            bottom: '',
             right: '-100%',
             left: ''
         });
-        slideOut(oldPage, 'left', () => $(oldPage).css('display', 'none'));
+        slideOut(oldPage, 'left', null ,() => $(oldPage).css('display', 'none'));
         slideIn(page, 'right')
     };
 
@@ -62,10 +62,12 @@
         const $page = $(page);
         $page.css({
             display: 'block',
+            top: '',
+            bottom: '',
             right: '',
             left: '-100%'
         });
-        slideOut(oldPage, 'right', () => $(oldPage).css('display', 'none'));
+        slideOut(oldPage, 'right', null, () => $(oldPage).css('display', 'none'));
         slideIn(page, 'left')
     };
 
@@ -75,8 +77,10 @@
             display: 'block',
             top: '-100%',
             bottom: '',
+            right: '',
+            left: ''
         });
-        slideOut(oldPage, 'bottom', () => $(oldPage).css('display', 'none'));
+        slideOut(oldPage, 'bottom', null, () => $(oldPage).css('display', 'none'));
         slideIn(page, 'top')
     };
 
@@ -86,8 +90,10 @@
             display: 'block',
             top: '',
             bottom: '-100%',
+            right: '',
+            left: ''
         });
-        slideOut(oldPage, 'top', () => $(oldPage).css('display', 'none'));
+        slideOut(oldPage, 'top', null, () => $(oldPage).css('display', 'none'));
         slideIn(page, 'bottom')
     };
 })();
