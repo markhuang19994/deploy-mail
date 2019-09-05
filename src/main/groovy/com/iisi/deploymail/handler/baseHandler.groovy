@@ -15,7 +15,7 @@ class baseHandler {
 
     @ResponseBody
     @GetMapping('/invalidateSession')
-    String getAllDeployUsers(HttpServletRequest request) {
+    String invalidateSession(HttpServletRequest request) {
         def session = request.getSession(false)
         if (session != null) {
             session.invalidate()

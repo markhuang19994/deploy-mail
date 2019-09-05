@@ -177,5 +177,18 @@ function step1(engName) {
         });
     });
 
+    $('#logout__btn').click(() => {
+        $.ajax({
+            url: '/base/invalidateSession',
+            success: () => {
+                changePageLeftIn($('#step1-body'), $('#index-body'));
+            },
+            error: e => {
+                console.log(e['responseJSON']);
+                alert(e.message);
+            }
+        })
+    });
+
     $('textarea').attr('spellcheck', 'false');
 }

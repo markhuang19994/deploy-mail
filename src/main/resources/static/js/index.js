@@ -20,7 +20,7 @@ function index() {
     });
 
     $('#goStep1').click(() => {
-        changePage($('#index-body'), $('#step1-body'));
+        changePageRightIn($('#index-body'), $('#step1-body'));
         step1($('#sel option:selected').text());
     });
 }

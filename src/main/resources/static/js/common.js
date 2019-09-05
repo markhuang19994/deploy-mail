@@ -45,4 +45,49 @@
         slideOut(oldPage, 'left', () => $(oldPage).css('display', 'none'));
         slideIn(page, 'right')
     };
+
+
+    window.changePageRightIn = function (oldPage, page) {
+        const $page = $(page);
+        $page.css({
+            display: 'block',
+            right: '-100%',
+            left: ''
+        });
+        slideOut(oldPage, 'left', () => $(oldPage).css('display', 'none'));
+        slideIn(page, 'right')
+    };
+
+    window.changePageLeftIn = function (oldPage, page) {
+        const $page = $(page);
+        $page.css({
+            display: 'block',
+            right: '',
+            left: '-100%'
+        });
+        slideOut(oldPage, 'right', () => $(oldPage).css('display', 'none'));
+        slideIn(page, 'left')
+    };
+
+    window.changePageTopIn = function (oldPage, page) {
+        const $page = $(page);
+        $page.css({
+            display: 'block',
+            top: '-100%',
+            bottom: '',
+        });
+        slideOut(oldPage, 'bottom', () => $(oldPage).css('display', 'none'));
+        slideIn(page, 'top')
+    };
+
+    window.changePageBottomIn = function (oldPage, page) {
+        const $page = $(page);
+        $page.css({
+            display: 'block',
+            top: '',
+            bottom: '-100%',
+        });
+        slideOut(oldPage, 'top', () => $(oldPage).css('display', 'none'));
+        slideIn(page, 'bottom')
+    };
 })();
