@@ -2,11 +2,10 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow: auto;
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
-#index-body, #step1-body {
+#index-body, #step1-body, #advance-setting-body {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -160,3 +159,19 @@ textarea {
 #save-mail-setting__btn, #advance-setting__btn, #logout__btn {
     margin-left: 1rem;
 }
+
+/*advance setting css*/
+#advance-setting-content {
+    text-align: center;
+}
+
+#advance-setting-save-div {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+#advance-setting-save-btn {
+    margin-left: 2rem;
+}
+

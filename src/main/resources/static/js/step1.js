@@ -187,7 +187,11 @@ function step1(engName) {
                 console.log(e['responseJSON']);
                 alert(e.message);
             }
-        })
+        });
+    });
+
+    $('#advance-setting__btn').click(() => {
+        changePageTopIn($('#step1-body'), $('#advance-setting-body'));
     });
 
     $('textarea').attr('spellcheck', 'false');
