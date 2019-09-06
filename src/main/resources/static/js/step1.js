@@ -1,3 +1,5 @@
+let userMailAccount = '';
+
 function step1(engName) {
     $.ajax({
         type: 'GET',
@@ -9,6 +11,12 @@ function step1(engName) {
                 const checkinConfig = d['checkinConfig'];
                 const checkoutConfig = d['checkoutConfig'];
                 const checksumConfig = d['checksumConfig'];
+                const mailAccount = d['mailAccount'];
+
+                if (mailAccount){
+                    userMailAccount = mailAccount
+                }
+
                 if (engName) {
                     $('#senderName').val(engName);
                 }
@@ -33,7 +41,6 @@ function step1(engName) {
                         $('#checksum-default-send-cc').val(defaultSendCC.join(';\n'))
                     }
                 }
-
 
                 if (checkoutConfig) {
                     const defaultSendTo = checkoutConfig['defaultSendTo'];
@@ -192,6 +199,7 @@ function step1(engName) {
 
     $('#advance-setting__btn').click(() => {
         changePageTopIn($('#step1-body'), $('#advance-setting-body'));
+        fillAdvanceSettingValue();
     });
 
     $('textarea').attr('spellcheck', 'false');

@@ -33,11 +33,16 @@ class LoginServiceImpl implements LoginService {
         def checksumConfigJson = columnMap.get('CHECKSUM_CONFIG')
         def checksumConfig = JsonUtil.parseJson(String.valueOf(checksumConfigJson), ChecksumConfig.class)
 
+        def mailAccount = columnMap.get('MAIL_ACCOUNT')
+        def mailPassword = columnMap.get('MAIL_PASSWORD')
+
         new DeployMailUser(
                 engName: engName,
                 checkinConfig: checkinConfig,
                 checksumConfig: checksumConfig,
-                checkoutConfig: checkoutConfig
+                checkoutConfig: checkoutConfig,
+                mailAccount: mailAccount,
+                mailPassword: mailPassword
         )
     }
 }
