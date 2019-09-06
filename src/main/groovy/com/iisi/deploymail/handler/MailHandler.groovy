@@ -8,6 +8,7 @@ import com.iisi.deploymail.model.prop.mail.ChecksumMailProp
 import com.iisi.deploymail.service.DeployMailService
 import com.iisi.deploymail.service.DeployMailUserService
 import com.iisi.deploymail.service.DeployResourcesService
+import com.iisi.deploymail.service.impl.AbstractMailServiceImpl
 import com.iisi.deploymail.tool.HtmlResource
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -52,6 +53,8 @@ class MailHandler {
         def session = request.getSession()
         def checkinMailProp = paramResolver.resolveCheckinHandlerParam(request)
         checkinMailProp.checkinResources = deployResourcesService.downloadCheckinResources(checkinMailProp)
+        def userEngName = session.getAttribute(Constants.USER_ENG_NAME).toString()
+        AbstractMailServiceImpl.fillAdvanceSetting(checkinMailProp, userEngName, deployMailUserService)
         checkinMailService.sendMail(checkinMailProp)
         return 'Checkin mail send success'
     }
@@ -62,6 +65,8 @@ class MailHandler {
         def session = request.getSession()
         def checkoutMailProp = paramResolver.resolveCheckoutHandlerParam(request)
         checkoutMailProp.checkoutResources = deployResourcesService.downloadCheckoutResources(checkoutMailProp)
+        def userEngName = session.getAttribute(Constants.USER_ENG_NAME).toString()
+        AbstractMailServiceImpl.fillAdvanceSetting(checkoutMailProp, userEngName, deployMailUserService)
         checkoutMailService.sendMail(checkoutMailProp)
         return 'Checkout mail send success'
     }
@@ -72,6 +77,8 @@ class MailHandler {
         def session = request.getSession()
         def checksumMailProp = paramResolver.resolveChecksumHandlerParam(request)
         checksumMailProp.checksumResources = deployResourcesService.downloadChecksumResources(checksumMailProp)
+        def userEngName = session.getAttribute(Constants.USER_ENG_NAME).toString()
+        AbstractMailServiceImpl.fillAdvanceSetting(checksumMailProp, userEngName, deployMailUserService)
         checksumMailService.sendMail(checksumMailProp)
         return 'Checksum mail send success'
     }

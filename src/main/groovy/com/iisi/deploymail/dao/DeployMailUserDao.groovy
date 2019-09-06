@@ -9,4 +9,6 @@ interface DeployMailUserDao {
     int updateDeployMailUser(DeployMailUser deployMailUser)
 
     int updateDeployMailUserSetting(DeployMailUser deployMailUser)
+
+    DeployMailUser getDeployMailUserByEngName(String engName)
 }

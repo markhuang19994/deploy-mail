@@ -11,4 +11,5 @@ interface DeployMailUserService {
 
     int updateDeployMailUserSetting(DeployMailUser deployMailUser)
 
+    DeployMailUser getDeployMailUserByEngName(String engName)
 }

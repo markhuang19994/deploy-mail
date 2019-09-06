@@ -32,8 +32,8 @@ class ChecksumMailServiceImpl extends AbstractMailServiceImpl<ChecksumMailProp> 
         def checksumResources = checksumMailProp.checksumResources
         def attachFiles = [checksumResources.checksum]
 
-        String username = env.getProperty('mail.user.name')
-        String password = env.getProperty('mail.user.pwd')
+        String username = checksumMailProp.mailAccount?:env.getProperty('mail.user.name')
+        String password = checksumMailProp.mailPassword?:env.getProperty('mail.user.pwd')
         def session = getMailSession()
 
         def mailAddress = getMailAddress(checksumMailProp.to, checksumMailProp.cc, false)

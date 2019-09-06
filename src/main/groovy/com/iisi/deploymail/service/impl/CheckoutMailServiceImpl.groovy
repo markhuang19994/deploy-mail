@@ -32,8 +32,8 @@ class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> 
         def checkoutResources = checkoutMailProp.checkoutResources
         def checkinFiles = [checkoutResources.checkoutForm, checkoutResources.checkoutTxt]
 
-        String username = env.getProperty('mail.user.name')
-        String password = env.getProperty('mail.user.pwd')
+        String username = checkoutMailProp.mailAccount?:env.getProperty('mail.user.name')
+        String password = checkoutMailProp.mailPassword?:env.getProperty('mail.user.pwd')
         def session = getMailSession()
 
         def mailAddress = getMailAddress(checkoutMailProp.to, checkoutMailProp.cc, false)

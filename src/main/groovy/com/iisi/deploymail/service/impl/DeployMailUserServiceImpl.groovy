@@ -27,4 +27,8 @@ class DeployMailUserServiceImpl implements DeployMailUserService {
     int updateDeployMailUserSetting(DeployMailUser deployMailUser) {
         deployMailUserDao.updateDeployMailUserSetting(deployMailUser)
     }
+
+    DeployMailUser getDeployMailUserByEngName(String engName){
+        deployMailUserDao.getDeployMailUserByEngName(engName)
+    }
 }

@@ -1,9 +1,14 @@
 package com.iisi.deploymail.service.impl
 
+import com.iisi.deploymail.dao.DeployMailUserDao
 import com.iisi.deploymail.freemarker.FtlProvider
+import com.iisi.deploymail.model.db.DeployMailUser
 import com.iisi.deploymail.model.prop.mail.MailProp
 import com.iisi.deploymail.service.DeployMailService
+import com.iisi.deploymail.service.DeployMailUserService
+import com.iisi.deploymail.util.KeyUtil
 import org.springframework.core.env.Environment
+import org.springframework.core.io.ClassPathResource
 
 import javax.activation.DataHandler
 import javax.activation.DataSource
@@ -60,6 +65,21 @@ abstract class AbstractMailServiceImpl<T extends MailProp> implements DeployMail
         }
 
         return [to: toAddr, cc: cc.collect { new InternetAddress(it) } as Address[]]
+    }
+
+    static fillAdvanceSetting(MailProp mailProp, String userEngName, DeployMailUserService deployMailUserService) {
+       def dbDeployMailUser =  deployMailUserService.getDeployMailUserByEngName(userEngName)
+
+        def account = dbDeployMailUser.mailAccount
+        def pwd = dbDeployMailUser.mailPassword
+        def decodePwdByte = Base64.getDecoder().decode(pwd)
+
+        def priKey = KeyUtil.getKey(new ClassPathResource('key/privateKey.key').inputStream)
+        def decodePwd = KeyUtil.decrypt(decodePwdByte, priKey, 'RSA')
+        pwd = new String(decodePwd)
+
+        mailProp.mailAccount = account
+        mailProp.mailPassword = pwd
     }
 
 }

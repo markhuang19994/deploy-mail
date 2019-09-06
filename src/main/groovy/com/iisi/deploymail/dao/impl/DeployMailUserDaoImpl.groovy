@@ -1,10 +1,15 @@
 package com.iisi.deploymail.dao.impl
 
 import com.iisi.deploymail.dao.DeployMailUserDao
+import com.iisi.deploymail.model.config.CheckinConfig
+import com.iisi.deploymail.model.config.CheckoutConfig
+import com.iisi.deploymail.model.config.ChecksumConfig
 import com.iisi.deploymail.model.db.DeployMailUser
 import com.iisi.deploymail.util.JsonUtil
+import com.iisi.deploymail.util.KeyUtil
 import groovy.sql.Sql
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 
 @Component
@@ -47,13 +52,46 @@ class DeployMailUserDaoImpl implements DeployMailUserDao {
                 WHERE eng_name = ?
             ''', [account, engName])
         } else {
+            def pubKey = KeyUtil.getKey(new ClassPathResource('key/publicKey.key').inputStream)
+            def encodePwd = KeyUtil.encrypt(pwd.getBytes(), pubKey, 'RSA')
+            String encodePwdB64 = Base64.getEncoder().encodeToString(encodePwd);
             updateCount = gSql.executeUpdate('''
                 UPDATE DEPLOY_MAIL_USER  SET 
                 MAIL_ACCOUNT =  ?,
                 MAIL_PASSWORD = ?
                 WHERE eng_name = ?
-            ''', [account, pwd, engName])
+            ''', [account, encodePwdB64, engName])
         }
         updateCount
+    }
+
+    @Override
+    DeployMailUser getDeployMailUserByEngName(String engName){
+        def columnMap = gSql.firstRow("SELECT * FROM DEPLOY_MAIL_USER d WHERE d.ENG_NAME = '$engName'".toString()) as Map
+
+        if (columnMap == null) {
+            throw new Exception("User: $engName not found in table DEPLOY_MAIL_USER")
+        }
+
+        def checkinConfigJson = columnMap.get('CHECKIN_CONFIG')
+        def checkinConfig = JsonUtil.parseJson(String.valueOf(checkinConfigJson), CheckinConfig.class)
+
+        def checkoutConfigJson = columnMap.get('CHECKOUT_CONFIG')
+        def checkoutConfig = JsonUtil.parseJson(String.valueOf(checkoutConfigJson), CheckoutConfig.class)
+
+        def checksumConfigJson = columnMap.get('CHECKSUM_CONFIG')
+        def checksumConfig = JsonUtil.parseJson(String.valueOf(checksumConfigJson), ChecksumConfig.class)
+
+        def mailAccount = columnMap.get('MAIL_ACCOUNT')
+        def mailPassword = columnMap.get('MAIL_PASSWORD')
+
+        new DeployMailUser(
+                engName: engName,
+                checkinConfig: checkinConfig,
+                checksumConfig: checksumConfig,
+                checkoutConfig: checkoutConfig,
+                mailAccount: mailAccount,
+                mailPassword: mailPassword
+        )
     }
 }
