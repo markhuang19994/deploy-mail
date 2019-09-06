@@ -1,9 +1,11 @@
+let isPasswordTrigger = false;
+
 function fillAdvanceSettingValue() {
+    isPasswordTrigger = false
     document.getElementById('setting-mail-account').value = userMailAccount;
     document.getElementById('setting-mail-password').value = '********';
 }
 
-let isPasswordTrigger = false;
 $('#setting-mail-password').click(e => {
     if (!isPasswordTrigger) {
         e.currentTarget.value = '';
@@ -14,15 +16,21 @@ $('#setting-mail-password').click(e => {
 $('#advance-setting-save-btn').click(() => {
     const account = document.getElementById('setting-mail-account');
     const pwd = document.getElementById('setting-mail-password');
-    changePageBottomIn($('#advance-setting-body'), $('#step1-body'));
+
     $.ajax({
-        url: '',
+        type: 'POST',
+        url: 'mailHandler/saveAdvanceMailSetting',
         data: {
             account: account.value,
             pwd: !isPasswordTrigger ? '' : pwd.value
-        }, success: () => {
-        }
-        , error: () => {
+        },
+        success: (d) => alert(d),
+        error: e => {
+            console.log(e['responseJSON']);
+            alert(e.message);
+        },
+        done: () => {
+            changePageBottomIn($('#advance-setting-body'), $('#step1-body'));
         }
     });
 });

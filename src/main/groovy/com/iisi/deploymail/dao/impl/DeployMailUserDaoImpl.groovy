@@ -32,4 +32,28 @@ class DeployMailUserDaoImpl implements DeployMailUserDao {
         ''', [checkinConfigJson, checkoutConfigJson, checksumConfigJson, deployMailUser.engName])
         updateCount
     }
+
+    @Override
+    int updateDeployMailUserSetting(DeployMailUser deployMailUser) {
+        def engName = deployMailUser.engName
+        def account = deployMailUser.mailAccount
+        def pwd = deployMailUser.mailPassword
+
+        def updateCount = -1
+        if (pwd == null || pwd == '') {
+            updateCount = gSql.executeUpdate('''
+                UPDATE DEPLOY_MAIL_USER  SET 
+                MAIL_ACCOUNT =  ?
+                WHERE eng_name = ?
+            ''', [account, engName])
+        } else {
+            updateCount = gSql.executeUpdate('''
+                UPDATE DEPLOY_MAIL_USER  SET 
+                MAIL_ACCOUNT =  ?,
+                MAIL_PASSWORD = ?
+                WHERE eng_name = ?
+            ''', [account, pwd, engName])
+        }
+        updateCount
+    }
 }

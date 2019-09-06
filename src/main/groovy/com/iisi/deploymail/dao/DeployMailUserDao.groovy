@@ -7,4 +7,6 @@ interface DeployMailUserDao {
     List<String> getAllDeployMailUserNames()
 
     int updateDeployMailUser(DeployMailUser deployMailUser)
+
+    int updateDeployMailUserSetting(DeployMailUser deployMailUser)
 }

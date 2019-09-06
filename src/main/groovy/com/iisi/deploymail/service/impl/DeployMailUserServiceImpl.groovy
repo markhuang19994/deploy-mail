@@ -22,4 +22,9 @@ class DeployMailUserServiceImpl implements DeployMailUserService {
     int updateDeployMailUser(DeployMailUser deployMailUser) {
         deployMailUserDao.updateDeployMailUser(deployMailUser)
     }
+
+    @Override
+    int updateDeployMailUserSetting(DeployMailUser deployMailUser) {
+        deployMailUserDao.updateDeployMailUserSetting(deployMailUser)
+    }
 }

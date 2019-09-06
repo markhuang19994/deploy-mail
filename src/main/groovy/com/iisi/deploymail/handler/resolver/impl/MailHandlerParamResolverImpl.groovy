@@ -162,6 +162,16 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
         )
     }
 
+    @Override
+    DeployMailUser resolveSaveAdvanceMailSettingParam(HttpServletRequest request) {
+        def account = request.getParameter('account')
+        def pwd = request.getParameter('pwd')
+        new DeployMailUser(
+                mailAccount: account,
+                mailPassword: pwd
+        )
+    }
+
     private static List<String> parseMailTextareaVal(String text) {
         def result = text?.split('[;\n]')?.toList()?.findAll { it != null && it != '' }
         result ?: ['']

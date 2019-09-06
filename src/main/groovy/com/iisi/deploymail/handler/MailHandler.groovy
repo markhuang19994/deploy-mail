@@ -85,8 +85,18 @@ class MailHandler {
         def engName = session.getAttribute(Constants.USER_ENG_NAME)
         deployMailUser.engName = engName
 
-        def isUpdate = deployMailUserService.updateDeployMailUser(deployMailUser)
-        return "資料儲存${isUpdate ? '成功':'失敗'}"
+        def updateCount = deployMailUserService.updateDeployMailUser(deployMailUser)
+        return "資料儲存${updateCount > 0 ? '成功' : '失敗'}"
+    }
+
+    @ResponseBody
+    @PostMapping(path = '/saveAdvanceMailSetting')
+    String saveAdvanceMailSetting(HttpServletRequest request) {
+        def deployMailUser = paramResolver.resolveSaveAdvanceMailSettingParam(request)
+        def session = request.getSession()
+        deployMailUser.engName = session.getAttribute(Constants.USER_ENG_NAME)
+        def updateCount = deployMailUserService.updateDeployMailUserSetting(deployMailUser)
+        return "資料儲存${updateCount > 0 ? '成功' : '失敗'}"
     }
 }
 

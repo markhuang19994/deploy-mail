@@ -9,4 +9,6 @@ interface DeployMailUserService {
 
     int updateDeployMailUser(DeployMailUser deployMailUser)
 
+    int updateDeployMailUserSetting(DeployMailUser deployMailUser)
+
 }

@@ -16,6 +16,8 @@ interface MailHandlerParamResolver {
     ChecksumMailProp resolveChecksumHandlerParam(HttpServletRequest request)
 
     DeployMailUser resolveSaveMailSettingParam(HttpServletRequest request)
+
+    DeployMailUser resolveSaveAdvanceMailSettingParam(HttpServletRequest request)
 }
 
 
