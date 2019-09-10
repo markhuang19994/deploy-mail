@@ -158,7 +158,7 @@ function step1(engName) {
         });
     });
 
-    $('#save-mail-setting').click(() => {
+    $('#save-mail-setting__btn').click(() => {
         const searchParams = new URLSearchParams(window.location.search);
         startLoading('資料儲存中');
         $.ajax({
