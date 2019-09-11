@@ -32,12 +32,17 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
     @Override
     void sendMail(CheckinMailProp checkinMailProp) {
         def checkinResources = checkinMailProp.checkinResources
+        def checkinFiles = [checkinResources.changeForm]
         def diffFiles = getDiffFiles(checkinResources.diffZip)
-        def checkinFiles = [checkinResources.changeForm] << diffFiles[0]
-        def replyFiles = diffFiles.size() > 1 ? diffFiles[1..diffFiles.size() - 1] : []
+        List<File> replyFiles = []
+        if (diffFiles.size() > 1) {
+            replyFiles = diffFiles.reverse()
+        } else {
+            checkinFiles  << diffFiles[0]
+        }
 
-        String username = checkinMailProp.mailAccount?:env.getProperty('mail.user.name')
-        String password = checkinMailProp.mailPassword?:env.getProperty('mail.user.pwd')
+        String username = checkinMailProp.mailAccount ?: env.getProperty('mail.user.name')
+        String password = checkinMailProp.mailPassword ?: env.getProperty('mail.user.pwd')
         def session = getMailSession()
 
         def mailAddress = getMailAddress(checkinMailProp.to, checkinMailProp.cc, false)
