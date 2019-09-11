@@ -1,4 +1,6 @@
 function step1(engName) {
+    const $senderName = $('#senderName');
+
     $.ajax({
         type: 'GET',
         url: '/login',
@@ -11,7 +13,7 @@ function step1(engName) {
                 const checksumConfig = d['checksumConfig'];
 
                 if (engName) {
-                    $('#senderName').val(engName);
+                    $senderName.val(engName);
                 }
                 if (checkinConfig) {
                     const defaultSendTo = checkinConfig['defaultSendTo'];
@@ -47,7 +49,7 @@ function step1(engName) {
                 }
 
                 if (d['engName']) {
-                    $('#senderName').text(d['engName']);
+                    $senderName.text(d['engName']);
                 }
             }
         },
@@ -57,26 +59,39 @@ function step1(engName) {
         }
     });
 
-    $('#checkin-send-btn').click(() => {
+    $('#checkin-send-btn').click(async () => {
         const searchParams = new URLSearchParams(window.location.search);
         const jenkinsJobName = searchParams.get('jenkinsJobName') || null;
         const jenkinsBuildNum = searchParams.get('jenkinsBuildNum') || null;
         const projectName = searchParams.get('projectName') || null;
         const lacrNo = searchParams.get('lacrNo') || null;
-        const senderName = searchParams.get('senderName') || null;
+
+        let data = {
+            jenkinsJobName,
+            jenkinsBuildNum,
+            projectName,
+            lacrNo,
+            senderName: $senderName.val()
+        };
+
+        if (document.getElementById('switch_demo').checked) {
+            const userData = await getUserData();
+            $.extend(data, {}, {
+                checkinDefaultSendTo: userData['mailAccount'],
+                checkinDefaultSendCc: ''
+            });
+        } else {
+            $.extend(data, {}, {
+                checkinDefaultSendTo: $('#checkin-default-send-to').val(),
+                checkinDefaultSendCc: $('#checkin-default-send-cc').val()
+            });
+        }
+
         startLoading('信件寄送中');
         $.ajax({
             type: 'POST',
             url: 'mailHandler/checkin',
-            data: {
-                jenkinsJobName,
-                jenkinsBuildNum,
-                projectName,
-                lacrNo,
-                senderName: $('#senderName').val(),
-                checkinDefaultSendTo: $('#checkin-default-send-to').val(),
-                checkinDefaultSendCc: $('#checkin-default-send-cc').val()
-            },
+            data,
             success: d => {
                 alert(d);
             },
@@ -89,25 +104,39 @@ function step1(engName) {
         });
     });
 
-    $('#checkout-send-btn').click(() => {
+    $('#checkout-send-btn').click(async () => {
         const searchParams = new URLSearchParams(window.location.search);
         const jenkinsJobName = searchParams.get('jenkinsJobName') || null;
         const jenkinsBuildNum = searchParams.get('jenkinsBuildNum') || null;
         const projectName = searchParams.get('projectName') || null;
         const lacrNo = searchParams.get('lacrNo') || null;
         startLoading('信件寄送中');
+
+        let data = {
+            jenkinsJobName,
+            jenkinsBuildNum,
+            projectName,
+            lacrNo,
+            senderName: $senderName.val()
+        };
+
+        if (document.getElementById('switch_demo').checked) {
+            const userData = await getUserData();
+            $.extend(data, {}, {
+                checkoutDefaultSendTo: userData['mailAccount'],
+                checkoutDefaultSendCc: ''
+            });
+        } else {
+            $.extend(data, {}, {
+                checkoutDefaultSendTo: $('#checkout-default-send-to').val(),
+                checkoutDefaultSendCc: $('#checkout-default-send-cc').val()
+            });
+        }
+
         $.ajax({
             type: 'POST',
             url: 'mailHandler/checkout',
-            data: {
-                jenkinsJobName,
-                jenkinsBuildNum,
-                projectName,
-                lacrNo,
-                senderName: $('#senderName').val(),
-                checkoutDefaultSendTo: $('#checkout-default-send-to').val(),
-                checkoutDefaultSendCc: $('#checkout-default-send-cc').val()
-            },
+            data,
             success: d => {
                 alert(d);
             },
@@ -120,25 +149,39 @@ function step1(engName) {
         });
     });
 
-    $('#checksum-send-btn').click(() => {
+    $('#checksum-send-btn').click(async () => {
         const searchParams = new URLSearchParams(window.location.search);
         const jenkinsJobName = searchParams.get('jenkinsJobName') || null;
         const jenkinsBuildNum = searchParams.get('jenkinsBuildNum') || null;
         const projectName = searchParams.get('projectName') || null;
         const lacrNo = searchParams.get('lacrNo') || null;
         startLoading('信件寄送中');
+
+        let data = {
+            jenkinsJobName,
+            jenkinsBuildNum,
+            projectName,
+            lacrNo,
+            senderName: $senderName.val()
+        };
+
+        if (document.getElementById('switch_demo').checked) {
+            const userData = await getUserData();
+            $.extend(data, {}, {
+                checksumDefaultSendTo: userData['mailAccount'],
+                checksumDefaultSendCc: ''
+            });
+        } else {
+            $.extend(data, {}, {
+                checksumDefaultSendTo: $('#checksum-default-send-to').val(),
+                checksumDefaultSendCc: $('#checksum-default-send-cc').val()
+            });
+        }
+
         $.ajax({
             type: 'POST',
             url: 'mailHandler/checksum',
-            data: {
-                jenkinsJobName,
-                jenkinsBuildNum,
-                projectName,
-                lacrNo,
-                senderName: $('#senderName').val(),
-                checksumDefaultSendTo: $('#checksum-default-send-to').val(),
-                checksumDefaultSendCc: $('#checksum-default-send-cc').val()
-            },
+            data,
             success: d => {
                 alert(d);
             },
@@ -190,10 +233,21 @@ function step1(engName) {
         });
     });
 
-    $('#advance-setting__btn').click(() => {
-        changePageTopIn($('#step1-body'), $('#advance-setting-body'));
-        fillAdvanceSettingValue();
+    $('#switch_demo').click(e => {
+        const target = e.currentTarget;
+        if (target.checked) {
+            $('textarea').attr('disabled', 'disabled');
+        } else {
+            $('textarea').removeAttr('disabled');
+        }
     });
 
-    $('textarea').attr('spellcheck', 'false');
+    $('#advance-setting__btn').click(async () => {
+        changePageTopIn($('#step1-body'), $('#advance-setting-body'));
+        await fillAdvanceSettingValue();
+    });
+
+    const $textarea = $('textarea');
+    $textarea.attr('spellcheck', 'false');
+    $textarea.attr('disabled', 'disabled');
 }
