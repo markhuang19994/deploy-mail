@@ -1,5 +1,6 @@
-function fillAdvanceSettingValue() {
-    document.getElementById('setting-mail-account').value = userMailAccount;
+async function fillAdvanceSettingValue() {
+    const userData = await getUserData();
+    document.getElementById('setting-mail-account').value = userData['mailAccount'];
     document.getElementById('setting-mail-password').value = '********';
 }
 

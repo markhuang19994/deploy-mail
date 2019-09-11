@@ -1,5 +1,3 @@
-let userMailAccount = '';
-
 function step1(engName) {
     $.ajax({
         type: 'GET',
@@ -11,11 +9,6 @@ function step1(engName) {
                 const checkinConfig = d['checkinConfig'];
                 const checkoutConfig = d['checkoutConfig'];
                 const checksumConfig = d['checksumConfig'];
-                const mailAccount = d['mailAccount'];
-
-                if (mailAccount){
-                    userMailAccount = mailAccount
-                }
 
                 if (engName) {
                     $('#senderName').val(engName);

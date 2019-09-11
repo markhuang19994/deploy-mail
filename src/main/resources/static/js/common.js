@@ -54,7 +54,7 @@
             right: '-100%',
             left: ''
         });
-        slideOut(oldPage, 'left', null ,() => $(oldPage).css('display', 'none'));
+        slideOut(oldPage, 'left', null, () => $(oldPage).css('display', 'none'));
         slideIn(page, 'right')
     };
 
@@ -96,4 +96,26 @@
         slideOut(oldPage, 'top', null, () => $(oldPage).css('display', 'none'));
         slideIn(page, 'bottom')
     };
+
+    window.getUserData = function () {
+        return new Promise(res => {
+            $.ajax({
+                type: 'POST',
+                url: 'base/getUserData',
+                data: {},
+                success: d => {
+                    res(d);
+                },
+                error: e => {
+                    console.log(e['responseJSON']);
+                    alert(e.message);
+                    res();
+                }
+            }).done(() => {
+                endLoading()
+            });
+        });
+    }
+
+
 })();
