@@ -224,7 +224,7 @@ function step1(engName) {
         $.ajax({
             url: '/base/invalidateSession',
             success: () => {
-                changePageLeftIn($('#step1-body'), $('#index-body'));
+                location.reload();
             },
             error: e => {
                 console.log(e['responseJSON']);
