@@ -216,13 +216,13 @@ textarea {
     box-sizing: border-box;
 }
 .switch_demo-inner:before {
-    content: "只寄給自己";
+    content: "測試模式開啟";
     padding-left: 10px;
     background-color: #34A7C1;
     color: #FFFFFF;
 }
 .switch_demo-inner:after {
-    content: "只寄給自己";
+    content: "測試模式關閉";
     padding-right: 10px;
     background-color: #EEEEEE;
     color: #999999;
