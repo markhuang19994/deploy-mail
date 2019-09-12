@@ -108,7 +108,7 @@
                 },
                 error: e => {
                     console.log(e['responseJSON']);
-                    alert(e.message);
+                    showPopup(e['responseJSON']);
                     res();
                 }
             }).done(() => {

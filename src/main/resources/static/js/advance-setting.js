@@ -29,7 +29,7 @@ $('#advance-setting-save-btn').click( async () => {
         });
     });
     changePageBottomIn($('#advance-setting-body'), $('#step1-body'));
-    setTimeout(() => alert(d), 500)
+    setTimeout(() => showPopup(d), 500)
 });
 
 $('#advance-setting-cancel-btn').click(() => {

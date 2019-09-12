@@ -15,7 +15,7 @@ function index() {
         },
         error: e => {
             console.log(e['responseJSON']);
-            alert(e.message);
+            showPopup(e['responseJSON']);
         }
     });
 
@@ -41,7 +41,7 @@ $(() => {
         },
         error: e => {
             console.log(e['responseJSON']);
-            alert(e.message);
+            showPopup(e['responseJSON']);
         }
     });
 });

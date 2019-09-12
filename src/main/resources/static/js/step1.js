@@ -55,7 +55,7 @@ function step1(engName) {
         },
         error: e => {
             console.log(e['responseJSON']);
-            alert(e.message);
+            showPopup(e['responseJSON']);
         }
     });
 
@@ -93,11 +93,11 @@ function step1(engName) {
             url: 'mailHandler/checkin',
             data,
             success: d => {
-                alert(d);
+                showPopup(d);
             },
             error: e => {
                 console.log(e['responseJSON']);
-                alert(e.message);
+                showPopup(e['responseJSON']);
             }
         }).done(() => {
             endLoading()
@@ -138,11 +138,11 @@ function step1(engName) {
             url: 'mailHandler/checkout',
             data,
             success: d => {
-                alert(d);
+                showPopup(d);
             },
             error: e => {
                 console.log(e['responseJSON']);
-                alert(e.message);
+                showPopup(e['responseJSON']);
             }
         }).done(() => {
             endLoading()
@@ -183,11 +183,11 @@ function step1(engName) {
             url: 'mailHandler/checksum',
             data,
             success: d => {
-                alert(d);
+                showPopup(d);
             },
             error: e => {
                 console.log(e['responseJSON']);
-                alert(e.message);
+                showPopup(e['responseJSON']);
             }
         }).done(() => {
             endLoading();
@@ -209,11 +209,11 @@ function step1(engName) {
                 checkoutDefaultSendCc: $('#checkout-default-send-cc').val(),
             },
             success: d => {
-                alert(d);
+                showPopup(d);
             },
             error: e => {
                 console.log(e['responseJSON']);
-                alert(e.message);
+                showPopup(e['responseJSON']);
             }
         }).done(() => {
             endLoading();
@@ -228,7 +228,7 @@ function step1(engName) {
             },
             error: e => {
                 console.log(e['responseJSON']);
-                alert(e.message);
+                showPopup(e['responseJSON']);
             }
         });
     });
