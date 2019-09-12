@@ -15,7 +15,7 @@ function index() {
         },
         error: e => {
             console.log(e['responseJSON']);
-            showPopup(e['responseJSON']);
+            showPopup(e['responseJSON']['trace']);
         }
     });
 
@@ -41,7 +41,7 @@ $(() => {
         },
         error: e => {
             console.log(e['responseJSON']);
-            showPopup(e['responseJSON']);
+            showPopup(e['responseJSON']['trace']);
         }
     });
 });

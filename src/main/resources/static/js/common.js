@@ -108,7 +108,7 @@
                 },
                 error: e => {
                     console.log(e['responseJSON']);
-                    showPopup(e['responseJSON']);
+                    showPopup(e['responseJSON']['trace']);
                     res();
                 }
             }).done(() => {

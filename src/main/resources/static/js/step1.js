@@ -55,7 +55,7 @@ function step1(engName) {
         },
         error: e => {
             console.log(e['responseJSON']);
-            showPopup(e['responseJSON']);
+            showPopup(e['responseJSON']['trace']);
         }
     });
 
@@ -97,7 +97,7 @@ function step1(engName) {
             },
             error: e => {
                 console.log(e['responseJSON']);
-                showPopup(e['responseJSON']);
+                showPopup(e['responseJSON']['trace']);
             }
         }).done(() => {
             endLoading()
@@ -142,7 +142,7 @@ function step1(engName) {
             },
             error: e => {
                 console.log(e['responseJSON']);
-                showPopup(e['responseJSON']);
+                showPopup(e['responseJSON']['trace']);
             }
         }).done(() => {
             endLoading()
@@ -187,7 +187,7 @@ function step1(engName) {
             },
             error: e => {
                 console.log(e['responseJSON']);
-                showPopup(e['responseJSON']);
+                showPopup(e['responseJSON']['trace']);
             }
         }).done(() => {
             endLoading();
@@ -213,7 +213,7 @@ function step1(engName) {
             },
             error: e => {
                 console.log(e['responseJSON']);
-                showPopup(e['responseJSON']);
+                showPopup(e['responseJSON']['trace']);
             }
         }).done(() => {
             endLoading();
@@ -228,7 +228,7 @@ function step1(engName) {
             },
             error: e => {
                 console.log(e['responseJSON']);
-                showPopup(e['responseJSON']);
+                showPopup(e['responseJSON']['trace']);
             }
         });
     });
