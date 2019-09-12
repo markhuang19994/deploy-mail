@@ -108,7 +108,7 @@
                 },
                 error: e => {
                     console.log(e['responseJSON']);
-                    showPopup(e['responseJSON']['trace']);
+                    showPopup('出現了錯誤，詳情請看console。');
                     res();
                 }
             }).done(() => {
