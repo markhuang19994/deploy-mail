@@ -42,15 +42,17 @@ class DeployMailUserDaoImpl implements DeployMailUserDao {
     int updateDeployMailUserSetting(DeployMailUser deployMailUser) {
         def engName = deployMailUser.engName
         def account = deployMailUser.mailAccount
+        def accountAlias = deployMailUser.mailAccountAlias
         def pwd = deployMailUser.mailPassword
 
         def updateCount = -1
         if (pwd == null || pwd == '') {
             updateCount = gSql.executeUpdate('''
                 UPDATE DEPLOY_MAIL_USER  SET 
-                MAIL_ACCOUNT =  ?
+                MAIL_ACCOUNT =  ?,
+                MAIL_ACCOUNT_ALIAS =  ?
                 WHERE eng_name = ?
-            ''', [account, engName])
+            ''', [account, accountAlias, engName])
         } else {
             def pubKey = KeyUtil.getKey(new ClassPathResource('key/publicKey.key').inputStream)
             def encodePwd = KeyUtil.encrypt(pwd.getBytes(), pubKey, 'RSA')
@@ -58,15 +60,16 @@ class DeployMailUserDaoImpl implements DeployMailUserDao {
             updateCount = gSql.executeUpdate('''
                 UPDATE DEPLOY_MAIL_USER  SET 
                 MAIL_ACCOUNT =  ?,
+                MAIL_ACCOUNT_ALIAS =  ?,
                 MAIL_PASSWORD = ?
                 WHERE eng_name = ?
-            ''', [account, encodePwdB64, engName])
+            ''', [account, accountAlias, encodePwdB64, engName])
         }
         updateCount
     }
 
     @Override
-    DeployMailUser getDeployMailUserByEngName(String engName){
+    DeployMailUser getDeployMailUserByEngName(String engName) {
         def columnMap = gSql.firstRow("SELECT * FROM DEPLOY_MAIL_USER d WHERE d.ENG_NAME = '$engName'".toString()) as Map
 
         if (columnMap == null) {
@@ -82,8 +85,9 @@ class DeployMailUserDaoImpl implements DeployMailUserDao {
         def checksumConfigJson = columnMap.get('CHECKSUM_CONFIG')
         def checksumConfig = JsonUtil.parseJson(String.valueOf(checksumConfigJson), ChecksumConfig.class)
 
-        def mailAccount = columnMap.get('MAIL_ACCOUNT')
-        def mailPassword = columnMap.get('MAIL_PASSWORD')
+        def mailAccount = columnMap.get('MAIL_ACCOUNT') ?: ''
+        def mailAccountAlias = columnMap.get('MAIL_ACCOUNT_ALIAS') ?: ''
+        def mailPassword = columnMap.get('MAIL_PASSWORD') ?: ''
 
         new DeployMailUser(
                 engName: engName,
@@ -91,6 +95,7 @@ class DeployMailUserDaoImpl implements DeployMailUserDao {
                 checksumConfig: checksumConfig,
                 checkoutConfig: checkoutConfig,
                 mailAccount: mailAccount,
+                mailAccountAlias: mailAccountAlias,
                 mailPassword: mailPassword
         )
     }

@@ -71,6 +71,7 @@ abstract class AbstractMailServiceImpl<T extends MailProp> implements DeployMail
        def dbDeployMailUser =  deployMailUserService.getDeployMailUserByEngName(userEngName)
 
         def account = dbDeployMailUser.mailAccount
+        def accountAlias = dbDeployMailUser.mailAccountAlias
         def pwd = dbDeployMailUser.mailPassword
         def decodePwdByte = Base64.getDecoder().decode(pwd)
 
@@ -79,6 +80,7 @@ abstract class AbstractMailServiceImpl<T extends MailProp> implements DeployMail
         pwd = new String(decodePwd)
 
         mailProp.mailAccount = account
+        mailProp.mailAccountAlias = accountAlias
         mailProp.mailPassword = pwd
     }
 

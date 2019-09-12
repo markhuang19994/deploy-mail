@@ -6,6 +6,7 @@ create table DEPLOY_MAIL_USER
     CHECKIN_CONFIG  nvarchar(max),
     CHECKSUM_CONFIG nvarchar(max),
     MAIL_ACCOUNT nvarchar(200),
+    MAIL_ACCOUNT_ALIAS nvarchar(200),
     MAIL_PASSWORD nvarchar(max)
 )
 

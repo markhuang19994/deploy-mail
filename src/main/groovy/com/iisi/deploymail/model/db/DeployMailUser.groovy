@@ -10,5 +10,6 @@ class DeployMailUser {
     ChecksumConfig checksumConfig
     CheckoutConfig checkoutConfig
     String mailAccount
+    String mailAccountAlias
     String mailPassword
 }

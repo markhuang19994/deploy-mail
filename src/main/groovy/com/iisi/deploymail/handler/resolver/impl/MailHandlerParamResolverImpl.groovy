@@ -164,10 +164,12 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
 
     @Override
     DeployMailUser resolveSaveAdvanceMailSettingParam(HttpServletRequest request) {
-        def account = request.getParameter('account')
+        def account = request.getParameter('account') ?: ''
+        def accountAlias = request.getParameter('accountAlias') ?: ''
         def pwd = request.getParameter('pwd')
         new DeployMailUser(
                 mailAccount: account,
+                mailAccountAlias: accountAlias,
                 mailPassword: pwd
         )
     }

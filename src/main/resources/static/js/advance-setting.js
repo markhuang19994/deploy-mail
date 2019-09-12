@@ -9,7 +9,7 @@ $('#setting-mail-password').click(e => {
     e.currentTarget.value = '';
 });
 
-$('#advance-setting-save-btn').click( async () => {
+$('#advance-setting-save-btn').click(async () => {
     const account = document.getElementById('setting-mail-account');
     const accountAlias = document.getElementById('setting-mail-account-alias');
     const pwd = document.getElementById('setting-mail-password');
@@ -19,7 +19,7 @@ $('#advance-setting-save-btn').click( async () => {
             url: 'mailHandler/saveAdvanceMailSetting',
             data: {
                 account: account.value,
-                accountAlias,
+                accountAlias: accountAlias.value,
                 pwd: pwd.value === '********' ? '' : pwd.value
             },
             success: (d) => {

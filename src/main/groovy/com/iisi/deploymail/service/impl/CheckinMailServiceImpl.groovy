@@ -41,13 +41,14 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
             checkinFiles  << diffFiles[0]
         }
 
-        String username = checkinMailProp.mailAccount ?: env.getProperty('mail.user.name')
+        String mailAccount = checkinMailProp.mailAccount ?: env.getProperty('mail.user.name')
+        String mailAccountAlias = checkinMailProp.mailAccountAlias ?: mailAccount
         String password = checkinMailProp.mailPassword ?: env.getProperty('mail.user.pwd')
         def session = getMailSession()
 
         def mailAddress = getMailAddress(checkinMailProp.to, checkinMailProp.cc, false)
         MimeMessage message = new MimeMessage(session)
-        message.setFrom(new InternetAddress(username))
+        message.setFrom(new InternetAddress(mailAccountAlias))
         message.addRecipients(Message.RecipientType.TO, mailAddress.to)
         if (mailAddress.cc) {
             message.addRecipients(Message.RecipientType.CC, mailAddress.cc)
@@ -61,7 +62,7 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
         message.setContent(multipart, HTML_MAIL_CONTENT_TYPE)
 
         Transport transport = session.getTransport("smtp")
-        transport.connect(username, password)
+        transport.connect(mailAccount, password)
         LOGGER.debug("Start send mail to ${mailAddress.toString()}")
         transport.sendMessage(message, message.getAllRecipients())
         LOGGER.debug("send First message success...")
@@ -71,7 +72,7 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
             for (int i = 0; i < replyFiles.size(); i++) {
                 File partialFile = replyFiles.get(i)
                 Multipart mPart = generateMultipart(partialFile)
-                reply.setFrom(new InternetAddress(username))
+                reply.setFrom(new InternetAddress(mailAccountAlias))
                 reply.setReplyTo(message.getReplyTo())
                 reply.setContent(mPart)
                 MimeBodyPart bodyPart = new MimeBodyPart()

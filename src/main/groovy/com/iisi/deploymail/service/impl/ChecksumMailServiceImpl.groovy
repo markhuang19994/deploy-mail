@@ -32,13 +32,14 @@ class ChecksumMailServiceImpl extends AbstractMailServiceImpl<ChecksumMailProp> 
         def checksumResources = checksumMailProp.checksumResources
         def attachFiles = [checksumResources.checksum]
 
-        String username = checksumMailProp.mailAccount?:env.getProperty('mail.user.name')
+        String mailAccount = checksumMailProp.mailAccount?:env.getProperty('mail.user.name')
+        String mailAccountAlias = checksumMailProp.mailAccountAlias ?: mailAccount
         String password = checksumMailProp.mailPassword?:env.getProperty('mail.user.pwd')
         def session = getMailSession()
 
         def mailAddress = getMailAddress(checksumMailProp.to, checksumMailProp.cc, false)
         MimeMessage message = new MimeMessage(session)
-        message.setFrom(new InternetAddress(username))
+        message.setFrom(new InternetAddress(mailAccountAlias))
         message.addRecipients(Message.RecipientType.TO, mailAddress.to)
         if (mailAddress.cc) {
             message.addRecipients(Message.RecipientType.CC, mailAddress.cc)
@@ -52,7 +53,7 @@ class ChecksumMailServiceImpl extends AbstractMailServiceImpl<ChecksumMailProp> 
         message.setContent(multipart, HTML_MAIL_CONTENT_TYPE)
 
         Transport transport = session.getTransport("smtp")
-        transport.connect(username, password)
+        transport.connect(mailAccount, password)
         LOGGER.debug("Start send mail to ${mailAddress.toString()}")
         transport.sendMessage(message, message.getAllRecipients())
 

@@ -2,6 +2,7 @@ package com.iisi.deploymail.model.prop.mail
 
 abstract class MailProp {
     String mailAccount
+    String mailAccountAlias
     String mailPassword
     String projectName
     String lacrNo
