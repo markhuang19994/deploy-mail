@@ -107,6 +107,12 @@ textarea {
     resize: none;
 }
 
+textarea:disabled {
+    color: rgb(84, 84, 84);
+    cursor: default;
+    background-color: rgb(235, 235, 228);
+}
+
 #step1-body {
     padding: 1% 0 0 1%;
     width: 99%;
