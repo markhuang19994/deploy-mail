@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/loading.css">
     <link rel="stylesheet" href="/css/page.css">
+    <link rel="stylesheet" href="/css/popup.css">
     <script
             src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -21,15 +22,25 @@
                 '/js/common.js',
                 '/js/index.js',
                 '/js/step1.js',
-                '/js/advance-setting.js'
+                '/js/advance-setting.js',
+                '/js/popup.js'
             ]);
         });
     </script>
 </head>
 <body>
+<!--loading-->
 <div class="loading">
     <div class="loadingIcon" data-loader="circle-side"></div>
     <div class="loadingTxt">Loading</div>
+</div>
+
+<!--popup-->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modal-content__p-1">Some text in the Modal..</p>
+    </div>
 </div>
 
 <!--index-->
