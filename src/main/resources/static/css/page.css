@@ -175,7 +175,6 @@ textarea {
     margin-left: 2rem;
 }
 
-
 /*switch*/
 .switch_demo {
     position: absolute;
@@ -185,9 +184,11 @@ textarea {
     -moz-user-select: none;
     -ms-user-select: none;
 }
+
 .switch_demo-checkbox {
     display: none;
 }
+
 .switch_demo-label {
     display: block;
     overflow: hidden;
@@ -195,12 +196,14 @@ textarea {
     border: 2px solid #999999;
     border-radius: 20px;
 }
+
 .switch_demo-inner {
     display: block;
     width: 200%;
     margin-left: -100%;
     transition: margin 0.3s ease-in 0s;
 }
+
 .switch_demo-inner:before,
 .switch_demo-inner:after {
     display: block;
@@ -215,12 +218,14 @@ textarea {
     font-weight: bold;
     box-sizing: border-box;
 }
+
 .switch_demo-inner:before {
     content: "測試模式開啟";
     padding-left: 10px;
     background-color: #34A7C1;
     color: #FFFFFF;
 }
+
 .switch_demo-inner:after {
     content: "測試模式關閉";
     padding-right: 10px;
@@ -228,6 +233,7 @@ textarea {
     color: #999999;
     text-align: right;
 }
+
 .switch_demo-switch {
     display: block;
     width: 18px;
@@ -241,9 +247,11 @@ textarea {
     border-radius: 20px;
     transition: all 0.3s ease-in 0s;
 }
+
 .switch_demo-checkbox:checked + .switch_demo-label .switch_demo-inner {
     margin-left: 0;
 }
+
 .switch_demo-checkbox:checked + .switch_demo-label .switch_demo-switch {
     right: 0;
 }
