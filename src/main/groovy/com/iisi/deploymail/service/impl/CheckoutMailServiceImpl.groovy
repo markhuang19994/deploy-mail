@@ -44,7 +44,7 @@ class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> 
         if (mailAddress.cc) {
             message.addRecipients(Message.RecipientType.CC, mailAddress.cc)
         }
-        message.setSubject(getSubject(checkoutMailProp.projectName, checkoutMailProp.lacrNo))
+        message.setSubject(getSubject(checkoutMailProp.lacrNo, checkoutMailProp.projectName))
 
         Multipart multipart = generateMultipart(checkinFiles as File[])
         MimeBodyPart messageBodyPart = new MimeBodyPart()

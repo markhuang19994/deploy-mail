@@ -53,7 +53,7 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
         if (mailAddress.cc) {
             message.addRecipients(Message.RecipientType.CC, mailAddress.cc)
         }
-        message.setSubject(getSubject(checkinMailProp.projectName, checkinMailProp.lacrNo))
+        message.setSubject(getSubject(checkinMailProp.lacrNo, checkinMailProp.projectName))
 
         Multipart multipart = generateMultipart(checkinFiles as File[])
         MimeBodyPart messageBodyPart = new MimeBodyPart()

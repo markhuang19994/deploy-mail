@@ -44,7 +44,7 @@ class ChecksumMailServiceImpl extends AbstractMailServiceImpl<ChecksumMailProp> 
         if (mailAddress.cc) {
             message.addRecipients(Message.RecipientType.CC, mailAddress.cc)
         }
-        message.setSubject(getSubject(checksumMailProp.projectName, checksumMailProp.lacrNo))
+        message.setSubject(getSubject(checksumMailProp.lacrNo, checksumMailProp.projectName))
 
         Multipart multipart = generateMultipart(attachFiles as File[])
         MimeBodyPart messageBodyPart = new MimeBodyPart()
