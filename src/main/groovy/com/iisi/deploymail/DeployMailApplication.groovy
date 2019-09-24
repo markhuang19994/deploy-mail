@@ -1,5 +1,6 @@
 package com.iisi.deploymail
 
+import com.iisi.deploymail.job.BgImageUpdateJob
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 
@@ -7,7 +8,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 class DeployMailApplication {
 
     static void main(String[] args) {
-        SpringApplication.run(DeployMailApplication, args)
+        def ctx = SpringApplication.run(DeployMailApplication, args)
+        def job = ctx.getBean(BgImageUpdateJob.class)
+        job.updateBgImage()
     }
 
 }
