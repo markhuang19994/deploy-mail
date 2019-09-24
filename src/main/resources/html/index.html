@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/loading.css">
     <link rel="stylesheet" href="/css/page.css">
     <link rel="stylesheet" href="/css/popup.css">
+    <link rel="stylesheet" href="/css/background-image.css">
     <script
             src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -20,15 +21,20 @@
         $(function () {
             Loader.loadScripts([
                 '/js/common.js',
+                '/js/popup.js',
+                '/js/background-image.js',
                 '/js/index.js',
                 '/js/step1.js',
                 '/js/advance-setting.js',
-                '/js/popup.js'
             ]);
         });
     </script>
 </head>
 <body>
+
+<!--background filter-->
+<div class="bg-filter"></div>
+
 <!--loading-->
 <div class="loading">
     <div class="loadingIcon" data-loader="circle-side"></div>

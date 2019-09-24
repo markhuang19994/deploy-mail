@@ -149,7 +149,8 @@ textarea:disabled {
 }
 
 .btn:hover {
-    background-color: #828282b8;
+    /*background-color: #828282b8;*/
+    background-color: #8c8c8c;
 }
 
 .btn i {
