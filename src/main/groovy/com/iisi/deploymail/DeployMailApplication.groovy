@@ -9,8 +9,12 @@ class DeployMailApplication {
 
     static void main(String[] args) {
         def ctx = SpringApplication.run(DeployMailApplication, args)
-        def job = ctx.getBean(BgImageUpdateJob.class)
-        job.updateBgImage()
+        def t = new Thread({
+            def job = ctx.getBean(BgImageUpdateJob.class)
+            job.updateBgImage()
+        })
+        t.setDaemon(true)
+        t.start()
     }
 
 }

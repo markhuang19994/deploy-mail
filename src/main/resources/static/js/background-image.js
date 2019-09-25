@@ -1,9 +1,18 @@
 $(function () {
     const body = document.body;
-    Object.assign(body.style, {
-        backgroundImage: 'url(/image/bg01.jpg)',
-        backgroundClip: 'padding-box',
-        backgroundSize: 'cover',
-        zIndex: '-10'
-    });
+
+    $("<img/>").attr('src', 'base/background/image')
+        .on('load', function () {
+                if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth === 0) {
+                    console.log('broken image!');
+                } else {
+                    Object.assign(body.style, {
+                        backgroundImage: 'url(base/background/image)',
+                        backgroundClip: 'padding-box',
+                        backgroundSize: 'cover',
+                        zIndex: '-10'
+                    });
+                }
+            }
+        );
 });

@@ -8,7 +8,12 @@ final class Constants {
     static final String USER_ENG_NAME = 'userEngName'
 
     static final IMAGE_SEARCH_KEYWORD = [
-            'universe', 'working'
+            'universe',
+            'working',
+            'flower',
+            'nature%20wallpaper',
+            'desk',
+            'landscape'
     ]
 
     static class Flag {

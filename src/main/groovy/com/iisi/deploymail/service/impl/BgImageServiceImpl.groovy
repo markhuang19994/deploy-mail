@@ -2,12 +2,21 @@ package com.iisi.deploymail.service.impl
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.iisi.deploymail.service.BgImageService
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
 
 import javax.net.ssl.HttpsURLConnection
+import java.text.SimpleDateFormat
 
 @Service
 class BgImageServiceImpl implements BgImageService {
+
+    private imgRootDir;
+
+    BgImageServiceImpl() {
+        ClassPathResource cpr = new ClassPathResource('/static/image')
+        imgRootDir = cpr.getFile()
+    }
 
     byte[] getBgImage(imgSrc) {
         HttpsURLConnection conn = new URL(imgSrc).openConnection() as HttpsURLConnection
@@ -32,20 +41,70 @@ class BgImageServiceImpl implements BgImageService {
     }
 
     @Override
-    List<String> getImageSrcList(String imgDetailJson) {
+    List<String> getImageSrcList(String imgDetailJson, ImageQuality quality) {
         ObjectMapper om = new ObjectMapper()
         def m = om.readValue(imgDetailJson, Map.class)
+        def q = quality.value as String
 
         m['photos'].findAll {
             def width = it['width']
             def height = it['height']
             def src = it['src'] ?: [:]
-            def ori = src['original']
+            def ori = src[q]
             (width && height && ori
                     && width / (double) height > 1.5
                     && width / (double) height < 2.1)
         }.collect {
-            it['src']['original']
+            it['src'][q]
         } as List<String>
+    }
+
+    @Override
+    void storeImageFile(List<String> srcList) {
+        def dir = getBackgroundImageDir()
+        if (!dir.exists()) {
+            dir.mkdirs()
+        }
+        for (int i = 1; i <= 2; i++) {
+            def src = srcList.get(i)
+            def bgImg = getBgImage(src)
+            def imgFile = new File(dir, 'img_' + i)
+            imgFile.delete()
+            imgFile << bgImg
+            srcList.remove(i)
+        }
+    }
+
+    @Override
+    File getBackgroundImageDir() {
+        SimpleDateFormat sdf = new SimpleDateFormat('EEE')
+        new File(imgRootDir, 'day_' + sdf.format(new Date()))
+    }
+
+    @Override
+    File getBackgroundImageRootDir() {
+        imgRootDir
+    }
+
+    @Override
+    File getDefaultBackgroundImage() {
+        new File(imgRootDir, 'bg_default.jpg')
+    }
+
+    static enum ImageQuality {
+        ORIGINAL('original'),
+        LARGE('large'),
+        LARGE2X('large2x'),
+        MEDIUM('medium'),
+        SMALL('small'),
+        PORTRAIT('portrait'),
+        LANDSCAPE('landscape'),
+        TINY('tiny')
+
+        def value
+
+        ImageQuality(value) {
+            this.value = value
+        }
     }
 }

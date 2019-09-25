@@ -4,7 +4,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #ffffff8a;
+    background-color: #ffffffc2;
 }
 
 textarea {
@@ -12,5 +12,5 @@ textarea {
 }
 
 h1 {
-    text-shadow: 3px 2px 2px #a9a9a9;
+    text-shadow: 2px 2px 2px #a9a9a9;
 }
