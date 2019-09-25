@@ -262,3 +262,12 @@ textarea:disabled {
 .switch_demo-checkbox:checked + .switch_demo-label .switch_demo-switch {
     right: 0;
 }
+
+#version {
+    position: fixed;
+    z-index: 99;
+    bottom: 2px;
+    right: 20px;
+    font-family: monospace;
+    color: black;
+}
