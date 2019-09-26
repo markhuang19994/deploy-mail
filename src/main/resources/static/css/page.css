@@ -163,7 +163,7 @@ textarea:disabled {
     float: right;
 }
 
-#save-mail-setting__btn, #advance-setting__btn, #logout__btn {
+#step1-header .btn {
     margin-left: 1rem;
 }
 

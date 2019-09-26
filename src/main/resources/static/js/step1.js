@@ -74,7 +74,8 @@ function step1(engName) {
             senderName: $senderName.val()
         };
 
-        if (document.getElementById('switch_demo').checked) {
+        const isDemoMode = document.getElementById('switch_demo').checked;
+        if (isDemoMode) {
             const userData = await getUserData();
             $.extend(data, {}, {
                 checkinDefaultSendTo: userData['mailAccount'],
@@ -94,6 +95,16 @@ function step1(engName) {
             data,
             success: d => {
                 showPopup(d);
+                if (isDemoMode){
+                    displayNotification({
+                        icon: '/image/notification.png',
+                        body: `${engName}送出了一封checkin`,
+                        image: '',
+                        data: {
+                            link: `http://finsrv01.iead.local:6080/jenkins/view/CITI_UAT/job/Deploy/job/${jenkinsJobName}/${jenkinsBuildNum}/`
+                        }
+                    });
+                }
             },
             error: e => {
                 console.log(e['responseJSON']);
@@ -229,6 +240,20 @@ function step1(engName) {
             error: e => {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
+            }
+        });
+    });
+
+    $('#subscribe').click(function(){
+        showPopup('訂閱後將會收到所有透過此站發送checkin mail的人的通知', () => {
+            if ('Notification' in window) {
+                console.log('Notification permission default status:', Notification.permission);
+                Notification.requestPermission(function (status) {
+                    console.log('Notification permission status:', status);
+                    displayNotification({
+                        body: '謝謝訂閱!'
+                    });
+                });
             }
         });
     });
