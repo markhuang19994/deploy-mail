@@ -12,6 +12,11 @@ $(function () {
         }
     };
 
+    window.closePopup = () => {
+        callBack = null;
+        $(closeSpan).trigger('click');
+    };
+
     closeSpan.addEventListener('click', onClose);
 
     $(document).on('click', 'body', e => {

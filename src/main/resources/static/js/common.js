@@ -115,7 +115,15 @@
                 endLoading()
             });
         });
-    }
+    };
 
-
+    window.jsonObjToFormData = function (jsonObj) {
+        const formData = new FormData();
+        const keys = Object.keys(jsonObj);
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            formData.append(key, jsonObj[key]);
+        }
+        return formData;
+    };
 })();

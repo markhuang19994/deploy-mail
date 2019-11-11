@@ -26,6 +26,7 @@
                 '/js/index.js',
                 '/js/step1.js',
                 '/js/advance-setting.js',
+                '/js/custom-upload.js'
             ]);
         });
     </script>
@@ -70,8 +71,11 @@
         <button class="btn" id="advance-setting__btn">
             <span>Advance setting</span><i class="fa fa-cog" aria-hidden="true"></i>
         </button>
+        <button class="btn" id="custom_upload__btn">
+            <span>Custom upload</span><i class="fa fa-cog" aria-hidden="true"></i>
+        </button>
         <button class="btn" id="subscribe">
-            <span>Subscribe</span> <i  class="fa fa-bell" aria-hidden="true"></i>
+            <span>Subscribe</span> <i class="fa fa-bell" aria-hidden="true"></i>
         </button>
         <button class="btn" id="logout__btn">
             <span>Logout</span> <i class="fa fa-sign-out" aria-hidden="true"></i>
@@ -138,6 +142,29 @@
         <div id="advance-setting-save-div">
             <button class="btn" id="advance-setting-cancel-btn">Cancel</button>
             <button class="btn" id="advance-setting-save-btn">Save</button>
+        </div>
+    </div>
+</div>
+
+<!--custom upload-->
+<div id="custom-upload-body">
+    <div id="custom-upload-content">
+        <h1>Custom Upload</h1>
+        <div>
+            <table>
+                <tr>
+                    <td>checkoutForm.doc</td>
+                    <td><input id="checkout-form-upload" type="file"/></td>
+                </tr>
+                <tr>
+                    <td>changeForm.doc</td>
+                    <td><input  id="change-form-upload" type="file"/></td>
+                </tr>
+                <tr style="height: 100px">
+                    <td><button class="btn" id="custom-upload-cancel-btn">Cancel</button></td>
+                    <td><button class="btn" id="custom-upload-save-btn">Save</button></td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>

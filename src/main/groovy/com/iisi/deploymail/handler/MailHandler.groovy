@@ -10,13 +10,18 @@ import com.iisi.deploymail.service.DeployMailUserService
 import com.iisi.deploymail.service.DeployResourcesService
 import com.iisi.deploymail.service.impl.AbstractMailServiceImpl
 import com.iisi.deploymail.tool.HtmlResource
+import com.iisi.deploymail.util.FileUtil
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.multipart.MultipartFile
+import org.springframework.web.multipart.MultipartHttpServletRequest
+import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest
 
 import javax.servlet.http.HttpServletRequest
 
@@ -49,10 +54,15 @@ class MailHandler {
 
     @ResponseBody
     @PostMapping(path = '/checkin')
-    String sendCheckin(HttpServletRequest request) {
+    String sendCheckin(@RequestParam(value = "changeForm", required = false) MultipartFile changeForm,
+                       HttpServletRequest request) {
         def session = request.getSession()
         def checkinMailProp = paramResolver.resolveCheckinHandlerParam(request)
         checkinMailProp.checkinResources = deployResourcesService.downloadCheckinResources(checkinMailProp)
+        if (changeForm != null) {
+            checkinMailProp.checkinResources.changeForm =
+                    FileUtil.createTempFile(changeForm.bytes, 'changeForm.doc')
+        }
         def userEngName = session.getAttribute(Constants.USER_ENG_NAME).toString()
         AbstractMailServiceImpl.fillAdvanceSetting(checkinMailProp, userEngName, deployMailUserService)
         checkinMailService.sendMail(checkinMailProp)
@@ -61,10 +71,15 @@ class MailHandler {
 
     @ResponseBody
     @PostMapping(path = '/checkout')
-    String sendCheckout(HttpServletRequest request) {
+    String sendCheckout(@RequestParam(value = "checkoutForm", required = false) MultipartFile checkoutForm,
+                        HttpServletRequest request) {
         def session = request.getSession()
         def checkoutMailProp = paramResolver.resolveCheckoutHandlerParam(request)
         checkoutMailProp.checkoutResources = deployResourcesService.downloadCheckoutResources(checkoutMailProp)
+        if (checkoutForm != null) {
+            checkoutMailProp.checkoutResources.checkoutForm =
+                    FileUtil.createTempFile(checkoutForm.bytes, 'checkoutForm.doc')
+        }
         def userEngName = session.getAttribute(Constants.USER_ENG_NAME).toString()
         AbstractMailServiceImpl.fillAdvanceSetting(checkoutMailProp, userEngName, deployMailUserService)
         checkoutMailService.sendMail(checkoutMailProp)

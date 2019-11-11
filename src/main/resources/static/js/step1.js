@@ -88,14 +88,19 @@ function step1(engName) {
             });
         }
 
+        const formData = jsonObjToFormData(data);
+        formData.append('changeForm', document.getElementById('change-form-upload').files[0]);
+
         startLoading('信件寄送中');
         $.ajax({
             type: 'POST',
             url: 'mailHandler/checkin',
-            data,
+            data: formData,
+            processData: false,
+            contentType: false,
             success: d => {
                 showPopup(d);
-                if (isDemoMode){
+                if (isDemoMode) {
                     displayNotification({
                         icon: '/image/notification.png',
                         body: `${engName}送出了一封checkin`,
@@ -144,10 +149,15 @@ function step1(engName) {
             });
         }
 
+        const formData = jsonObjToFormData(data);
+        formData.append('checkoutForm', document.getElementById('checkout-form-upload').files[0]);
+
         $.ajax({
             type: 'POST',
             url: 'mailHandler/checkout',
-            data,
+            data: formData,
+            processData: false,
+            contentType: false,
             success: d => {
                 showPopup(d);
             },
@@ -244,7 +254,7 @@ function step1(engName) {
         });
     });
 
-    $('#subscribe').click(function(){
+    $('#subscribe').click(function () {
         showPopup('訂閱後將會收到所有透過此站發送checkin mail的人的通知', () => {
             if ('Notification' in window) {
                 console.log('Notification permission default status:', Notification.permission);
@@ -270,6 +280,10 @@ function step1(engName) {
     $('#advance-setting__btn').click(async () => {
         changePageTopIn($('#step1-body'), $('#advance-setting-body'));
         await fillAdvanceSettingValue();
+    });
+
+    $('#custom_upload__btn').click(() => {
+        changePageTopIn($('#step1-body'), $('#custom-upload-body'));
     });
 
     const $textarea = $('textarea');

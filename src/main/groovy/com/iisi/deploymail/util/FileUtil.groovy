@@ -12,13 +12,30 @@ class FileUtil {
     private static final TEMP_FOLDER = new File(System.properties['java.io.tmpdir'] as String)
 
     static File createTempFile(String content, String charset) {
-        def tempFile = new File(TEMP_FOLDER, "temp_${System.currentTimeMillis()}")
-        tempFile.write(content, charset)
-        tempFile
+        createTempFile(content.getBytes(charset), null)
     }
 
     static File createTempFile(String content) {
         createTempFile(content, StandardCharsets.UTF_8.name())
+    }
+
+    static File createTempFile(byte[] bytes, String fileName) {
+        def extraPath = fileName ? '/' + fileName : ''
+        def tempFile = new File(TEMP_FOLDER, "temp_${System.currentTimeMillis()}" + extraPath)
+        tempFile.parentFile.mkdirs()
+        FileOutputStream fos
+        try {
+            fos = new FileOutputStream(tempFile)
+            fos.write(bytes)
+            fos.flush()
+        } catch (Exception e) {
+            e.printStackTrace()
+        } finally {
+            if (fos != null) {
+                fos.close()
+            }
+        }
+        tempFile
     }
 
     static File getTempFolder() {
