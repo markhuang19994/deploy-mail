@@ -263,6 +263,11 @@ textarea:disabled {
     right: 0;
 }
 
+/*custom upload*/
+#custom-upload-content {
+    margin-left: 8px;
+}
+
 #version {
     position: fixed;
     z-index: 99;
