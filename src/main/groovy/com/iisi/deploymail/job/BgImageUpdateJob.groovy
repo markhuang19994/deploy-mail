@@ -15,7 +15,7 @@ class BgImageUpdateJob {
     private BgImageService bgImageService
     private List<String> srcList = []
 
-    @Scheduled(cron = "? 0 8,10,12,14,16,18 * * ? *")
+    @Scheduled(cron = "0 0 8,10,12,14,16,18 * * ?")
     updateBgImage() {
         if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY || srcList.size() < 2) {
             srcList = []
