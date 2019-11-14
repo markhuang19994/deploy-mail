@@ -52,7 +52,7 @@ class baseHandler {
     ResponseEntity<?> getBackgroundImage(HttpServletResponse resp) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG);
-        headers.set('Cache-Control', 'max-age=7200, public');
+        headers.set('Cache-Control', 'max-age=300, public');
         def imgDir = bgImageService.getBackgroundImageDir()
         if (imgDir.exists()) {
             def images = imgDir.listFiles()
