@@ -55,6 +55,7 @@ class MailHandler {
     @ResponseBody
     @PostMapping(path = '/checkin')
     String sendCheckin(@RequestParam(value = "changeForm", required = false) MultipartFile changeForm,
+                       @RequestParam(value = "otherFiles", required = false) List<MultipartFile> otherFiles,
                        HttpServletRequest request) {
         def session = request.getSession()
         def checkinMailProp = paramResolver.resolveCheckinHandlerParam(request)
@@ -62,6 +63,12 @@ class MailHandler {
         if (changeForm != null) {
             checkinMailProp.checkinResources.changeForm =
                     FileUtil.createTempFile(changeForm.bytes, 'changeForm.doc')
+        }
+        if (otherFiles != null && otherFiles.size() > 0) {
+            checkinMailProp.checkinResources.otherFiles = []
+            otherFiles.each {
+                checkinMailProp.checkinResources.otherFiles << FileUtil.createTempFile(it.bytes, it.originalFilename)
+            }
         }
         def userEngName = session.getAttribute(Constants.USER_ENG_NAME).toString()
         AbstractMailServiceImpl.fillAdvanceSetting(checkinMailProp, userEngName, deployMailUserService)

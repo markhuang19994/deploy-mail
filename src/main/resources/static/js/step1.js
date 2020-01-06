@@ -90,6 +90,9 @@ function step1(engName) {
 
         const formData = jsonObjToFormData(data);
         formData.append('changeForm', document.getElementById('change-form-upload').files[0]);
+        for (let otherFile of document.getElementById('other-upload').files) {
+            formData.append('otherFiles', otherFile);
+        }
 
         startLoading('信件寄送中');
         $.ajax({

@@ -38,8 +38,9 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
         if (diffFiles.size() > 1) {
             replyFiles = diffFiles.reverse()
         } else {
-            checkinFiles  << diffFiles[0]
+            checkinFiles << diffFiles[0]
         }
+        checkinFiles = checkinFiles + checkinResources.otherFiles
 
         String mailAccount = checkinMailProp.mailAccount ?: env.getProperty('mail.user.name')
         String mailAccountAlias = checkinMailProp.mailAccountAlias ?: mailAccount
