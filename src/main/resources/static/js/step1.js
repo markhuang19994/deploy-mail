@@ -1,5 +1,6 @@
 function step1(engName) {
     const $senderName = $('#senderName');
+    const mailNote = {};
 
     $.ajax({
         type: 'GET',
@@ -75,14 +76,17 @@ function step1(engName) {
         };
 
         const isDemoMode = document.getElementById('switch_demo').checked;
+        const checkinNote = mailNote['checkin'];
         if (isDemoMode) {
             const userData = await getUserData();
             $.extend(data, {}, {
+                checkinNote,
                 checkinDefaultSendTo: userData['mailAccount'],
                 checkinDefaultSendCc: ''
             });
         } else {
             $.extend(data, {}, {
+                checkinNote,
                 checkinDefaultSendTo: $('#checkin-default-send-to').val(),
                 checkinDefaultSendCc: $('#checkin-default-send-cc').val()
             });
@@ -101,25 +105,23 @@ function step1(engName) {
             data: formData,
             processData: false,
             contentType: false,
-            success: d => {
-                showPopup(d);
-                if (isDemoMode) {
-                    displayNotification({
-                        icon: '/image/notification.png',
-                        body: `${engName}送出了一封checkin`,
-                        image: '',
-                        data: {
-                            link: `http://finsrv01.iead.local:6080/jenkins/view/CITI_UAT/job/Deploy/job/${jenkinsJobName}/${jenkinsBuildNum}/`
-                        }
-                    });
-                }
-            },
             error: e => {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).done(() => {
-            endLoading()
+        }).done((d) => {
+            endLoading();
+            showPopup(d);
+            if (!isDemoMode) {
+                displayNotification({
+                    icon: '/image/notification.png',
+                    body: `${engName}送出了一封checkin`,
+                    image: '',
+                    data: {
+                        link: `http://finsrv01.iead.local:6080/jenkins/view/CITI_UAT/job/Deploy/job/${jenkinsJobName}/${jenkinsBuildNum}/`
+                    }
+                });
+            }
         });
     });
 
@@ -139,14 +141,17 @@ function step1(engName) {
             senderName: $senderName.val()
         };
 
+        const checkoutNote = mailNote['checkout'];
         if (document.getElementById('switch_demo').checked) {
             const userData = await getUserData();
             $.extend(data, {}, {
+                checkoutNote,
                 checkoutDefaultSendTo: userData['mailAccount'],
                 checkoutDefaultSendCc: ''
             });
         } else {
             $.extend(data, {}, {
+                checkoutNote,
                 checkoutDefaultSendTo: $('#checkout-default-send-to').val(),
                 checkoutDefaultSendCc: $('#checkout-default-send-cc').val()
             });
@@ -161,15 +166,13 @@ function step1(engName) {
             data: formData,
             processData: false,
             contentType: false,
-            success: d => {
-                showPopup(d);
-            },
             error: e => {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).done(() => {
-            endLoading()
+        }).done((d) => {
+            endLoading();
+            showPopup(d);
         });
     });
 
@@ -189,14 +192,17 @@ function step1(engName) {
             senderName: $senderName.val()
         };
 
+        const checksumNote = mailNote['checksum'];
         if (document.getElementById('switch_demo').checked) {
             const userData = await getUserData();
             $.extend(data, {}, {
+                checksumNote,
                 checksumDefaultSendTo: userData['mailAccount'],
                 checksumDefaultSendCc: ''
             });
         } else {
             $.extend(data, {}, {
+                checksumNote,
                 checksumDefaultSendTo: $('#checksum-default-send-to').val(),
                 checksumDefaultSendCc: $('#checksum-default-send-cc').val()
             });
@@ -206,15 +212,13 @@ function step1(engName) {
             type: 'POST',
             url: 'mailHandler/checksum',
             data,
-            success: d => {
-                showPopup(d);
-            },
             error: e => {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).done(() => {
+        }).done((d) => {
             endLoading();
+            showPopup(d);
         });
     });
 
@@ -232,15 +236,13 @@ function step1(engName) {
                 checkoutDefaultSendTo: $('#checkout-default-send-to').val(),
                 checkoutDefaultSendCc: $('#checkout-default-send-cc').val(),
             },
-            success: d => {
-                showPopup(d);
-            },
             error: e => {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).done(() => {
+        }).done((d) => {
             endLoading();
+            showPopup(d);
         });
     });
 
@@ -254,6 +256,41 @@ function step1(engName) {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
+        });
+    });
+
+    const $mailNoteDiv = $('div.mail-note');
+    $mailNoteDiv.slideUp();
+    $('.mail-action.note').click(function () {
+        window.screenMask(300);
+        const mailType = this.id.split('-')[0];
+        $mailNoteDiv.slideDown();
+        const $textarea = $mailNoteDiv.find('textarea');
+        $textarea.prop('disabled', '');
+        $textarea.val(`
+            |<style>
+            |    div.my-note p {
+            |        color: red;
+            |    }
+            |</style>
+            |<div class="my-note">
+            |    <p>default test line1</p>
+            |    <p>default test line2</p>
+            |</div>
+        `.replace(/\n\s*\|/g, '\n'));
+
+        const $cancelBtn = $mailNoteDiv.find('button.cancel');
+        $cancelBtn.click(function () {
+            $textarea.val('');
+            $(this).unbind();
+            $mailNoteDiv.slideUp(() => window.unScreenMask());
+        });
+
+        const $confirmBtn = $mailNoteDiv.find('button.confirm');
+        $confirmBtn.click(function () {
+            mailNote[mailType] = $textarea.val();
+            $(this).unbind();
+            $mailNoteDiv.slideUp(() => window.unScreenMask());
         });
     });
 

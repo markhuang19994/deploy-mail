@@ -21,6 +21,7 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
         def errorMsgs = []
         def sendToStr = request.getParameter('checkinDefaultSendTo')
         def sendCcStr = request.getParameter('checkinDefaultSendCc')
+        def note = request.getParameter('checkinNote')
 
         if (sendToStr == null) {
             errorMsgs << 'checkinDefaultSendTo'
@@ -38,6 +39,7 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
                 projectName: commonParamMap.projectName,
                 lacrNo: commonParamMap.lacrNo,
                 senderName: commonParamMap.senderName,
+                note: note,
                 to: parseMailTextareaVal(sendToStr),
                 cc: parseMailTextareaVal(sendCcStr)
         )
@@ -47,6 +49,7 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
         def errorMsgs = []
         def sendToStr = request.getParameter('checkoutDefaultSendTo')
         def sendCcStr = request.getParameter('checkoutDefaultSendCc')
+        def note = request.getParameter('checkoutNote')
 
         if (sendToStr == null) {
             errorMsgs << 'checkoutDefaultSendTo'
@@ -64,6 +67,7 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
                 projectName: commonParamMap.projectName,
                 lacrNo: commonParamMap.lacrNo,
                 senderName: commonParamMap.senderName,
+                note: note,
                 to: parseMailTextareaVal(sendToStr),
                 cc: parseMailTextareaVal(sendCcStr)
         )
@@ -73,6 +77,7 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
         def errorMsgs = []
         def sendToStr = request.getParameter('checksumDefaultSendTo')
         def sendCcStr = request.getParameter('checksumDefaultSendCc')
+        def note = request.getParameter('checksumNote')
 
         if (sendToStr == null) {
             errorMsgs << 'checksumDefaultSendTo'
@@ -90,6 +95,7 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
                 projectName: commonParamMap.projectName,
                 lacrNo: commonParamMap.lacrNo,
                 senderName: commonParamMap.senderName,
+                note: note,
                 to: parseMailTextareaVal(sendToStr),
                 cc: parseMailTextareaVal(sendCcStr)
         )

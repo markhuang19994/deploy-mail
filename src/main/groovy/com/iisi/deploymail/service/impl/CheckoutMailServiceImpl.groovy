@@ -34,7 +34,7 @@ class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> 
 
         String mailAccount = checkoutMailProp.mailAccount ?: env.getProperty('mail.user.name')
         String mailAccountAlias = checkoutMailProp.mailAccountAlias ?: mailAccount
-        String password = checkoutMailProp.mailPassword?:env.getProperty('mail.user.pwd')
+        String password = checkoutMailProp.mailPassword ?: env.getProperty('mail.user.pwd')
         def session = getMailSession()
 
         def mailAddress = getMailAddress(checkoutMailProp.to, checkoutMailProp.cc, false)
@@ -46,9 +46,13 @@ class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> 
         }
         message.setSubject(getSubject(checkoutMailProp.lacrNo, checkoutMailProp.projectName))
 
+        def mailHtml = generateMailHtml(checkoutMailProp)
+        def note = checkoutMailProp.note != null ? checkoutMailProp.note : '';
+        mailHtml.replace('${note}', note)
+
         Multipart multipart = generateMultipart(checkinFiles as File[])
         MimeBodyPart messageBodyPart = new MimeBodyPart()
-        messageBodyPart.setContent(generateMailHtml(checkoutMailProp), HTML_MAIL_CONTENT_TYPE)
+        messageBodyPart.setContent(mailHtml, HTML_MAIL_CONTENT_TYPE)
         multipart.addBodyPart(messageBodyPart)
         message.setContent(multipart, HTML_MAIL_CONTENT_TYPE)
 
@@ -66,7 +70,8 @@ class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> 
         def m = [
                 projectName: checkoutMailProp.projectName,
                 lacrNo     : checkoutMailProp.lacrNo,
-                senderName : checkoutMailProp.senderName
+                senderName : checkoutMailProp.senderName,
+                note       : checkoutMailProp.note
         ]
         FreemarkerUtil.processTemplateToString(template, m)
     }

@@ -11,6 +11,21 @@
         loading.querySelector('.loadingTxt').innerText = defaultLoadingText;
         loading.classList.remove('on');
     };
+
+    const screenMask = $('#screen-mask');
+    window.screenMask = function (zIndex) {
+        screenMask.css({
+            display: 'block',
+            zIndex
+        })
+    };
+
+    window.unScreenMask = function () {
+        screenMask.css({
+            display: 'none',
+            zIndex: 0
+        })
+    };
 })();
 
 (function changePage() {
@@ -111,9 +126,7 @@
                     showPopup('出現了錯誤，詳情請看console。');
                     res();
                 }
-            }).done(() => {
-                endLoading()
-            });
+            })
         });
     };
 

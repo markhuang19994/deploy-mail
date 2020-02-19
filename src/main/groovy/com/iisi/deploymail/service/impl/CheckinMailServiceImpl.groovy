@@ -95,7 +95,8 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
         def m = [
                 projectName: checkinMailProp.projectName,
                 lacrNo     : checkinMailProp.lacrNo,
-                senderName : checkinMailProp.senderName
+                senderName : checkinMailProp.senderName,
+                note       : checkinMailProp.note
         ]
         FreemarkerUtil.processTemplateToString(template, m)
     }

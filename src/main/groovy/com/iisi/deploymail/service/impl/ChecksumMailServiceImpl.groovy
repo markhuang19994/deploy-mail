@@ -32,9 +32,9 @@ class ChecksumMailServiceImpl extends AbstractMailServiceImpl<ChecksumMailProp> 
         def checksumResources = checksumMailProp.checksumResources
         def attachFiles = [checksumResources.checksum]
 
-        String mailAccount = checksumMailProp.mailAccount?:env.getProperty('mail.user.name')
+        String mailAccount = checksumMailProp.mailAccount ?: env.getProperty('mail.user.name')
         String mailAccountAlias = checksumMailProp.mailAccountAlias ?: mailAccount
-        String password = checksumMailProp.mailPassword?:env.getProperty('mail.user.pwd')
+        String password = checksumMailProp.mailPassword ?: env.getProperty('mail.user.pwd')
         def session = getMailSession()
 
         def mailAddress = getMailAddress(checksumMailProp.to, checksumMailProp.cc, false)
@@ -46,9 +46,13 @@ class ChecksumMailServiceImpl extends AbstractMailServiceImpl<ChecksumMailProp> 
         }
         message.setSubject(getSubject(checksumMailProp.lacrNo, checksumMailProp.projectName))
 
+        def mailHtml = generateMailHtml(checksumMailProp)
+        def note = checksumMailProp.note != null ? checksumMailProp.note : '';
+        mailHtml.replace('${note}', note)
+
         Multipart multipart = generateMultipart(attachFiles as File[])
         MimeBodyPart messageBodyPart = new MimeBodyPart()
-        messageBodyPart.setContent(generateMailHtml(checksumMailProp), HTML_MAIL_CONTENT_TYPE)
+        messageBodyPart.setContent(mailHtml, HTML_MAIL_CONTENT_TYPE)
         multipart.addBodyPart(messageBodyPart)
         message.setContent(multipart, HTML_MAIL_CONTENT_TYPE)
 
@@ -66,7 +70,8 @@ class ChecksumMailServiceImpl extends AbstractMailServiceImpl<ChecksumMailProp> 
         def m = [
                 projectName: checksumMailProp.projectName,
                 lacrNo     : checksumMailProp.lacrNo,
-                senderName : checksumMailProp.senderName
+                senderName : checksumMailProp.senderName,
+                note       : checksumMailProp.note
         ]
         FreemarkerUtil.processTemplateToString(template, m)
     }

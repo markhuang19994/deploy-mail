@@ -5,6 +5,17 @@ html, body {
     overflow: hidden;
 }
 
+#screen-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.65);
+    z-index: 300;
+}
+
 #index-body, #step1-body, #advance-setting-body, #custom-upload-body {
     position: absolute;
     width: 100%;
@@ -159,8 +170,33 @@ textarea:disabled {
     color: #757575;
 }
 
-.send-mail-btn {
-    float: right;
+div.mail-action {
+    display: flex;
+    justify-content: flex-end
+}
+
+button.mail-action:not(:last-child) {
+    margin-right: 1rem;
+}
+
+div.mail-note {
+    display:none;
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -68%);
+    z-index: 700;
+}
+
+.mail-note textarea {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 16px;
+    font-family: monospace;
+    font-size: 1.6rem;
 }
 
 #step1-header .btn {

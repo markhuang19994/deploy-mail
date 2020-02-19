@@ -42,6 +42,9 @@
     <div class="loadingTxt">Loading</div>
 </div>
 
+<!--mask-->
+<div id="screen-mask"></div>
+
 <!--popup-->
 <div id="myModal" class="modal">
     <div class="modal-content">
@@ -97,7 +100,10 @@
             <label for="checkout-default-send-cc">Cc:</label><br/>
             <textarea id="checkout-default-send-cc" name="checkout-default-send-cc"></textarea>
             <br/>
-            <button class="send-mail-btn btn" id="checkout-send-btn">Send</button>
+            <div class="mail-action">
+                <button class="mail-action note btn" id="checkout-note-btn">Note</button>
+                <button class="mail-action btn" id="checkout-send-btn">Send</button>
+            </div>
         </div>
         <div class="checkin col">
             <h1>Checkin</h1>
@@ -107,7 +113,10 @@
             <label for="checkin-default-send-cc">CC:</label><br/>
             <textarea id="checkin-default-send-cc" name="checkin-default-send-cc"></textarea>
             <br/>
-            <button class="send-mail-btn btn" id="checkin-send-btn">Send</button>
+            <div class="mail-action">
+                <button class="mail-action note btn" id="checkin-note-btn">Note</button>
+                <button class="mail-action btn" id="checkin-send-btn">Send</button>
+            </div>
         </div>
         <div class="checksum col">
             <h1>Checksum</h1>
@@ -117,11 +126,23 @@
             <label for="checksum-default-send-cc">Cc:</label><br/>
             <textarea id="checksum-default-send-cc" name="checksum-default-send-cc"></textarea>
             <br/>
-            <button class="send-mail-btn btn" id="checksum-send-btn">Send</button>
+            <div class="mail-action">
+                <button class="mail-action note btn" id="checksum-note-btn">Note</button>
+                <button class="mail-action btn" id="checksum-send-btn">Send</button>
+            </div>
         </div>
         <br/>
         <br/>
         <br/>
+    </div>
+    <div>
+        <div class="mail-note">
+            <textarea cols="30" rows="10" spellcheck="false"></textarea>
+            <div class="mail-action">
+                <button class="mail-action cancel btn">Cancel</button>
+                <button class="mail-action confirm btn">Confirm</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -158,20 +179,24 @@
                 </tr>
                 <tr>
                     <td>changeForm.doc</td>
-                    <td><input  id="change-form-upload" type="file"/></td>
+                    <td><input id="change-form-upload" type="file"/></td>
                 </tr>
                 <tr>
                     <td>otherFiles</td>
-                    <td><input  id="other-upload" type="file" multiple/></td>
+                    <td><input id="other-upload" type="file" multiple/></td>
                 </tr>
                 <tr style="height: 100px">
-                    <td><button class="btn" id="custom-upload-cancel-btn">Cancel</button></td>
-                    <td><button class="btn" id="custom-upload-save-btn">Save</button></td>
+                    <td>
+                        <button class="btn" id="custom-upload-cancel-btn">Cancel</button>
+                    </td>
+                    <td>
+                        <button class="btn" id="custom-upload-save-btn">Save</button>
+                    </td>
                 </tr>
             </table>
         </div>
     </div>
 </div>
-<div id="version">version:202001061554</div>
+<div id="version">version:202002191140</div>
 </body>
 </html>

@@ -9,6 +9,7 @@ abstract class MailProp {
     String jenkinsJobName
     String jenkinsBuildNum
     String senderName
+    String note
     List<String> to;
     List<String> cc;
 }
