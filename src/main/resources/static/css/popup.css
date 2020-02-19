@@ -23,6 +23,8 @@
     width: 60%;
     top: 50%;
     transform: translateY(-50%);
+    font-family: monospace;
+    font-size: 1.5rem;
     box-shadow: 0 0 7px #ccc;
     max-height: 80%;
     overflow-y: auto;

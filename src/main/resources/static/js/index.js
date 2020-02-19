@@ -1,4 +1,14 @@
 $(() => {
+    (function version(){
+        const version = '202002191140';
+        const lineSplit = '<div class="line-split" style="margin: 6px 0 -12px 0;"></div>';
+        $('#version').text('version:' + version);
+        showPopupWithCookie(
+            ['版本更新:', lineSplit, '[功能] 現在寄信可以附加文字了(格式為HTML)', '[修正] BlockUI在寄信成功前就消失的情形'].join('\n<br/>\n'),
+            version,
+            new Date('2020-02-19').getTime() + 86400 * 1000 * 14
+        );
+    })();
     (function index() {
         $.ajax({
             url: '/isLogin',

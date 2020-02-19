@@ -44,6 +44,11 @@ html, body {
     margin-right: 1rem;
 }
 
+div.line-split {
+    width: 100%;
+    border: 1px solid rgb(128, 128, 128);
+}
+
 .select-wrapper {
     display: inline-block;
     position: relative;
@@ -180,7 +185,7 @@ button.mail-action:not(:last-child) {
 }
 
 div.mail-note {
-    display:none;
+    display: none;
     position: absolute;
     width: 50%;
     height: 50%;
