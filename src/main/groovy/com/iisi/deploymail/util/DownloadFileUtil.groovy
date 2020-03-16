@@ -35,7 +35,7 @@ final class DownloadFileUtil {
 
     static void main(String[] args) {
         def files = downloadFiles([
-                "http://finsrv01.iead.local:6080/jenkins/view/CITI_UAT/job/Deploy/job/CITI_PCL_PHASE_TEST/112/artifact/deploy/mailTemplate.txt",
+                "http://macaque:6080/jenkins/view/CITI_UAT/job/Deploy/job/CITI_PCL_PHASE_TEST/112/artifact/deploy/mailTemplate.txt",
         ], FileUtil.getTempFolder())
         println files
     }

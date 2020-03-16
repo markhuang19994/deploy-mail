@@ -118,7 +118,7 @@ function step1(engName) {
                     body: `${engName}送出了一封checkin`,
                     image: '',
                     data: {
-                        link: `http://finsrv01.iead.local:6080/jenkins/view/CITI_UAT/job/Deploy/job/${jenkinsJobName}/${jenkinsBuildNum}/`
+                        link: `http://macaque:6080/jenkins/view/CITI_UAT/job/Deploy/job/${jenkinsJobName}/${jenkinsBuildNum}/`
                     }
                 });
             }
