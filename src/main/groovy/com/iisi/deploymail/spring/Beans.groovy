@@ -4,6 +4,7 @@ import com.iisi.deploymail.freemarker.FtlProvider
 import com.iisi.deploymail.tool.HtmlResource
 import groovy.sql.Sql
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Scope
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 
@@ -25,9 +26,10 @@ class Beans {
     }
 
     @Bean
+    @Scope(value = 'prototype')
     Sql gSql() {
         def env = System.getenv()
-        def url = env.get('mssqlUrl') ?: 'jdbc:sqlserver://newmacaque:3433;database=XCOLA'
+        def url = env.get('mssqlUrl') ?: 'jdbc:sqlserver://sssrv01.iead.local:3433;database=XCOLA'
         def user = env.get('mssqlUser') ?: 'sa'
         def password = env.get('mssqlPwd') ?: 'p@ssw0rd'
         def dbConnParams = [
