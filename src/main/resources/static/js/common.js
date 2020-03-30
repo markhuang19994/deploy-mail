@@ -142,8 +142,8 @@
 
     window.setCookie = (cName, cValue, expDays) => {
         const d = new Date();
-        d.setTime(d.getTime() + (expDays*24*60*60*1000));
-        const expires = "expires="+ d.toUTCString();
+        d.setTime(d.getTime() + (expDays * 24 * 60 * 60 * 1000));
+        const expires = "expires=" + d.toUTCString();
         document.cookie = cName + "=" + cValue + ";" + expires + ";path=/";
     };
 
@@ -151,7 +151,7 @@
         const name = cName + "=";
         const decodedCookie = decodeURIComponent(document.cookie);
         const ca = decodedCookie.split(';');
-        for(let i = 0; i <ca.length; i++) {
+        for (let i = 0; i < ca.length; i++) {
             let c = ca[i];
             while (c.charAt(0) === ' ') {
                 c = c.substring(1);
@@ -162,4 +162,22 @@
         }
         return "";
     };
+
+    window.insertAtCursor = function (ele, val) {
+        if (document.selection) {        //IE support
+            ele.focus();
+            const sel = document.selection.createRange();
+            sel.text = val;
+        } else if (ele.selectionStart || ele.selectionStart === '0') {//MOZILLA and others
+            const startPos = ele.selectionStart;
+            const endPos = ele.selectionEnd;
+            ele.value = ele.value.substring(0, startPos)
+                + val
+                + ele.value.substring(endPos, ele.value.length);
+            ele.selectionStart = startPos + val.length;
+            ele.selectionEnd = startPos + val.length;
+        } else {
+            ele.value += val;
+        }
+    }
 })();

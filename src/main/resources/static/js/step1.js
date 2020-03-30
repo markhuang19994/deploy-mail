@@ -329,4 +329,11 @@ function step1(engName) {
     const $textarea = $('textarea');
     $textarea.attr('spellcheck', 'false');
     $textarea.attr('disabled', 'disabled');
+
+    $(document).on('keydown', 'textarea', function(e){
+        if (e.keyCode === 9) {
+            insertAtCursor(this, '    ');
+            return false;
+        }
+    });
 }
