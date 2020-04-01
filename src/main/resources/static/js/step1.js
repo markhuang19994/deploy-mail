@@ -109,9 +109,8 @@ function step1(engName) {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).done((d) => {
+        }).always((d) => {
             endLoading();
-            showPopup(d);
             if (!isDemoMode) {
                 displayNotification({
                     icon: '/image/notification.png',
@@ -170,10 +169,7 @@ function step1(engName) {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).done((d) => {
-            endLoading();
-            showPopup(d);
-        });
+        }).always(() => endLoading());
     });
 
     $('#checksum-send-btn').click(async () => {
@@ -216,10 +212,7 @@ function step1(engName) {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).done((d) => {
-            endLoading();
-            showPopup(d);
-        });
+        }).always(() => endLoading());
     });
 
     $('#save-mail-setting__btn').click(() => {
@@ -240,10 +233,7 @@ function step1(engName) {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).done((d) => {
-            endLoading();
-            showPopup(d);
-        });
+        }).always(() => endLoading());
     });
 
     $('#logout__btn').click(() => {
@@ -277,7 +267,7 @@ function step1(engName) {
             |    <p>default test line1</p>
             |    <p>default test line2</p>
             |</div>
-        `.replace(/\n\s*\|/g, '\n'));
+        `.replace(/\n\s*?\|/g, '\n').slice(1));
 
         const $cancelBtn = $mailNoteDiv.find('button.cancel');
         $cancelBtn.click(function () {
