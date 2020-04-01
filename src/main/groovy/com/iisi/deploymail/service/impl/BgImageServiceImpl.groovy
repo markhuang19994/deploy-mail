@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 @Service
 class BgImageServiceImpl implements BgImageService {
 
-    private imgRootDir;
+    private imgRootDir
 
     BgImageServiceImpl() {
         ClassPathResource cpr = new ClassPathResource('/static/image')
@@ -60,18 +60,16 @@ class BgImageServiceImpl implements BgImageService {
     }
 
     @Override
-    void storeImageFile(List<String> srcList) {
+    void storeImageFile(List<byte[]> imgByteList) {
         def dir = getBackgroundImageDir()
         if (!dir.exists()) {
             dir.mkdirs()
         }
-        for (int i = 1; i <= 2; i++) {
-            def src = srcList.get(i)
-            def bgImg = getBgImage(src)
-            def imgFile = new File(dir, 'img_' + i)
+        def i = 0
+        for (imgByte in imgByteList) {
+            def imgFile = new File(dir, 'img_' + i++)
             imgFile.delete()
-            imgFile << bgImg
-            srcList.remove(i)
+            imgFile << imgByte
         }
     }
 
@@ -88,7 +86,7 @@ class BgImageServiceImpl implements BgImageService {
 
     @Override
     File getDefaultBackgroundImage() {
-        new File(imgRootDir, 'bg_default.jpg')
+        new File(imgRootDir, 'bg_default.tiny.jpg')
     }
 
     static enum ImageQuality {

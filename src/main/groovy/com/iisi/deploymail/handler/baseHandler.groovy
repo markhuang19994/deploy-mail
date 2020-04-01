@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import java.nio.file.Files
+import java.util.stream.Collectors
 
 @Controller
 @RequestMapping(['/base'])
@@ -54,13 +55,16 @@ class baseHandler {
         headers.setContentType(MediaType.IMAGE_JPEG);
         headers.set('Cache-Control', 'max-age=300, public');
         def imgDir = bgImageService.getBackgroundImageDir()
-        if (imgDir.exists()) {
-            def images = imgDir.listFiles()
-            if (images != null && images.length > 1) {
-                int hr = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-                int idx = ((int) (hr / 12))
-                return new ResponseEntity<Object>(Files.readAllBytes(images[idx].toPath()), headers, HttpStatus.ACCEPTED)
+        try {
+            if (imgDir.exists()) {
+                def images = imgDir.listFiles()?.toList() ?: []
+                if (images.size() > 0) {
+                    Collections.shuffle(images)
+                    return new ResponseEntity<Object>(Files.readAllBytes(images[0].toPath()), headers, HttpStatus.ACCEPTED)
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace()
         }
 
         return new ResponseEntity<Object>(Files.readAllBytes(bgImageService.getDefaultBackgroundImage().toPath()), headers, HttpStatus.ACCEPTED)

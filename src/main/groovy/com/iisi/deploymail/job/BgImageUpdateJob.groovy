@@ -2,6 +2,7 @@ package com.iisi.deploymail.job
 
 import com.iisi.deploymail.constant.Constants
 import com.iisi.deploymail.service.BgImageService
+import com.tinify.Tinify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
@@ -17,7 +18,11 @@ class BgImageUpdateJob {
 
     @Scheduled(cron = "0 0 8,10,12,14,16,18 * * ?")
     updateBgImage() {
-        if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY || srcList.size() < 2) {
+        def dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK)
+        if (dayOfWeek in [Calendar.SATURDAY, Calendar.SUNDAY]) {
+            return
+        }
+        if (dayOfWeek == Calendar.MONDAY) {
             srcList = []
         }
         updateChoiceSrcList()
@@ -34,15 +39,28 @@ class BgImageUpdateJob {
     private updateSrcListByRandomKeyword() {
         def keyword = new ArrayList(Constants.IMAGE_SEARCH_KEYWORD)
         Collections.shuffle(keyword)
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             def imgDetailsJson = bgImageService.getBgImageDetailsJson(
-                    "https://api.pexels.com/v1/search?query=${keyword[i]}&per_page=80&page=1")
+                    "https://api.pexels.com/v1/search?query=${keyword[i]}&per_page=50&page=1")
             srcList.addAll(bgImageService.getImageSrcList(imgDetailsJson, ImageQuality.ORIGINAL))
         }
     }
 
     private updateStoreImageFile(List<String> srcList) {
         Collections.shuffle(srcList)
-        bgImageService.storeImageFile(srcList)
+        def imgByteList = []
+        for (int i = 1; i <= 2; i++) {
+            def src = srcList.get(i)
+            def bgImg = bgImageService.getBgImage(src)
+            try {
+                Tinify.setKey("ZHsKFvWtd4GmPRmzlHM6F3lQ1vsKV4VY");
+                bgImg = Tinify.fromBuffer(bgImg).toBuffer();
+            } catch (Exception e) {
+                e.printStackTrace()
+            }
+            imgByteList << bgImg
+        }
+        bgImageService.storeImageFile(imgByteList)
+        srcList = srcList.subList(3, srcList.size())
     }
 }

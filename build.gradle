@@ -32,6 +32,7 @@ dependencies {
     implementation 'com.sun.mail:javax.mail:1.6.0'
     implementation 'com.microsoft.sqlserver:mssql-jdbc:6.4.0.jre8'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.9.8'
+    implementation 'com.tinify:tinify:latest.release'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }

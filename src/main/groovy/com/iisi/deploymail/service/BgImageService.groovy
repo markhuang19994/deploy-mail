@@ -9,7 +9,7 @@ interface BgImageService {
 
     List<String> getImageSrcList(String imgDetailJson, BgImageServiceImpl.ImageQuality quality)
 
-    void storeImageFile(List<String> srcList)
+    void storeImageFile(List<byte[]> imgByteList)
 
     File getBackgroundImageDir()
 
