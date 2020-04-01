@@ -1,12 +1,17 @@
 $(() => {
     (function version(){
-        const version = '202002191140';
+        const version = '202004011824';
         const lineSplit = '<div class="line-split" style="margin: 6px 0 -12px 0;"></div>';
         $('#version').text('version:' + version);
         showPopupWithCookie(
-            ['版本更新:', lineSplit, '[功能] 現在寄信可以附加文字了(格式為HTML)', '[修正] BlockUI在寄信成功前就消失的情形'].join('\n<br/>\n'),
+            [
+                '版本更新:', lineSplit,
+                '[功能] 可以自由選擇Mail想上傳哪些檔案了(custom upload)',
+                '[修正] 寄信失敗時loading block會正確消失了',
+                '[其他] 背景圖像經過高質量壓縮且更動頻率上升',
+            ].join('\n<br/>\n'),
             version,
-            new Date('2020-02-19').getTime() + 86400 * 1000 * 14
+            new Date('2020-04-06').getTime() + 86400 * 1000 * 14
         );
     })();
     (function index() {

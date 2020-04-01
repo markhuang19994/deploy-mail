@@ -32,7 +32,12 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
     @Override
     void sendMail(CheckinMailProp checkinMailProp) {
         def checkinResources = checkinMailProp.checkinResources
-        def checkinFiles = [checkinResources.changeForm]
+        def checkinFiles = []
+
+        if (!checkinMailProp.noSends?.contains('changeForm')) {
+            checkinFiles << checkinResources.changeForm
+        }
+
         def diffFiles = getDiffFiles(checkinResources.diffZip)
         List<File> replyFiles = []
         if (diffFiles.size() > 1) {
@@ -41,7 +46,7 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
             checkinFiles << diffFiles[0]
         }
         if (checkinResources.otherFiles) {
-            checkinFiles = checkinFiles + checkinResources.otherFiles
+            checkinFiles += checkinResources.otherFiles
         }
 
         String mailAccount = checkinMailProp.mailAccount ?: env.getProperty('mail.user.name')

@@ -79,6 +79,7 @@ class MailHandler {
     @ResponseBody
     @PostMapping(path = '/checkout')
     String sendCheckout(@RequestParam(value = "checkoutForm", required = false) MultipartFile checkoutForm,
+                        @RequestParam(value = "otherFiles", required = false) List<MultipartFile> otherFiles,
                         HttpServletRequest request) {
         def session = request.getSession()
         def checkoutMailProp = paramResolver.resolveCheckoutHandlerParam(request)
@@ -86,6 +87,12 @@ class MailHandler {
         if (checkoutForm != null) {
             checkoutMailProp.checkoutResources.checkoutForm =
                     FileUtil.createTempFile(checkoutForm.bytes, 'checkoutForm.doc')
+        }
+        if (otherFiles != null && otherFiles.size() > 0) {
+            checkoutMailProp.checkoutResources.otherFiles = []
+            otherFiles.each {
+                checkoutMailProp.checkoutResources.otherFiles << FileUtil.createTempFile(it.bytes, it.originalFilename)
+            }
         }
         def userEngName = session.getAttribute(Constants.USER_ENG_NAME).toString()
         AbstractMailServiceImpl.fillAdvanceSetting(checkoutMailProp, userEngName, deployMailUserService)
@@ -95,10 +102,17 @@ class MailHandler {
 
     @ResponseBody
     @PostMapping(path = '/checksum')
-    String sendChecksum(HttpServletRequest request) {
+    String sendChecksum(@RequestParam(value = "otherFiles", required = false) List<MultipartFile> otherFiles,
+                        HttpServletRequest request) {
         def session = request.getSession()
         def checksumMailProp = paramResolver.resolveChecksumHandlerParam(request)
         checksumMailProp.checksumResources = deployResourcesService.downloadChecksumResources(checksumMailProp)
+        if (otherFiles != null && otherFiles.size() > 0) {
+            checksumMailProp.checksumResources.otherFiles = []
+            otherFiles.each {
+                checksumMailProp.checksumResources.otherFiles << FileUtil.createTempFile(it.bytes, it.originalFilename)
+            }
+        }
         def userEngName = session.getAttribute(Constants.USER_ENG_NAME).toString()
         AbstractMailServiceImpl.fillAdvanceSetting(checksumMailProp, userEngName, deployMailUserService)
         checksumMailService.sendMail(checksumMailProp)

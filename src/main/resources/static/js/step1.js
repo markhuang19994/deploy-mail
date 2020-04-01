@@ -93,8 +93,14 @@ function step1(engName) {
         }
 
         const formData = jsonObjToFormData(data);
-        formData.append('changeForm', document.getElementById('change-form-upload').files[0]);
-        for (let otherFile of document.getElementById('other-upload').files) {
+
+        const changeFormIpt = document.getElementById('change-form-upload');
+        if (changeFormIpt) {
+            formData.append('changeForm', changeFormIpt.files[0]);
+        } else {
+            formData.append('noSends', 'changeForm')
+        }
+        for (let otherFile of document.getElementById('other-upload-checkin').files) {
             formData.append('otherFiles', otherFile);
         }
 
@@ -157,7 +163,15 @@ function step1(engName) {
         }
 
         const formData = jsonObjToFormData(data);
-        formData.append('checkoutForm', document.getElementById('checkout-form-upload').files[0]);
+        const checkoutFormIpt = document.getElementById('checkout-form-upload');
+        if (checkoutFormIpt) {
+            formData.append('checkoutForm', checkoutFormIpt.files[0]);
+        } else {
+            formData.append('noSends', 'checkoutForm')
+        }
+        for (let otherFile of document.getElementById('other-upload-checkout').files) {
+            formData.append('otherFiles', otherFile);
+        }
 
         $.ajax({
             type: 'POST',
@@ -204,10 +218,17 @@ function step1(engName) {
             });
         }
 
+        const formData = jsonObjToFormData(data);
+        for (let otherFile of document.getElementById('other-upload-checksum').files) {
+            formData.append('otherFiles', otherFile);
+        }
+
         $.ajax({
             type: 'POST',
             url: 'mailHandler/checksum',
-            data,
+            data: formData,
+            processData: false,
+            contentType: false,
             error: e => {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
@@ -320,7 +341,7 @@ function step1(engName) {
     $textarea.attr('spellcheck', 'false');
     $textarea.attr('disabled', 'disabled');
 
-    $(document).on('keydown', 'textarea', function(e){
+    $(document).on('keydown', 'textarea', function (e) {
         if (e.keyCode === 9) {
             insertAtCursor(this, '    ');
             return false;

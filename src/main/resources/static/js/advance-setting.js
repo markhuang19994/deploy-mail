@@ -35,6 +35,6 @@ $('#advance-setting-save-btn').click(async () => {
     setTimeout(() => showPopup(d), 500)
 });
 
-$('#advance-setting-cancel-btn').click(() => {
+$('#advance-setting-back-btn').click(() => {
     changePageBottomIn($('#advance-setting-body'), $('#step1-body'));
 });

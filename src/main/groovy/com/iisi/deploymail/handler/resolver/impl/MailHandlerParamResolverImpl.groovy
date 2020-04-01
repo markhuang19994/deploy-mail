@@ -22,6 +22,7 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
         def sendToStr = request.getParameter('checkinDefaultSendTo')
         def sendCcStr = request.getParameter('checkinDefaultSendCc')
         def note = request.getParameter('checkinNote')
+        def noSends = request.getParameter('noSends')?.split(',')?.toList()
 
         if (sendToStr == null) {
             errorMsgs << 'checkinDefaultSendTo'
@@ -40,6 +41,7 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
                 lacrNo: commonParamMap.lacrNo,
                 senderName: commonParamMap.senderName,
                 note: note,
+                noSends: noSends,
                 to: parseMailTextareaVal(sendToStr),
                 cc: parseMailTextareaVal(sendCcStr)
         )
@@ -50,6 +52,7 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
         def sendToStr = request.getParameter('checkoutDefaultSendTo')
         def sendCcStr = request.getParameter('checkoutDefaultSendCc')
         def note = request.getParameter('checkoutNote')
+        def noSends = request.getParameter('noSends')?.split(',')?.toList()
 
         if (sendToStr == null) {
             errorMsgs << 'checkoutDefaultSendTo'
@@ -68,6 +71,7 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
                 lacrNo: commonParamMap.lacrNo,
                 senderName: commonParamMap.senderName,
                 note: note,
+                noSends: noSends,
                 to: parseMailTextareaVal(sendToStr),
                 cc: parseMailTextareaVal(sendCcStr)
         )

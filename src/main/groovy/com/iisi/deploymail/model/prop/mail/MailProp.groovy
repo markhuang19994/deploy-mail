@@ -10,6 +10,7 @@ abstract class MailProp {
     String jenkinsBuildNum
     String senderName
     String note
+    List<String> noSends
     List<String> to;
     List<String> cc;
 }

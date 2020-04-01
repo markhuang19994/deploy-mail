@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/css/page.css">
     <link rel="stylesheet" href="/css/popup.css">
     <link rel="stylesheet" href="/css/background-image.css">
+    <link rel="stylesheet" href="/css/tabs.css">
+    <link rel="stylesheet" href="/css/tabstyles.css">
     <script
             src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
@@ -161,7 +163,7 @@
             <input type="password" id="setting-mail-password"/>
         </div>
         <div id="advance-setting-save-div">
-            <button class="btn" id="advance-setting-cancel-btn">Cancel</button>
+            <button class="btn" id="advance-setting-back-btn">Back</button>
             <button class="btn" id="advance-setting-save-btn">Save</button>
         </div>
     </div>
@@ -170,30 +172,57 @@
 <!--custom upload-->
 <div id="custom-upload-body">
     <div id="custom-upload-content">
-        <h1>Custom Upload</h1>
-        <div>
-            <table>
-                <tr>
-                    <td>checkoutForm.doc</td>
-                    <td><input id="checkout-form-upload" type="file"/></td>
-                </tr>
-                <tr>
-                    <td>changeForm.doc</td>
-                    <td><input id="change-form-upload" type="file"/></td>
-                </tr>
-                <tr>
-                    <td>otherFiles</td>
-                    <td><input id="other-upload" type="file" multiple/></td>
-                </tr>
-                <tr style="height: 100px">
-                    <td>
-                        <button class="btn" id="custom-upload-cancel-btn">Cancel</button>
-                    </td>
-                    <td>
-                        <button class="btn" id="custom-upload-save-btn">Save</button>
-                    </td>
-                </tr>
-            </table>
+        <div class="tabs tabs-style-tzoid">
+            <nav>
+                <ul class="tab">
+                    <li class="tab-current" data-idx="1">
+                        <a href="#section-tzoid-1"><span>Checkout</span></a>
+                    </li>
+                    <li data-idx="2">
+                        <a href="#section-tzoid-2"><span>Checkin</span></a>
+                    </li>
+                    <li data-idx="3">
+                        <a href="#section-tzoid-3"><span>Checksum</span></a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="tab content-wrap">
+                <section id="section-tzoid-1" class="page content-current">
+                    <table class="custom-upload">
+                        <tr>
+                            <td>checkoutForm.doc</td>
+                            <td><input id="checkout-form-upload" type="file"/></td>
+                            <td class="remove">X</td>
+                        </tr>
+                        <tr>
+                            <td>otherFiles</td>
+                            <td><input id="other-upload-checkout" type="file" multiple/></td>
+                        </tr>
+                    </table>
+                </section>
+                <section id="section-tzoid-2" class="page">
+                    <table class="custom-upload">
+                        <tr>
+                            <td>changeForm.doc</td>
+                            <td><input id="change-form-upload" type="file"/></td>
+                            <td class="remove">X</td>
+                        </tr>
+                        <tr>
+                            <td>otherFiles</td>
+                            <td><input id="other-upload-checkin" type="file" multiple/></td>
+                        </tr>
+                    </table>
+                </section>
+                <section id="section-tzoid-3" class="page">
+                    <table class="custom-upload">
+                        <tr>
+                            <td>otherFiles</td>
+                            <td><input id="other-upload-checksum" type="file" multiple/></td>
+                        </tr>
+                    </table>
+                </section>
+            </div><!-- /content -->
+            <button class="btn" id="custom-upload-back-btn">Back</button>
         </div>
     </div>
 </div>

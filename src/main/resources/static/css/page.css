@@ -306,7 +306,23 @@ div.mail-note {
 
 /*custom upload*/
 #custom-upload-content {
-    margin-left: 8px;
+    margin: 16px 0 0 8px;
+}
+
+table.custom-upload td.remove {
+    cursor: pointer;
+}
+
+table.custom-upload td.remove:hover {
+    opacity: .6;
+}
+
+#custom-upload-back-btn {
+    margin: 16px auto 0;
+    width: 20%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
 #version {

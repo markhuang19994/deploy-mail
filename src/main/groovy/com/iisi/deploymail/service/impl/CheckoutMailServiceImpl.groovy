@@ -30,7 +30,16 @@ class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> 
     @Override
     void sendMail(CheckoutMailProp checkoutMailProp) {
         def checkoutResources = checkoutMailProp.checkoutResources
-        def checkinFiles = [checkoutResources.checkoutForm, checkoutResources.checkoutTxt]
+        def checkoutFiles = []
+
+        if (!checkoutMailProp.noSends?.contains('checkoutForm')) {
+            checkoutFiles << checkoutResources.checkoutForm
+        }
+        checkoutFiles << checkoutResources.checkoutTxt
+
+        if (checkoutResources.otherFiles) {
+            checkoutFiles += checkoutResources.otherFiles
+        }
 
         String mailAccount = checkoutMailProp.mailAccount ?: env.getProperty('mail.user.name')
         String mailAccountAlias = checkoutMailProp.mailAccountAlias ?: mailAccount
@@ -50,7 +59,7 @@ class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> 
         def note = checkoutMailProp.note != null ? checkoutMailProp.note : '';
         mailHtml.replace('${note}', note)
 
-        Multipart multipart = generateMultipart(checkinFiles as File[])
+        Multipart multipart = generateMultipart(checkoutFiles as File[])
         MimeBodyPart messageBodyPart = new MimeBodyPart()
         messageBodyPart.setContent(mailHtml, HTML_MAIL_CONTENT_TYPE)
         multipart.addBodyPart(messageBodyPart)

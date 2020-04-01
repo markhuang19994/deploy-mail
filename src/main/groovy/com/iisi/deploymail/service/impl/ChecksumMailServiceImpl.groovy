@@ -30,7 +30,11 @@ class ChecksumMailServiceImpl extends AbstractMailServiceImpl<ChecksumMailProp> 
     @Override
     void sendMail(ChecksumMailProp checksumMailProp) {
         def checksumResources = checksumMailProp.checksumResources
-        def attachFiles = [checksumResources.checksum]
+
+        def checksumFiles = [checksumResources.checksum]
+        if (checksumResources.otherFiles) {
+            checksumFiles += checksumResources.otherFiles
+        }
 
         String mailAccount = checksumMailProp.mailAccount ?: env.getProperty('mail.user.name')
         String mailAccountAlias = checksumMailProp.mailAccountAlias ?: mailAccount
@@ -50,7 +54,7 @@ class ChecksumMailServiceImpl extends AbstractMailServiceImpl<ChecksumMailProp> 
         def note = checksumMailProp.note != null ? checksumMailProp.note : '';
         mailHtml.replace('${note}', note)
 
-        Multipart multipart = generateMultipart(attachFiles as File[])
+        Multipart multipart = generateMultipart(checksumFiles as File[])
         MimeBodyPart messageBodyPart = new MimeBodyPart()
         messageBodyPart.setContent(mailHtml, HTML_MAIL_CONTENT_TYPE)
         multipart.addBodyPart(messageBodyPart)
