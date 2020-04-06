@@ -29,7 +29,7 @@ class Beans {
     @Scope(value = 'prototype')
     Sql gSql() {
         def env = System.getenv()
-        def url = env.get('mssqlUrl') ?: 'jdbc:sqlserver://newmacaque:3433;database=XCOLA'
+        def url = env.get('mssqlUrl') ?: 'jdbc:sqlserver://sssrv01.iead.local:3433;database=XCOLA'
         def user = env.get('mssqlUser') ?: 'sa'
         def password = env.get('mssqlPwd') ?: 'p@ssw0rd'
         def dbConnParams = [

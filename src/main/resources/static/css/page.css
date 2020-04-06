@@ -86,7 +86,7 @@ select {
     display: inline-block;
     margin-left: 1rem;
     font-size: 2rem;
-    color: #bbbbbb;
+    color: #808080;
     cursor: pointer;
 }
 
@@ -226,7 +226,7 @@ div.mail-note {
 /*switch*/
 .switch_demo {
     position: absolute;
-    width: 140px;
+    width: 102px;
     right: 2rem;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -268,14 +268,14 @@ div.mail-note {
 }
 
 .switch_demo-inner:before {
-    content: "測試模式開啟";
+    content: "測試模式";
     padding-left: 10px;
     background-color: #34A7C1;
     color: #FFFFFF;
 }
 
 .switch_demo-inner:after {
-    content: "測試模式關閉";
+    content: "測試模式";
     padding-right: 10px;
     background-color: #EEEEEE;
     color: #999999;
@@ -290,7 +290,7 @@ div.mail-note {
     position: absolute;
     top: 0;
     bottom: 0;
-    right: 101px;
+    right: 66px;
     border: 2px solid #999999;
     border-radius: 20px;
     transition: all 0.3s ease-in 0s;
@@ -323,6 +323,15 @@ table.custom-upload td.remove:hover {
     text-align: center;
     display: flex;
     justify-content: center;
+}
+
+.tab.content-wrap {
+    width: 98%;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    box-shadow: 5px 7px 6px #c1c1c1 !important;
 }
 
 #version {
