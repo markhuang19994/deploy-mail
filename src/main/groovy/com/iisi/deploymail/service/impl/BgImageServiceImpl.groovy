@@ -32,8 +32,6 @@ class BgImageServiceImpl implements BgImageService {
         HttpsURLConnection conn = new URL(urlStr).openConnection() as HttpsURLConnection
         conn.setRequestProperty('Accept', '*/*')
         conn.setRequestProperty('Authorization', '563492ad6f91700001000001eff56780807c4bdebf8e0335f9af3f20')
-        conn.setRequestProperty('Origin', 'http://localhost:8080')
-        conn.setRequestProperty('Referer', 'http://localhost:8080/index')
         conn.setRequestProperty('Sec-Fetch', 'cors')
         conn.setRequestProperty('User-Agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.75 Safari/537.36')
         def inp = conn.inputStream
