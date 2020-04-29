@@ -1,17 +1,16 @@
 $(() => {
     (function version(){
-        const version = '202004011824';
+        const version = '202004291157';
         const lineSplit = '<div class="line-split" style="margin: 6px 0 -12px 0;"></div>';
         $('#version').text('version:' + version);
         showPopupWithCookie(
             [
                 '版本更新:', lineSplit,
-                '[功能] 可以自由選擇Mail想上傳哪些檔案了(custom upload)',
-                '[修正] 寄信失敗時loading block會正確消失了',
-                '[其他] 背景圖像經過高質量壓縮且更動頻率上升',
+                '[修正] Note填寫完畢，再按一次不會再刷掉之前填的了',
+                '[其他] 頁面切換更加smooth',
             ].join('\n<br/>\n'),
             version,
-            new Date('2020-04-06').getTime() + 86400 * 1000 * 14
+            new Date('2020-05-03').getTime() + 86400 * 1000 * 14
         );
     })();
     (function index() {

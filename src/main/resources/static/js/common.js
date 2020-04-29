@@ -29,34 +29,76 @@
 })();
 
 (function changePage() {
-    window.slideOut = function (ele, direction = 'left', speed = 350, callback) {
-        const $ele = $(ele);
-        if (direction === 'left') {
-            $ele.animate({left: '-100%'}, speed, callback);
-            $ele.attr('direction', 'left');
-        } else if ((direction === 'right')) {
-            $ele.animate({right: '-100%'}, speed, callback);
-            $ele.attr('direction', 'right');
-        } else if ((direction === 'top')) {
-            $ele.animate({top: '-100%'}, speed, callback);
-            $ele.attr('direction', 'top');
-        } else {
-            $ele.animate({bottom: '-100%'}, speed, callback);
-            $ele.attr('direction', 'bottom');
+
+    function directionAnimate(ele, direction, newDirectionVal,
+                              speed  /*animate speed ms*/, fps /* animate fps*/, callback) {
+        speed = speed || 300
+        fps = fps || 30
+        const pureEle = $(ele)[0]
+        const oldDirectionVal = pureEle.style[direction] || '0';
+        const reg = new RegExp(/(-?\d*)(.*)/g);
+        let unit = oldDirectionVal.replace(reg, '$2');
+
+        let oldDirectionNum = 0;
+        try {
+            oldDirectionNum = parseInt(oldDirectionVal.replace(reg, '$1'));
+        } catch (e) {
         }
+
+        if (unit === '') {
+            unit = newDirectionVal.replace(reg, '$2')
+        }
+
+        let newDirectionNum = 0;
+        try {
+            newDirectionNum = parseInt(newDirectionVal.replace(reg, '$1'))
+        } catch (e) {
+        }
+
+        let frequency = speed / fps;
+        frequency = frequency < 1 ? frequency : ~~frequency
+        const gap = (Math.round(((newDirectionNum - oldDirectionNum) / speed) * frequency) * 100) / 100;
+
+        let nowDirectionNum = oldDirectionNum;
+        let isEnd = false;
+
+        function _animate() {
+            nowDirectionNum = nowDirectionNum + gap;
+
+            const isNegativeLimit = newDirectionNum < oldDirectionNum && nowDirectionNum < newDirectionNum
+            const isPositiveLimit = newDirectionNum > oldDirectionNum && nowDirectionNum > newDirectionNum
+            if (isNegativeLimit || isPositiveLimit) {
+                nowDirectionNum = newDirectionNum;
+                isEnd = true;
+            }
+
+            pureEle.style[direction] = nowDirectionNum + unit;
+
+            if (!isEnd) {
+                setTimeout(_animate, frequency);
+            } else {
+                if (typeof callback === 'function') {
+                    callback();
+                }
+            }
+        }
+
+        _animate();
+    }
+
+    window.slideOut = function (ele, direction = 'left', speed, callback) {
+        const $ele = $(ele);
+        const destCss = {};
+        destCss[direction] = '-100%'
+        directionAnimate(ele, direction, '-100%', speed, 30, callback)
+        $ele.attr('direction', direction);
     };
 
-    window.slideIn = function (ele, direction, speed = 350, callback) {
+    window.slideIn = function (ele, direction, speed, callback) {
         const $ele = $(ele);
-        if (direction === 'left') {
-            $ele.animate({left: '0'}, speed, callback);
-        } else if ((direction === 'right')) {
-            $ele.animate({right: '0'}, speed, callback);
-        } else if ((direction === 'top')) {
-            $ele.animate({top: '0'}, speed, callback);
-        } else {
-            $ele.animate({bottom: '0'}, speed, callback);
-        }
+        const destCss = {}
+        destCss[direction] = '0'
+        directionAnimate(ele, direction, '0', speed, 30, callback)
         $ele.attr('direction', '');
     };
 
@@ -70,7 +112,7 @@
             left: ''
         });
         slideOut(oldPage, 'left', null, () => $(oldPage).css('display', 'none'));
-        slideIn(page, 'right')
+        slideIn(page, 'right');
     };
 
     window.changePageLeftIn = function (oldPage, page) {
@@ -83,7 +125,7 @@
             left: '-100%'
         });
         slideOut(oldPage, 'right', null, () => $(oldPage).css('display', 'none'));
-        slideIn(page, 'left')
+        slideIn(page, 'left');
     };
 
     window.changePageTopIn = function (oldPage, page) {
@@ -96,7 +138,7 @@
             left: ''
         });
         slideOut(oldPage, 'bottom', null, () => $(oldPage).css('display', 'none'));
-        slideIn(page, 'top')
+        slideIn(page, 'top');
     };
 
     window.changePageBottomIn = function (oldPage, page) {
@@ -109,7 +151,7 @@
             left: ''
         });
         slideOut(oldPage, 'top', null, () => $(oldPage).css('display', 'none'));
-        slideIn(page, 'bottom')
+        slideIn(page, 'bottom');
     };
 
     window.getUserData = function () {

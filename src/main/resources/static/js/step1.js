@@ -278,7 +278,7 @@ function step1(engName) {
         $mailNoteDiv.slideDown();
         const $textarea = $mailNoteDiv.find('textarea');
         $textarea.prop('disabled', '');
-        $textarea.val(`
+        $textarea.val(mailNote[mailType] ? mailNote[mailType] : `
             |<style>
             |    div.my-note p {
             |        color: red;
