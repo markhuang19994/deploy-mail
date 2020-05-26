@@ -9,17 +9,24 @@ import com.iisi.deploymail.util.JsonUtil
 import com.iisi.deploymail.util.KeyUtil
 import groovy.sql.Sql
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.ApplicationContext
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
+
+import java.applet.AppletContext
 
 @Component
 class DeployMailUserDaoImpl implements DeployMailUserDao {
     @Autowired
-    Sql gSql
+    private ApplicationContext ctx;
+
+    private Sql gSql() {
+        ctx.getBean('gSql', Sql.class)
+    }
 
     @Override
     List<String> getAllDeployMailUserNames() {
-        gSql.rows("SELECT eng_name FROM DEPLOY_MAIL_USER").collect { it.values()[0] } as List<String>
+        gSql().rows("SELECT eng_name FROM DEPLOY_MAIL_USER").collect { it.values()[0] } as List<String>
     }
 
     @Override
@@ -28,7 +35,7 @@ class DeployMailUserDaoImpl implements DeployMailUserDao {
         def checkoutConfigJson = JsonUtil.stringify(deployMailUser.checkoutConfig, false)
         def checksumConfigJson = JsonUtil.stringify(deployMailUser.checksumConfig, false)
 
-        def updateCount = gSql.executeUpdate('''
+        def updateCount = gSql().executeUpdate('''
             UPDATE DEPLOY_MAIL_USER  SET 
             checkin_config =  ?,
             checkout_config = ?,
@@ -47,7 +54,7 @@ class DeployMailUserDaoImpl implements DeployMailUserDao {
 
         def updateCount = -1
         if (pwd == null || pwd == '') {
-            updateCount = gSql.executeUpdate('''
+            updateCount = gSql().executeUpdate('''
                 UPDATE DEPLOY_MAIL_USER  SET 
                 MAIL_ACCOUNT =  ?,
                 MAIL_ACCOUNT_ALIAS =  ?
@@ -57,7 +64,7 @@ class DeployMailUserDaoImpl implements DeployMailUserDao {
             def pubKey = KeyUtil.getKey(new ClassPathResource('key/publicKey.key').inputStream)
             def encodePwd = KeyUtil.encrypt(pwd.getBytes(), pubKey, 'RSA')
             String encodePwdB64 = Base64.getEncoder().encodeToString(encodePwd);
-            updateCount = gSql.executeUpdate('''
+            updateCount = gSql().executeUpdate('''
                 UPDATE DEPLOY_MAIL_USER  SET 
                 MAIL_ACCOUNT =  ?,
                 MAIL_ACCOUNT_ALIAS =  ?,
@@ -70,7 +77,7 @@ class DeployMailUserDaoImpl implements DeployMailUserDao {
 
     @Override
     DeployMailUser getDeployMailUserByEngName(String engName) {
-        def columnMap = gSql.firstRow("SELECT * FROM DEPLOY_MAIL_USER d WHERE d.ENG_NAME = '$engName'".toString()) as Map
+        def columnMap = gSql().firstRow("SELECT * FROM DEPLOY_MAIL_USER d WHERE d.ENG_NAME = '$engName'".toString()) as Map
 
         if (columnMap == null) {
             throw new Exception("User: $engName not found in table DEPLOY_MAIL_USER")
