@@ -25,7 +25,7 @@ class BgImageUpdateJob {
         if (dayOfWeek == Calendar.MONDAY) {
             srcList = []
         }
-        updateChoiceSrcList()
+//        updateChoiceSrcList()
         updateSrcListByRandomKeyword()
         updateStoreImageFile(srcList)
     }
