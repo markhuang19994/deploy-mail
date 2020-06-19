@@ -6,8 +6,7 @@ $(() => {
         showPopupWithCookie(
             [
                 '版本更新:', lineSplit,
-                '[修正] Note填寫完畢，再按一次不會再刷掉之前填的了',
-                '[其他] 頁面切換更加smooth',
+                '[修正] 信件寄送完成後提示消失問題'
             ].join('\n<br/>\n'),
             version,
             new Date('2020-05-03').getTime() + 86400 * 1000 * 14

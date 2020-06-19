@@ -115,7 +115,7 @@ function step1(engName) {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).always((d) => {
+        }).done(d => d && showPopup(d)).always((d) => {
             endLoading();
             if (!isDemoMode) {
                 displayNotification({
@@ -183,7 +183,7 @@ function step1(engName) {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).always(() => endLoading());
+        }).done(d => d && showPopup(d)).always(() => endLoading());
     });
 
     $('#checksum-send-btn').click(async () => {
@@ -233,7 +233,7 @@ function step1(engName) {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).always(() => endLoading());
+        }).done(d => d && showPopup(d)).always(() => endLoading());
     });
 
     $('#save-mail-setting__btn').click(() => {
@@ -254,7 +254,7 @@ function step1(engName) {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).always(() => endLoading());
+        }).done(d => d && showPopup(d)).always(() => endLoading());
     });
 
     $('#logout__btn').click(() => {
