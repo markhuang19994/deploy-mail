@@ -94,12 +94,26 @@ function step1(engName) {
 
         const formData = jsonObjToFormData(data);
 
+        const noSends = [];
+
         const changeFormIpt = document.getElementById('change-form-upload');
         if (changeFormIpt) {
             formData.append('changeForm', changeFormIpt.files[0]);
         } else {
-            formData.append('noSends', 'changeForm')
+            noSends.push('changeForm')
         }
+
+        const changeFormSqlIpt = document.getElementById('change-form-sql-upload');
+        if (changeFormIpt) {
+            formData.append('changeFormSql', changeFormSqlIpt.files[0]);
+        } else {
+            noSends.push('changeFormSql')
+        }
+
+        if (noSends.length > 0) {
+            formData.append('noSends', noSends.join(','))
+        }
+
         for (let otherFile of document.getElementById('other-upload-checkin').files) {
             formData.append('otherFiles', otherFile);
         }
@@ -115,7 +129,7 @@ function step1(engName) {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).done(d => d && showPopup(d)).always((d) => {
+        }).done(d => d && showHtmlPopup(d)).always((d) => {
             endLoading();
             if (!isDemoMode) {
                 displayNotification({
@@ -183,7 +197,7 @@ function step1(engName) {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).done(d => d && showPopup(d)).always(() => endLoading());
+        }).done(d => d && showHtmlPopup(d)).always(() => endLoading());
     });
 
     $('#checksum-send-btn').click(async () => {
@@ -233,7 +247,7 @@ function step1(engName) {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).done(d => d && showPopup(d)).always(() => endLoading());
+        }).done(d => d && showHtmlPopup(d)).always(() => endLoading());
     });
 
     $('#save-mail-setting__btn').click(() => {
@@ -254,7 +268,7 @@ function step1(engName) {
                 console.log(e['responseJSON']);
                 showPopup('出現了錯誤，詳情請看console。');
             }
-        }).done(d => d && showPopup(d)).always(() => endLoading());
+        }).done(d => d && showHtmlPopup(d)).always(() => endLoading());
     });
 
     $('#logout__btn').click(() => {

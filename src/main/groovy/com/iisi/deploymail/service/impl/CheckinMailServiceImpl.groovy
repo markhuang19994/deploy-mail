@@ -30,21 +30,40 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
     }
 
     @Override
-    void sendMail(CheckinMailProp checkinMailProp) {
+    Map<String, Object> sendMail(CheckinMailProp checkinMailProp) {
+        def warnMessages = []
+
         def checkinResources = checkinMailProp.checkinResources
         def checkinFiles = []
 
         if (!checkinMailProp.noSends?.contains('changeForm')) {
-            checkinFiles << checkinResources.changeForm
+            if (checkinResources.changeForm) {
+                checkinFiles << checkinResources.changeForm
+            } else {
+                warnMessages << 'changeForm is not found.'
+            }
+        }
+
+        if (!checkinMailProp.noSends?.contains('changeFormSql')) {
+            if (checkinResources.changeFormSql) {
+                checkinFiles << checkinResources.changeFormSql
+            } else {
+                warnMessages << 'changeFormSql is not found.'
+            }
         }
 
         def diffFiles = getDiffFiles(checkinResources.diffZip)
         List<File> replyFiles = []
-        if (diffFiles.size() > 1) {
-            replyFiles = diffFiles.reverse()
+        if (diffFiles && diffFiles.size() > 0) {
+            if (diffFiles.size() > 1) {
+                replyFiles = diffFiles.reverse()
+            } else {
+                checkinFiles << diffFiles[0]
+            }
         } else {
-            checkinFiles << diffFiles[0]
+            warnMessages << 'diffFiles is not found.'
         }
+
         if (checkinResources.otherFiles) {
             checkinFiles += checkinResources.otherFiles
         }
@@ -69,30 +88,31 @@ class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
         multipart.addBodyPart(messageBodyPart)
         message.setContent(multipart, HTML_MAIL_CONTENT_TYPE)
 
-        Transport transport = session.getTransport("smtp")
-        transport.connect(mailAccount, password)
-        LOGGER.debug("Start send mail to ${mailAddress.toString()}")
-        transport.sendMessage(message, message.getAllRecipients())
-        LOGGER.debug("send First message success...")
+        session.getTransport("smtp").withCloseable { transport ->
+            transport.connect(mailAccount, password)
+            LOGGER.debug("Start send mail to ${mailAddress.toString()}")
+            transport.sendMessage(message, message.getAllRecipients())
+            LOGGER.debug("send First message success...")
 
-        if (replyFiles.size() > 0) {
-            Message reply = message.reply(true)
-            for (int i = 0; i < replyFiles.size(); i++) {
-                File partialFile = replyFiles.get(i)
-                Multipart mPart = generateMultipart(partialFile)
-                reply.setFrom(new InternetAddress(mailAccountAlias))
-                reply.setReplyTo(message.getReplyTo())
-                reply.setContent(mPart)
-                MimeBodyPart bodyPart = new MimeBodyPart()
-                bodyPart.setText("Attach file " + (i + 1) + "/" + replyFiles.size() + ".")
-                mPart.addBodyPart(bodyPart)
-                transport.sendMessage(reply, reply.getAllRecipients())
-                LOGGER.debug("Send reply mail ${partialFile.getName()} success...")
-                reply = reply.reply(true)
+            if (replyFiles.size() > 0) {
+                Message reply = message.reply(true)
+                for (int i = 0; i < replyFiles.size(); i++) {
+                    File partialFile = replyFiles.get(i)
+                    Multipart mPart = generateMultipart(partialFile)
+                    reply.setFrom(new InternetAddress(mailAccountAlias))
+                    reply.setReplyTo(message.getReplyTo())
+                    reply.setContent(mPart)
+                    MimeBodyPart bodyPart = new MimeBodyPart()
+                    bodyPart.setText("Attach file " + (i + 1) + "/" + replyFiles.size() + ".")
+                    mPart.addBodyPart(bodyPart)
+                    transport.sendMessage(reply, reply.getAllRecipients())
+                    LOGGER.debug("Send reply mail ${partialFile.getName()} success...")
+                    reply = reply.reply(true)
+                }
             }
+            LOGGER.debug('Send checkin mail success')
         }
-        LOGGER.debug('Send checkin mail success')
-        transport.close()
+        [warnMessages: warnMessages]
     }
 
     private String generateMailHtml(CheckinMailProp checkinMailProp) {

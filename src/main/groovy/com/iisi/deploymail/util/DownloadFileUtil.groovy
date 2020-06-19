@@ -13,21 +13,36 @@ final class DownloadFileUtil {
         def result = new LinkedHashMap()
         sourceUrls.each { sourceUrl ->
             def filename = sourceUrl.tokenize('/')[-1]
-            def file = new File("$destDir", "$filename")
-            def fos = new FileOutputStream(file)
-            def protocolUrlTokens = sourceUrl.tokenize(':')
-            def protocolTokenLen = protocolUrlTokens.size()
-            def sourceUrlAsURI = new URI(
-                    protocolUrlTokens[0],
-                    protocolUrlTokens[1..(protocolTokenLen - 1)].join(":"), ""
-            )
-            def out = new BufferedOutputStream(fos)
             try {
-                out << sourceUrlAsURI.toURL().openStream()
-                result[filename] = file
-                LOGGER.debug("${sourceUrlAsURI.toURL().toString()} download success.")
-            } finally {
-                out.close()
+                def file = new File("$destDir", "$filename")
+
+                def protocolUrlTokens = sourceUrl.tokenize(':')
+                def protocolTokenLen = protocolUrlTokens.size()
+                def sourceUrlAsURI = new URI(
+                        protocolUrlTokens[0],
+                        protocolUrlTokens[1..(protocolTokenLen - 1)].join(":"), ""
+                )
+
+                def fos
+                def out
+                try {
+                    fos = new FileOutputStream(file)
+                    out = new BufferedOutputStream(fos)
+
+                    out << sourceUrlAsURI.toURL().openStream()
+                    result[filename] = file
+                    LOGGER.debug("${sourceUrlAsURI.toURL().toString()} download success.")
+                } finally {
+                    if (fos) {
+                        fos.close()
+                    }
+                    if (out) {
+                        out.close()
+                    }
+                }
+            } catch (Exception e) {
+                LOGGER.error(e.getMessage(), e)
+                result[filename] = null
             }
         }
         result

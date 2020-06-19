@@ -55,6 +55,7 @@ class MailHandler {
     @ResponseBody
     @PostMapping(path = '/checkin')
     String sendCheckin(@RequestParam(value = "changeForm", required = false) MultipartFile changeForm,
+                       @RequestParam(value = "changeFormSql", required = false) MultipartFile changeFormSql,
                        @RequestParam(value = "otherFiles", required = false) List<MultipartFile> otherFiles,
                        HttpServletRequest request) {
         def session = request.getSession()
@@ -64,6 +65,10 @@ class MailHandler {
             checkinMailProp.checkinResources.changeForm =
                     FileUtil.createTempFile(changeForm.bytes, 'changeForm.doc')
         }
+        if (changeFormSql != null) {
+            checkinMailProp.checkinResources.changeFormSql =
+                    FileUtil.createTempFile(changeFormSql.bytes, 'changeForm-SQL.doc')
+        }
         if (otherFiles != null && otherFiles.size() > 0) {
             checkinMailProp.checkinResources.otherFiles = []
             otherFiles.each {
@@ -72,8 +77,14 @@ class MailHandler {
         }
         def userEngName = session.getAttribute(Constants.USER_ENG_NAME).toString()
         AbstractMailServiceImpl.fillAdvanceSetting(checkinMailProp, userEngName, deployMailUserService)
-        checkinMailService.sendMail(checkinMailProp)
-        return 'Checkin mail send success'
+
+        def result = checkinMailService.sendMail(checkinMailProp)
+
+        def resultMsg = 'Checkin mail send success.'
+        if (result['warnMessages']) {
+            resultMsg += '<br/>' + result['warnMessages'].collect{ '[warn]' + it}.join('<br/>')
+        }
+        return resultMsg
     }
 
     @ResponseBody

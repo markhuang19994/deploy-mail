@@ -28,7 +28,7 @@ class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> 
     }
 
     @Override
-    void sendMail(CheckoutMailProp checkoutMailProp) {
+    Map<String, Object> sendMail(CheckoutMailProp checkoutMailProp) {
         def checkoutResources = checkoutMailProp.checkoutResources
         def checkoutFiles = []
 

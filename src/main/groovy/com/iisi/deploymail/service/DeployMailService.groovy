@@ -5,6 +5,6 @@ import com.iisi.deploymail.model.prop.mail.MailProp
 
 interface DeployMailService<T extends MailProp> {
 
-    void sendMail(T mailProp)
+    Map<String, Object> sendMail(T mailProp)
 
 }

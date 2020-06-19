@@ -28,7 +28,7 @@ class ChecksumMailServiceImpl extends AbstractMailServiceImpl<ChecksumMailProp> 
     }
 
     @Override
-    void sendMail(ChecksumMailProp checksumMailProp) {
+    Map<String, Object> sendMail(ChecksumMailProp checksumMailProp) {
         def checksumResources = checksumMailProp.checksumResources
 
         def checksumFiles = [checksumResources.checksum]

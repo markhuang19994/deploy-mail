@@ -51,7 +51,7 @@ class DeployResourcesServiceImpl implements DeployResourcesService {
         def buildNum = checkinMailProp.jenkinsBuildNum
 
         def checkinResourcesList = [
-                "${projectName}_diff_split.zip", 'changeForm.doc'
+                "${projectName}_diff_split.zip", 'changeForm.doc', 'changeForm-SQL.doc'
         ]
 
         def urls = checkinResourcesList.collect {
@@ -65,6 +65,7 @@ class DeployResourcesServiceImpl implements DeployResourcesService {
         def checkinResources = new CheckinResources()
         checkinResources.diffZip = downloadFiles[checkinResourcesList[0]]
         checkinResources.changeForm = downloadFiles[checkinResourcesList[1]]
+        checkinResources.changeFormSql = downloadFiles[checkinResourcesList[2]]
         checkinResources
     }
 
