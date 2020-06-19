@@ -10,7 +10,7 @@ $(() => {
                 '[新增] changeForm-SQL.doc檔案上傳'
             ].join('\n<br/>\n'),
             version,
-            new Date('2020-05-03').getTime() + 86400 * 1000 * 14
+            new Date('2020-06-19').getTime() + 86400 * 1000 * 14
         );
     })();
     (function index() {
