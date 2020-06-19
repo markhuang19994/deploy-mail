@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  deploy-mail:
+    build: ./app
+    restart: always
+    networks:
+      - my-net
+    ports:
+      - 9788:8080
+    volumes:
+      - ./app/config:/usr/app/config
+    environment:
+      mssqlUrl: 'jdbc:sqlserver://domain:port;database=XCo'
+      mssqlUser: 'xx'
+      mssqlPwd: 'xxxxx'
+    extra_hosts:
+      - "newmacaque:xxx.xxx.xx.xx"
+      - "macaque:xxx.xxx.xx.xx"
+
+networks:
+  my-net:
+    driver: bridge
+
