@@ -104,7 +104,7 @@ function step1(engName) {
         }
 
         const changeFormSqlIpt = document.getElementById('change-form-sql-upload');
-        if (changeFormIpt) {
+        if (changeFormSqlIpt) {
             formData.append('changeFormSql', changeFormSqlIpt.files[0]);
         } else {
             noSends.push('changeFormSql')
