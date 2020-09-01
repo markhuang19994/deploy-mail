@@ -14,18 +14,17 @@ import org.springframework.stereotype.Service
 
 import javax.mail.Message
 import javax.mail.Multipart
-import javax.mail.Transport
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMessage
 
 @Service('CheckinMailService')
-class CheckinMailServiceImpl extends AbstractMailServiceImpl<CheckinMailProp> {
+class CheckinDeployMailService extends AbstractDeployMailService<CheckinMailProp> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CheckinMailServiceImpl.class)
+    private static final Logger LOGGER = LoggerFactory.getLogger(CheckinDeployMailService.class)
 
     @Autowired
-    CheckinMailServiceImpl(Environment env, FtlProvider ftlProvider) {
+    CheckinDeployMailService(Environment env, FtlProvider ftlProvider) {
         super(env, ftlProvider)
     }
 

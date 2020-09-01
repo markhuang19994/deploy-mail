@@ -18,12 +18,12 @@ import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMessage
 
 @Service('CheckoutMailService')
-class CheckoutMailServiceImpl extends AbstractMailServiceImpl<CheckoutMailProp> {
+class CheckoutDeployMailService extends AbstractDeployMailService<CheckoutMailProp> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CheckoutMailServiceImpl.class)
+    private static final Logger LOGGER = LoggerFactory.getLogger(CheckoutDeployMailService.class)
 
     @Autowired
-    CheckoutMailServiceImpl(Environment env, FtlProvider ftlProvider) {
+    CheckoutDeployMailService(Environment env, FtlProvider ftlProvider) {
         super(env, ftlProvider)
     }
 

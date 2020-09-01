@@ -13,8 +13,6 @@ import org.springframework.context.ApplicationContext
 import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Component
 
-import java.applet.AppletContext
-
 @Component
 class DeployMailUserDaoImpl implements DeployMailUserDao {
     @Autowired

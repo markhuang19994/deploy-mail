@@ -8,7 +8,7 @@ import com.iisi.deploymail.model.prop.mail.ChecksumMailProp
 import com.iisi.deploymail.service.DeployMailService
 import com.iisi.deploymail.service.DeployMailUserService
 import com.iisi.deploymail.service.DeployResourcesService
-import com.iisi.deploymail.service.impl.AbstractMailServiceImpl
+import com.iisi.deploymail.service.impl.AbstractDeployMailService
 import com.iisi.deploymail.tool.HtmlResource
 import com.iisi.deploymail.util.FileUtil
 import org.slf4j.Logger
@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseBody
 import org.springframework.web.multipart.MultipartFile
-import org.springframework.web.multipart.MultipartHttpServletRequest
-import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest
 
 import javax.servlet.http.HttpServletRequest
 
@@ -76,7 +74,7 @@ class MailHandler {
             }
         }
         def userEngName = session.getAttribute(Constants.USER_ENG_NAME).toString()
-        AbstractMailServiceImpl.fillAdvanceSetting(checkinMailProp, userEngName, deployMailUserService)
+        AbstractDeployMailService.fillAdvanceSetting(checkinMailProp, userEngName, deployMailUserService)
 
         def result = checkinMailService.sendMail(checkinMailProp)
 
@@ -106,7 +104,7 @@ class MailHandler {
             }
         }
         def userEngName = session.getAttribute(Constants.USER_ENG_NAME).toString()
-        AbstractMailServiceImpl.fillAdvanceSetting(checkoutMailProp, userEngName, deployMailUserService)
+        AbstractDeployMailService.fillAdvanceSetting(checkoutMailProp, userEngName, deployMailUserService)
         checkoutMailService.sendMail(checkoutMailProp)
         return 'Checkout mail send success'
     }
@@ -125,7 +123,7 @@ class MailHandler {
             }
         }
         def userEngName = session.getAttribute(Constants.USER_ENG_NAME).toString()
-        AbstractMailServiceImpl.fillAdvanceSetting(checksumMailProp, userEngName, deployMailUserService)
+        AbstractDeployMailService.fillAdvanceSetting(checksumMailProp, userEngName, deployMailUserService)
         checksumMailService.sendMail(checksumMailProp)
         return 'Checksum mail send success'
     }

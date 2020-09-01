@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class DeployResourcesServiceImpl implements DeployResourcesService {
-    private static final LOGGER =  LoggerFactory.getLogger(AbstractMailServiceImpl.class)
+    private static final LOGGER =  LoggerFactory.getLogger(AbstractDeployMailService.class)
 
     @Autowired
     Environment env

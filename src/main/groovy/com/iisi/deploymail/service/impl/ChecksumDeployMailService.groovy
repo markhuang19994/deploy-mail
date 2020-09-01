@@ -18,12 +18,12 @@ import javax.mail.internet.MimeBodyPart
 import javax.mail.internet.MimeMessage
 
 @Service('ChecksumMailService')
-class ChecksumMailServiceImpl extends AbstractMailServiceImpl<ChecksumMailProp> {
+class ChecksumDeployMailService extends AbstractDeployMailService<ChecksumMailProp> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChecksumMailServiceImpl.class)
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChecksumDeployMailService.class)
 
     @Autowired
-    ChecksumMailServiceImpl(Environment env, FtlProvider ftlProvider) {
+    ChecksumDeployMailService(Environment env, FtlProvider ftlProvider) {
         super(env, ftlProvider)
     }
 
