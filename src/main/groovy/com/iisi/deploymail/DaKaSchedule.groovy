@@ -41,7 +41,7 @@ class DaKaSchedule {
 
     @Scheduled(cron = "0 30 9,18 * * ?")
     sendDaKaNotice() {
-        TimeUnit.SECONDS.sleep(Math.round(Math.random() * 180))
+//        TimeUnit.SECONDS.sleep(Math.round(Math.random() * 180))
         def mailUser = mailUserService.getDeployMailUserByEngName("Mark")
         def mailAccount = mailUser.mailAccount ?: env.getProperty('mail.user.name')
         def mailAccountAlias = mailUser.mailAccountAlias ?: mailAccount
@@ -87,17 +87,17 @@ class DaKaSchedule {
 
     private static List<InternetAddress> getMailAddressToList() {
         [
-                'jiaying.peng@iisigroup.com',
-                'tim.chiang@iisigroup.com',
-                'smano.huang@iisigroup.com',
-                'johnson.ho@iisigroup.com',
-                'roger.lin@iisigroup.com',
-                'cathy.chang@iisigroup.com',
-                'andy.chen@iisigroup.com',
+//                'jiaying.peng@iisigroup.com',
+//                'tim.chiang@iisigroup.com',
+//                'smano.huang@iisigroup.com',
+//                'johnson.ho@iisigroup.com',
+//                'roger.lin@iisigroup.com',
+//                'cathy.chang@iisigroup.com',
+//                'andy.chen@iisigroup.com',
+//                'mingchung.chen@iisigroup.com',
+//                'richard.yeh@iisigroup.com',
+//                'russel.chua@iisigroup.com',
                 'mark.huang@iisigroup.com',
-                'mingchung.chen@iisigroup.com',
-                'richard.yeh@iisigroup.com',
-                'russel.chua@iisigroup.com'
         ].collect { new InternetAddress(it) }
     }
 
@@ -106,7 +106,7 @@ class DaKaSchedule {
         SimpleDateFormat df = new SimpleDateFormat("HH");
         String str = df.format(date);
         int a = Integer.parseInt(str);
-        if (a >= 9 && a <= 18) {
+        if (a >= 9 && a <= 12) {
             return "上班"
         } else {
             return "下班"
