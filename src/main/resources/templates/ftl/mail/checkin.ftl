@@ -27,7 +27,7 @@
 </head>
 <body>
 <div id="content">
-    <p>Dear Michelle and Librarian team,</p><br/>
+    <p>Dear Librarian team,</p><br/>
     <p>請協助Checkin <span class="red">[${projectName!}]</span>，相關檔案如附件。</p><br/>
     <p>LacrNo: <span class="red">${lacrNo!}</span></p><br/>
 </div>
