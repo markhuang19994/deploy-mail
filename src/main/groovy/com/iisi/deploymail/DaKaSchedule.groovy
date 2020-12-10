@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit
  * @since 9/1/20
  * @author Mark Huang
  */
-@Component
+//@Component
 class DaKaSchedule {
     private static final Logger LOGGER = LoggerFactory.getLogger(DaKaSchedule.class)
     private final Environment env;
