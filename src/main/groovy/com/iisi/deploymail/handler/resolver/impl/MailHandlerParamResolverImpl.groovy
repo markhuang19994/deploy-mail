@@ -185,7 +185,7 @@ class MailHandlerParamResolverImpl implements MailHandlerParamResolver {
     }
 
     private static List<String> parseMailTextareaVal(String text) {
-        def result = text?.split('[;\n]')?.toList()?.findAll { it != null && it != '' }
+        def result = text?.split('(;|\r?\n)')?.toList()?.findAll { it != null && it != '' }
         result ?: ['']
     }
 }
